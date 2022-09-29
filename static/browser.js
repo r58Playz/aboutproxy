@@ -1,12 +1,11 @@
 function aboutBrowser(page) {
-  var HOSTURL = "https://aboutbrowser.r58.repl.co/";
-  var base = HOSTURL + "aboutbrowser/";
+  var base = window.location.protocol + "//" + window.location.host + "/aboutbrowser/";
   return base + page + ".html";
 }
 
 function init() {
   var url = document.getElementById("browserUrl");
-  url.addEventListener("keydown", function(e) {
+  url.addEventListener("keydown", function (e) {
     if (e.code === "Enter") {
       changeUrl(url.value);
     }
@@ -14,12 +13,24 @@ function init() {
 }
 
 function changeUrl(url) {
-  if (url == "") {
-    url = aboutBrowser("blank")
+  if (url == "" || url.includes("aboutbrowser://")) {
+    if (url == "") {
+      url = aboutBrowser("blank");
+    } else if (url.includes("aboutbrowser://")) {
+      url = url.replace('aboutbrowser://', '');
+      url = aboutBrowser(url)
+    }
+    setUrl(url);
+    return;
+  } else if (isUrl(url)) {
+    setUrl(url);
+    return;
+  } else {
+    setUrl('https://www.google.com/search?q=' + url);
   }
-  if (!/^https?:\/\//i.test(url)) {
-    url = 'https://' + url;
-  }
+}
+
+function setUrl(url) {
   var browser = document.getElementById("browser");
   browser.src = url;
 }

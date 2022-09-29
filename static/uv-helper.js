@@ -14,8 +14,3 @@ form.addEventListener('submit', async event => {
         window.location.href = __uv$config.prefix + __uv$config.encodeUrl(url);
     });
 });
-
-function isUrl(val = ''){
-    if (/^http(s?):\/\//.test(val) || val.includes('.') && val.substr(0, 1) !== ' ') return true;
-    return false;
-};
