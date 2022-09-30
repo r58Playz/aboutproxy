@@ -1,0 +1,21 @@
+.container {
+    min-width: var(--in-content-container-min-width);
+    max-width: var(--in-content-container-max-width);
+    display: flex;
+    flex-direction: row;
+}
+
+body {
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+    min-height: 100vh;
+    padding: 40px 48px;
+    align-items: center;
+    justify-content: center;
+}
+
+.robotContainer {
+    align-self: stretch;
+    padding: 1em;
+}
