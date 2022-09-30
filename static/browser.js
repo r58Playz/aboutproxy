@@ -28,7 +28,11 @@ function changeUrl(url) {
     setUrl(url);
     return;
   } else if (isUrl(url)) {
-    proxyUsing(url, currentProxyId);
+    if (hasHttps(url)) {
+      proxyUsing(url, currentProxyId);
+    } else {
+      proxyUsing('https://' + url, currentProxyId)
+    }
     return;
   } else {
     proxyUsing('https://www.google.com/search?q=' + url, currentProxyId);
