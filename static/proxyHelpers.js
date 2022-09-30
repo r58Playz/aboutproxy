@@ -1,7 +1,7 @@
-function proxyUsingUV(url) {
+function proxyUsingDIP(url) {
     window.navigator.serviceWorker.register('./sw.js', {
-        scope: __uv$config.prefix
+        scope: window.__DIP.config.prefix
     }).then(() => {
-        setUrl(__uv$config.prefix + __uv$config.encodeUrl(url))
+        setUrl(window.__DIP.config.prefix + window.__DIP.encodeURL(url))
     });
 }

@@ -1,6 +1,6 @@
 var browserAddressBar = document.getElementById("browserUrl");
 var browser = document.getElementById("browser");
-var currentProxyId = "UV";
+var currentProxyId = "DIP";
 
 function aboutBrowser(page) {
   var base = window.location.protocol + "//" + window.location.host + "/aboutbrowser/";
@@ -59,16 +59,16 @@ function browserReload() {
 }
 
 function proxyUsing(url, proxy) {
-  if (proxy == "UV") {
-    proxyUsingUV(url);
+  if (proxy == "DIP") {
+    proxyUsingDIP(url);
   } else {
     console.error("Invalid proxy!");
   }
 }
 
 function baseUrlFor(proxy) {
-  if (proxy == "UV") {
-    return __uv$config.prefix;
+  if (proxy == "DIP") {
+    return window.__DIP.config.prefix;
   } else {
     console.error("Invalid proxy!");
   }

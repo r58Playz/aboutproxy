@@ -1,0 +1,23 @@
+.tabContainer {
+    display: flex;
+    margin: 1em;
+}
+
+.tabItem {
+    flex: 1 1 0;
+    max-width: 15em;
+    background-color: black;
+    color: white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+    margin-left: 2.5px;
+    margin-right: 2.5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.icon {
+    padding: 5px;
+}
