@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
 
-html, body {
+html,
+body {
   margin: 0;
   height: 100%;
 }
@@ -11,7 +12,7 @@ html, body {
 
 .browserContainer {
   width: 100%;
-  height:100%;
+  height: 100%;
   display: flex;
   flex-flow: column;
 }
@@ -29,6 +30,7 @@ html, body {
   border-bottom: 1px solid black;
   display: flex;
   flex-flow: row;
+  background-color: rgb(53, 54, 58);
 }
 
 .browser {
@@ -42,22 +44,31 @@ html, body {
 .navbarBtn {
   background-color: transparent;
   border: none;
-  border-radius: 4px;
+  border-radius: 100%;
   margin: 4px;
+  aspect-ratio: 1 / 1;
   flex-shrink: auto;
   font-size: 1em;
+  transition: background-color .2s ease-in-out;
+  color: white;
 }
 
 .navbarBtn:hover {
-  background-color: whitesmoke;
+  background-color: rgb(69, 70, 73);
 }
 
 .navbarBtn:active {
-  background-color: gainsboro;
+  background-color: rgb(80, 81, 84);
 }
 
 .navbarUrl {
   flex: auto;
   margin-left: 8px;
   margin-right: 8px;
+  padding-left: 1em;
+  padding-right: 1em;
+  border-radius: 25px;
+  background-color: rgb(32, 33, 36);
+  border: none;
+  color: white;
 }

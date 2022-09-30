@@ -16,7 +16,8 @@
 <body onload="init();">
   <div class="container browserContainer">
     <div class="navbar">
-      <button class="navbarBtn"><i class="fa-solid fa-rotate-right"></i></button>
+      <button class="navbarBtn" id="browserReload" onclick="browserReload();"><i
+          class="fa-solid fa-rotate-right"></i></button>
       <input class="navbarUrl" id="browserUrl"></input>
     </div>
     <iframe class="browser" id="browser"></iframe>

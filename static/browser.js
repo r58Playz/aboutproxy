@@ -50,6 +50,10 @@ function browserOnload() {
   browserAddressBar.value = url;
 }
 
+function browserReload() {
+  browser.contentWindow.location.reload();
+}
+
 function proxyUsing(url, proxy) {
   if (proxy == "UV") {
     proxyUsingUV(url);
