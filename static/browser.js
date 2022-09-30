@@ -49,27 +49,13 @@ function browserOnload() {
     url = url.replace(window.location.protocol + "//" + window.location.host + '/aboutbrowser/', '');
     url = url.substring(0, url.length - 5);
     url = "aboutbrowser://" + url;
+  } else {
+    url = url.replace(window.location.protocol + "//" + window.location.host + baseUrlFor(currentProxyId), '')
+    url = decodeUrl(url, currentProxyId);
   }
-  url = url.replace(window.location.protocol + "//" + window.location.host + baseUrlFor(currentProxyId), '')
   browserAddressBar.value = url;
 }
 
 function browserReload() {
   browser.contentWindow.location.reload();
-}
-
-function proxyUsing(url, proxy) {
-  if (proxy == "DIP") {
-    proxyUsingDIP(url);
-  } else {
-    console.error("Invalid proxy!");
-  }
-}
-
-function baseUrlFor(proxy) {
-  if (proxy == "DIP") {
-    return window.__DIP.config.prefix;
-  } else {
-    console.error("Invalid proxy!");
-  }
 }
