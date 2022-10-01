@@ -5,7 +5,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <link href="style.css" rel="stylesheet" type="text/css" />
-  <link href="tabs.css" rel="stylesheet" type="text/css" />
+  <link href="chrome-tabs/css/chrome-tabs.css" rel="stylesheet" />
+  <link href="chrome-tabs/css/chrome-tabs-dark-theme.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <!-- DIP stuff -->
   <script src="dip/dip.config.js"></script>
@@ -16,9 +17,27 @@
 
 <body onload="init();">
   <div class="container browserContainer">
-    <div class="tabContainer" id="tabContainer">
-      <button class="navbarBtn tabBtn" onclick="addNewABTab();" id="addTab"><i
-          class="fa-solid fa-plus fa-sm tabBtnIcon"></i></button>
+    <div class="chrome-tabs" style="--tab-content-margin: 9px">
+      <div class="chrome-tabs-content-wrapper">
+        <div class="chrome-tabs-content"></div>
+        <div class="chrome-tabs-content-after"><button class="chrome-tabs-btn" data-add-tab><i
+              class="fa-solid fa-plus fa-xl tabBtnIcon"></i></button></div>
+      </div>
+      <div class="chrome-tabs-bottom-bar"></div>
+      <!-- Styles to prevent flash after JS initialization -->
+      <style>
+        .chrome-tabs .chrome-tab {
+          width: 258px
+        }
+
+        .chrome-tabs .chrome-tab:nth-child(1) {
+          transform: translate3d(0px, 0, 0)
+        }
+
+        .chrome-tabs .chrome-tab:nth-child(2) {
+          transform: translate3d(239px, 0, 0)
+        }
+      </style>
     </div>
     <div class="navbar">
       <button class="navbarBtn" id="browserReload" onclick="browserReload();"><i
@@ -28,7 +47,8 @@
     <div id="tabContents" class="browser"></div>
   </div>
   <script src="browser.js"></script>
-  <script src="tabs.js"></script>
+  <script src="https://unpkg.com/draggabilly@2.2.0/dist/draggabilly.pkgd.min.js"></script>
+  <script src="chrome-tabs/js/chrome-tabs.js"></script>
 </body>
 
 </html>

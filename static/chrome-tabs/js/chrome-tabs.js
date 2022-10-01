@@ -19,7 +19,7 @@
   const TAB_SIZE_SMALLER = 60
   const TAB_SIZE_MINI = 48
 
-  const noop = _ => {}
+  const noop = _ => { }
 
   const closest = (value, array) => {
     let closest = Infinity
@@ -81,7 +81,7 @@
     }
 
     setupCustomProperties() {
-      this.el.style.setProperty('--tab-content-margin', `${ TAB_CONTENT_MARGIN }px`)
+      this.el.style.setProperty('--tab-content-margin', `${TAB_CONTENT_MARGIN}px`)
     }
 
     setupStyleEl() {
@@ -176,8 +176,8 @@
       let styleHTML = ''
       this.tabPositions.forEach((position, i) => {
         styleHTML += `
-          .chrome-tabs[data-chrome-tabs-instance-id="${ this.instanceId }"] .chrome-tab:nth-child(${ i + 1 }) {
-            transform: translate3d(${ position }px, 0, 0)
+          .chrome-tabs[data-chrome-tabs-instance-id="${this.instanceId}"] .chrome-tab:nth-child(${i + 1}) {
+            transform: translate3d(${position}px, 0, 0)
           }
         `
       })
@@ -192,6 +192,7 @@
 
     addTab(tabProperties, { animate = true, background = false } = {}) {
       const tabEl = this.createNewTabEl()
+      //const addBefore = this.tabContentEl.querySelector(".chrome-tab-content-add-tabs-before-this")
 
       if (animate) {
         tabEl.classList.add('chrome-tab-was-just-added')
@@ -200,6 +201,7 @@
 
       tabProperties = Object.assign({}, defaultTapProperties, tabProperties)
       this.tabContentEl.appendChild(tabEl)
+      //this.tabContentEl.insertBefore(tabEl, addBefore);
       this.setTabCloseEventListener(tabEl)
       this.updateTab(tabEl, tabProperties)
       this.emit('tabAdd', { tabEl })
@@ -226,7 +228,7 @@
       if (activeTabEl === tabEl) return
       if (activeTabEl) activeTabEl.removeAttribute('active')
       tabEl.setAttribute('active', '')
-      this.emit('activeTabChange', { tabEl })
+      this.emit('activeTabChange', { active: activeTabEl, tabEl })
     }
 
     removeTab(tabEl) {
@@ -249,7 +251,7 @@
 
       const faviconEl = tabEl.querySelector('.chrome-tab-favicon')
       if (tabProperties.favicon) {
-        faviconEl.style.backgroundImage = `url('${ tabProperties.favicon }')`
+        faviconEl.style.backgroundImage = `url('${tabProperties.favicon}')`
         faviconEl.removeAttribute('hidden', '')
       } else {
         faviconEl.setAttribute('hidden', '')
@@ -312,7 +314,7 @@
           // Animate dragged tab back into its place
           requestAnimationFrame(_ => {
             tabEl.style.left = '0'
-            tabEl.style.transform = `translate3d(${ finalTranslateX }px, 0, 0)`
+            tabEl.style.transform = `translate3d(${finalTranslateX}px, 0, 0)`
 
             requestAnimationFrame(_ => {
               tabEl.classList.remove('chrome-tab-is-dragging')

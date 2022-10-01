@@ -1,6 +1,14 @@
 var browserAddressBar = document.getElementById("browserUrl");
+var browserIframeContainer = document.getElementById("tabContents");
 var browser = undefined;
 var currentProxyId = "DIP";
+var tabContents = [];
+
+function h(type, inner) {
+  var tmp = document.createElement(type);
+  tmp.innerHTML = inner;
+  return tmp;
+}
 
 function aboutBrowser(page) {
   var base = window.location.protocol + "//" + window.location.host + "/aboutbrowser/";
@@ -8,13 +16,51 @@ function aboutBrowser(page) {
 }
 
 function init() {
-  initTabs(switchTabsHandler);
-  addNewABTab(true);
+  initTabs();
   browserAddressBar.addEventListener("keydown", function (e) {
     if (e.code === "Enter") {
       changeUrl(browserAddressBar.value);
     }
   });
+}
+
+function initTabs() {
+  var el = document.querySelector('.chrome-tabs')
+  var chromeTabs = new ChromeTabs()
+
+  document.documentElement.classList.add('dark-theme')
+  el.classList.add('chrome-tabs-dark-theme')
+
+  chromeTabs.init(el)
+
+  el.addEventListener('activeTabChange', ({ detail }) => {
+    console.debug('Active tab changed', detail.active, detail.tabEl);
+    switchTabsHandler(detail.active, detail.tabEl)
+  })
+  el.addEventListener('tabAdd', ({ detail }) => {
+    console.debug('Tab added', detail.tabEl);
+    addTabHandler(detail.tabEl);
+  })
+  el.addEventListener('tabRemove', ({ detail }) => {
+    console.debug('Tab removed', detail.tabEl);
+    closeTabHandler(detail.tabEl);
+  })
+
+  document.querySelector('button[data-add-tab]').addEventListener('click', _ => {
+    chromeTabs.addTab({
+      title: 'New Tab',
+      favicon: false
+    })
+  })
+
+  window.addEventListener('keydown', (event) => {
+    if (event.ctrlKey && event.key === 't') {
+      chromeTabs.addTab({
+        title: 'New Tab',
+        favicon: false
+      })
+    }
+  })
 }
 
 function changeUrl(url) {
@@ -64,18 +110,49 @@ function browserReload() {
   browser.contentWindow.location.reload();
 }
 
-function switchTabsHandler(oldTab, newTab, _, tabContents) {
-  tabContents[oldTab].onload = undefined;
-  tabContents[newTab].onload = browserOnload;
-  browser = tabContents[newTab];
+function switchTabsHandler(oldTabEl, newTabEl) {
+  if (oldTabEl) {
+    var oldTabIframe = findTabDictFromTabEl(oldTabEl).iframe;
+    oldTabIframe.onload = undefined;
+    oldTabIframe.style.setProperty('display', 'none');
+  }
+  var newTabIframe = findTabDictFromTabEl(newTabEl).iframe;
+  newTabIframe.style.removeProperty('display');
+  newTabIframe.onload = browserOnload;
+  browser = newTabIframe;
   //refresh address bar by running onload handler
   browserOnload();
 }
 
-function addNewABTab(setAsActive = false) {
-  var newBrowser = h("iframe", "");
-  newBrowser.classList.add("browserTabContents")
-  var tabnum = addTab("New Tab", newBrowser);
-  if (setAsActive) switchToTab(tabnum);
-  setUrlFor(aboutBrowser('start'), tabContents[tabnum])
+function addTabHandler(tabEl) {
+  var iframe = h('iframe');
+  iframe.classList.add('browserTabContents');
+  iframe.style.setProperty('display', 'none');
+  setUrlFor(aboutBrowser('start'), iframe);
+  browserIframeContainer.appendChild(iframe);
+  tabContents.push({ tabEl, iframe })
+}
+
+function closeTabHandler(tabEl) {
+  var tabIndex = -1;
+  for (const tab of tabContents) {
+    if (tab.tabEl == tabEl) tabIndex = tabContents.indexOf(tab);
+  }
+  if (tabIndex == -1) {
+    console.error("how tf did you not find the tab? USER IS HECKER ALERT");
+  } else {
+    tabContents[tabIndex].iframe.remove()
+    tabContents.splice(tabIndex, 1);
+  }
+}
+
+function findTabIndexFromTabEl(tabEl) {
+  for (const tab of tabContents) {
+    if (tab.tabEl == tabEl) return tabContents.indexOf(tab);
+  }
+  console.error("failed to find tab!!!!!!!")
+}
+
+function findTabDictFromTabEl(tabEl) {
+  return tabContents[findTabIndexFromTabEl(tabEl)];
 }
