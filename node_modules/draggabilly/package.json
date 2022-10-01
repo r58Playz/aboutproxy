@@ -1,0 +1,44 @@
+{
+  "name": "draggabilly",
+  "version": "2.2.0",
+  "description": "make that shiz draggable",
+  "main": "draggabilly.js",
+  "dependencies": {
+    "get-size": "^2.0.2",
+    "unidragger": "^2.3.0"
+  },
+  "devDependencies": {
+    "chalk": "^2.3.2",
+    "gulp": "^3.9.1",
+    "gulp-jshint": "^2.1.0",
+    "gulp-json-lint": "^0.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.6.1",
+    "gulp-requirejs-optimize": "github:metafizzy/gulp-requirejs-optimize",
+    "gulp-uglify": "^3.0.0",
+    "gulp-util": "^3.0.8",
+    "jshint": "^2.9.5",
+    "minimist": "^1.2.0"
+  },
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/desandro/draggabilly.git"
+  },
+  "keywords": [
+    "DOM",
+    "drag",
+    "draggable",
+    "touch",
+    "multitouch"
+  ],
+  "author": "David DeSandro",
+  "license": "MIT",
+  "homepage": "https://draggabilly.desandro.com/",
+  "bugs": {
+    "url": "https://github.com/desandro/draggabilly/issues"
+  },
+  "directories": {
+    "test": "test"
+  }
+}

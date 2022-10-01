@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <link href="style.css" rel="stylesheet" type="text/css" />
+  <link href="tabs.css" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <!-- DIP stuff -->
   <script src="dip/dip.config.js"></script>
@@ -15,14 +16,19 @@
 
 <body onload="init();">
   <div class="container browserContainer">
+    <div class="tabContainer" id="tabContainer">
+      <button class="navbarBtn tabBtn" onclick="addNewABTab();" id="addTab"><i
+          class="fa-solid fa-plus fa-sm tabBtnIcon"></i></button>
+    </div>
     <div class="navbar">
       <button class="navbarBtn" id="browserReload" onclick="browserReload();"><i
           class="fa-solid fa-rotate-right"></i></button>
       <input class="navbarUrl" id="browserUrl"></input>
     </div>
-    <iframe class="browser" id="browser"></iframe>
+    <div id="tabContents" class="browser"></div>
   </div>
   <script src="browser.js"></script>
+  <script src="tabs.js"></script>
 </body>
 
 </html>

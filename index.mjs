@@ -15,7 +15,7 @@ function authenticationStatus(resp) {
 
 var users = [
 	["r58playz", "SecurlyIsBad"],
-
+	["Rohandoesntknow", "password sussy"], // sungame7
 ]
 
 server.on('request', (req, res) => {

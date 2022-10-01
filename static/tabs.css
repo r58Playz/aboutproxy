@@ -1,16 +1,15 @@
 .tabContainer {
     display: flex;
-    margin: 1em;
+    padding: 0.25em;
+    background-color: rgb(32, 33, 36);
 }
 
 .tabItem {
     flex: 1 1 0;
+    display: flex;
+    flex-flow: row;
     max-width: 15em;
-    background-color: black;
     color: white;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     min-width: 0;
     margin-left: 2.5px;
     margin-right: 2.5px;
@@ -18,6 +17,38 @@
     border-radius: 5px;
 }
 
-.icon {
+.focusedTab {
+    background-color: rgb(53, 54, 58);
+}
+
+.unfocusedTab {
+    background-color: rgb(32, 33, 36);
+}
+
+.tabIcon {
     padding: 5px;
+    flex: 0 0 0 !important;
+}
+
+.tabTitle {
+    flex: auto;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+}
+
+.tabTitleContent {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+.tabBtnIcon {
+    padding: 5px;
+}
+
+.tabBtn {
+    aspect-ratio: 1 / 1;
 }
