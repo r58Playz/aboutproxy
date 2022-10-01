@@ -16,6 +16,7 @@ function authenticationStatus(resp) {
 var users = [
 	["r58playz", "SecurlyIsBad"],
 	["Rohandoesntknow", "password sussy"], // sungame7
+	["misael", "wNy6Hhd2XK86i"], // aandy j lee / snek on cb / misael / andrew lee
 ]
 
 server.on('request', (req, res) => {
