@@ -1,0 +1,24 @@
+settings setting settingTitle {
+    font-size: 18px;
+    display: flex;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+settings setting settingTitle input {
+    overflow: hidden;
+    height: 28px;
+    padding: 4px;
+    flex: auto;
+}
+
+settings setting {
+    margin-bottom: 2em;
+}
+
+.pleasecenter {
+    position: relative;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}

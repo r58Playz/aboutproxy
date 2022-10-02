@@ -1,0 +1,21 @@
+{
+    "version": 1.1,
+    "tags": [
+        {
+            "name": "settings",
+            "description": "Settings wrapper used in aboutbrowser settings page."
+        },
+        {
+            "name": "setting",
+            "description": "Setting wrapper used in aboutbrowser settings page. Ex: `<setting id='id'>...</setting>`"
+        },
+        {
+            "name": "settingTitle",
+            "description": "Setting title used in aboutbrowser settings page."
+        },
+        {
+            "name": "settingStatus",
+            "description": "Setting status used in aboutbrowser settings page."
+        }
+    ]
+}

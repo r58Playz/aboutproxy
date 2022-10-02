@@ -1,8 +1,27 @@
+function setSetting(setting, value) {
+  localStorage.setItem(setting, value);
+}
+
+function getSetting(setting) {
+  return localStorage.getItem(setting)
+}
+
+function resetSetting(setting) {
+  localStorage.removeItem(setting);
+}
+
+function resetSettings() {
+  localStorage.clear();
+}
+
 var browserAddressBar = document.getElementById("browserUrl");
 var browserIframeContainer = document.getElementById("tabContents");
 var browser = undefined;
-var currentProxyId = "DIP";
+var currentProxyId;
+var searchEngineUrl;
 var tabContents = [];
+var startUrl;
+var chromeTabs = undefined;
 
 function h(type, inner) {
   var tmp = document.createElement(type);
@@ -17,6 +36,7 @@ function aboutBrowser(page) {
 
 function init() {
   initTabs();
+  initSettings();
   browserAddressBar.addEventListener("keydown", function (e) {
     if (e.code === "Enter") {
       changeUrl(browserAddressBar.value);
@@ -24,9 +44,19 @@ function init() {
   });
 }
 
+function initSettings() {
+  currentProxyId = "DIP";
+  searchEngineUrl = 'https://www.google.com/search?q='
+  startUrl = 'aboutbrowser://start';
+  var searchEngineUrlSetting = getSetting("searchEngineUrl");
+  if (searchEngineUrlSetting) searchEngineUrl = searchEngineUrlSetting
+  var startUrlSetting = getSetting("startUrl");
+  if (startUrlSetting) startUrl = startUrlSetting
+}
+
 function initTabs() {
   var el = document.querySelector('.chrome-tabs')
-  var chromeTabs = new ChromeTabs()
+  chromeTabs = new ChromeTabs()
 
   document.documentElement.classList.add('dark-theme')
   el.classList.add('chrome-tabs-dark-theme')
@@ -47,18 +77,14 @@ function initTabs() {
   })
 
   document.querySelector('button[data-add-tab]').addEventListener('click', _ => {
-    chromeTabs.addTab({
-      title: 'New Tab',
-      favicon: false
-    })
+    addTab();
   })
 
   window.addEventListener('keydown', (event) => {
     if (event.ctrlKey && event.key === 't') {
-      chromeTabs.addTab({
-        title: 'New Tab',
-        favicon: false
-      })
+      addTab();
+    } else if (event.ctrlKey && event.key === 'w') {
+      chromeTabs.removeTab(chromeTabs.activeTabEl);
     }
   })
 }
@@ -81,7 +107,7 @@ function changeUrl(url) {
     }
     return;
   } else {
-    proxyUsing('https://www.google.com/search?q=' + url, currentProxyId);
+    proxyUsing(searchEngineUrl + url, currentProxyId);
   }
 }
 
@@ -128,7 +154,6 @@ function addTabHandler(tabEl) {
   var iframe = h('iframe');
   iframe.classList.add('browserTabContents');
   iframe.style.setProperty('display', 'none');
-  setUrlFor(aboutBrowser('start'), iframe);
   browserIframeContainer.appendChild(iframe);
   tabContents.push({ tabEl, iframe })
 }
@@ -155,4 +180,13 @@ function findTabIndexFromTabEl(tabEl) {
 
 function findTabDictFromTabEl(tabEl) {
   return tabContents[findTabIndexFromTabEl(tabEl)];
+}
+
+function addTab(url) {
+  if (!url) url = startUrl;
+  chromeTabs.addTab({
+    title: 'New Tab',
+    favicon: false
+  })
+  changeUrl(url);
 }
