@@ -202,6 +202,10 @@ function browserExtensions() {
   addTab("aboutbrowser://extensions")
 }
 
+function openGames() {
+  addTab("aboutbrowser://games/index")
+}
+
 function switchTabsHandler(oldTabEl, newTabEl) {
   if (oldTabEl) {
     var oldTabIframe = findTabDictFromTabEl(oldTabEl).iframe;
