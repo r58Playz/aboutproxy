@@ -87,3 +87,12 @@ footer {
   bottom: 0;
   width: 100%;
 }
+
+.bookmarksBtnWrapper {
+  position: relative;
+}
+
+.bookmarksBtn {
+  position: absolute;
+  right: 0.5em;
+}

@@ -40,9 +40,18 @@
       </style>
     </div>
     <div class="navbar">
+      <button class="navbarBtn" id="browserBack" onclick="browserBack()"><i class="fa-solid fa-arrow-left"></i></button>
+      <button class="navbarBtn" id="browserBack" onclick="browserForward()"><i
+          class="fa-solid fa-arrow-right"></i></button>
       <button class="navbarBtn" id="browserReload" onclick="browserReload();"><i
           class="fa-solid fa-rotate-right"></i></button>
       <input class="navbarUrl" id="browserUrl"></input>
+      <div class="bookmarksBtnWrapper"><button class="navbarBtn bookmarksBtn" id="browserBookmarks"
+          onclick="browserBookmarks();"><i class="fa-regular fa-star"></i></button></div>
+      <button class="navbarBtn" id="browserExtensions" onclick="browserExtensions();"><i
+          class="fa-solid fa-puzzle-piece"></i></button>
+      <button class="navbarBtn" id="browserSettings" onclick="browserSettings();"><i
+          class="fa-solid fa-ellipsis-vertical"></i></button>
     </div>
     <div id="tabContents" class="browser"></div>
   </div>

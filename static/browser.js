@@ -34,14 +34,57 @@ function aboutBrowser(page) {
   return base + page + ".html";
 }
 
+function probeForChrome() {
+  // chrome is trash but firefox breaks proxies so :/
+  var isChromium = window.chrome;
+  var winNav = window.navigator;
+  var vendorName = winNav.vendor;
+  var isOpera = typeof window.opr !== "undefined";
+  var isIEedge = winNav.userAgent.indexOf("Edg") > -1;
+  var isIOSChrome = winNav.userAgent.match("CriOS");
+
+  if (isIOSChrome) {
+    return false;
+  } else if (
+    isChromium !== null &&
+    typeof isChromium !== "undefined" &&
+    vendorName === "Google Inc." &&
+    isOpera === false &&
+    isIEedge === false
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 function init() {
-  initTabs();
   initSettings();
+  initTabs();
+  if (probeForChrome()) unfuckChrome();
   browserAddressBar.addEventListener("keydown", function (e) {
     if (e.code === "Enter") {
       changeUrl(browserAddressBar.value);
     }
   });
+}
+
+function getHeightOfElement(element) {
+  const cs = getComputedStyle(element);
+
+  const paddingY = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
+
+  const borderY =
+    parseFloat(cs.borderTopWidth) + parseFloat(cs.borderBottomWidth);
+
+  return element.offsetHeight - paddingY - borderY;
+}
+
+function unfuckChrome() {
+  console.error("stupid chrome is broken so i have to go unfuck it")
+  var bSettings = document.getElementById("browserSettings");
+  bSettings.style.setProperty('width', getHeightOfElement(bSettings) + 2 + 'px');
+  console.error('unfucked chrome');
 }
 
 function initSettings() {
@@ -85,8 +128,11 @@ function initTabs() {
       addTab();
     } else if (event.ctrlKey && event.key === 'w') {
       chromeTabs.removeTab(chromeTabs.activeTabEl);
+    } else if (event.ctrlKey && event.key === 'r') {
+      browserReload();
     }
   })
+  addTab();
 }
 
 function changeUrl(url) {
@@ -134,6 +180,26 @@ function browserOnload() {
 
 function browserReload() {
   browser.contentWindow.location.reload();
+}
+
+function browserSettings() {
+  addTab("aboutbrowser://settings");
+}
+
+function browserBack() {
+  addTab("aboutbrowser://history")
+}
+
+function browserForward() {
+  addTab("aboutbrowser://history")
+}
+
+function browserBookmarks() {
+  addTab("aboutbrowser://bookmarks")
+}
+
+function browserExtensions() {
+  addTab("aboutbrowser://extensions")
 }
 
 function switchTabsHandler(oldTabEl, newTabEl) {
