@@ -2,48 +2,33 @@
 <html>
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>about:blank</title>
-  <link href="/style.css" rel="stylesheet" type="text/css" />
-  <link href="dark-theme.css" rel="stylesheet" type="text/css" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>about:blank</title>
+    <link href="/style.css" rel="stylesheet" type="text/css" />
+    <link href="dark-theme.css" rel="stylesheet" type="text/css" />
+    <link href="start.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="robot.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body>
-  <div class="container containerPadding">
-    <h1>Welcome to AboutBrowser!</h1>
-    <div>
-      <h2>AboutBrowser version history</h2>
-      <h3>v0.4.0</h3>
-      <ul>
-        <li>add dark theme</li>
-        <li>proxy selector</li>
-      </ul>
-      <h3>v0.3.2</h3>
-      <ul>
-        <li>you got some games on yo browser in a tab?</li>
-        <li>yes</li>
-      </ul>
-      <h3>v0.3.1</h3>
-      <ul>
-        <li>Finish up UI buttons</li>
-      </ul>
-      <h3>v0.3.0</h3>
-      <ul>
-        <li>Added settings page</li>
-        <li>Added version history</li>
-      </ul>
-      <h3>v0.2.0</h3>
-      <ul>
-        <li>Added HTTP auth</li>
-        <li>Added chrome tabs</li>
-      </ul>
-      <h3>v0.1.0</h3>
-      <ul>
-        <li>Added basic browser UI without tabs</li>
-      </ul>
+    <div class="container">
+        <div id="content">
+            <h1>AboutBrowser</h1>
+            <input type="text" class="navbarUrl" placeholder="Search or type a URL" id="omnibox">
+            <div id="recents">
+                <h3>Recents coming after history persistence!</h1>
+            </div>
+        </div>
+        <div class="footerRight">
+            AboutBrowser 0.5.0
+            <button class="navbarBtn" id="browserBack" onclick="openVerHistory();"><i
+                    class="fa-solid fa-clock-rotate-left"></i></button>
+        </div>
     </div>
-  </div>
+    <script src="/browser-api-tab.js"></script>
+    <script src="start.js"></script>
 </body>
 
 </html>

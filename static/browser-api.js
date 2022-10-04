@@ -8,7 +8,7 @@ window.addEventListener("message", (event) => {
     }
     let msg = event.data;
     let sender = event.source;
-    if (msg.type == "setSetting") {
+    if (msg.type === "setSetting") {
         console.debug("recieved setSetting for setting " + msg.setting + " and value " + msg.value);
         if (msg.setting === "searchEngineUrl") {
             // add checks here and send errcode over
@@ -26,7 +26,7 @@ window.addEventListener("message", (event) => {
         } else {
             sendMessage({ type: "settingSet", setting: "unknown", errCode: 1 }, sender)
         }
-    } else if (msg.type == "getSetting") {
+    } else if (msg.type === "getSetting") {
         console.debug("recieved getSetting for setting " + msg.setting);
         if (msg.setting == "searchEngineUrl") {
             sendMessage({ type: "settingValue", setting: "searchEngineUrl", value: searchEngineUrl }, sender);
@@ -37,8 +37,13 @@ window.addEventListener("message", (event) => {
         } else if (msg.setting == "proxyId") {
             sendMessage({ type: "settingValue", setting: "proxyId", value: currentProxyId }, sender);
         }
-    } else if (msg.type == "resetSettings") {
+    } else if (msg.type === "resetSettings") {
         resetSettings();
         initSettings();
+    } else if (msg.type === "openUrl") {
+        addTab(msg.value);
+    } else if (msg.type === "setUrl") {
+        console.debug("recieved setUrl for url " + msg.value);
+        changeUrl(msg.value);
     }
 })

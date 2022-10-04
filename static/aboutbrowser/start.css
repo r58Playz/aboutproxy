@@ -1,0 +1,14 @@
+.navbarUrl {
+    height: 4em;
+    width: 561px;
+}
+
+#content {
+    text-align: center;
+}
+
+.footerRight {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
