@@ -1,0 +1,13 @@
+body {
+    background-color: rgb(53, 54, 58);
+    color: #fff;
+    color-scheme: dark;
+}
+
+a:link {
+    color: #3391ff;
+}
+
+a:visited {
+    color: rgb(188, 140, 242);
+}

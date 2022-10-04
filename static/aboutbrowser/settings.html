@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="settings.css">
     <script src="settings.js"></script>
     <script src="/browser-api-tab.js"></script>
+    <link href="dark-theme.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body onload="init();">
@@ -30,15 +31,29 @@
                     <div>
                         <div class="pleasecenter">Search Engine URL: </div>
                     </div> <input type="text">
-                </settingTitle><br>
+                </settingTitle>
                 Search Engine URL used when searching.
+                <settingStatus></settingStatus>
+                <hr>
+            </setting>
+            <setting id="proxy">
+                <settingTitle>
+                    <div>
+                        <div class="pleasecenter">Proxy: </div>
+                    </div>
+                    <select name="Proxy" id="proxyselector">
+                        <option value="DIP">Dynamic Interception Proxy</option>
+                        <option value="UV">Ultraviolet</option>
+                    </select>
+                </settingTitle>
+                Proxy used to proxy URLs.
                 <settingStatus></settingStatus>
                 <hr>
             </setting>
             <setting id="resetSettings">
                 <settingTitle>
                     <button onclick="resetAllSettings();">RESET ALL SETTINGS</button>
-                </settingTitle><br>
+                </settingTitle>
                 RESET ALL settings to defaults.
                 <hr>
             </setting>

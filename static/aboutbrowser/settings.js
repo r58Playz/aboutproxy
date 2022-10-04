@@ -1,5 +1,6 @@
 var startUrlInput, startUrlStatus;
 var searchEngineUrlInput, searchEngineUrlStatus;
+var proxyInput, proxyStatus;
 
 function init() {
     var startUrlSetting = document.querySelector("settings setting#startUrl");
@@ -20,12 +21,21 @@ function init() {
         sendMessage({ type: "setSetting", setting: "searchEngineUrl", value: searchEngineUrlInput.value });
     })
 
+    var proxySetting = document.querySelector("settings setting#proxy");
+    proxyInput = proxySetting.querySelector("#proxyselector");
+    proxyStatus = proxySetting.querySelector("settingStatus");
+    proxyInput.addEventListener("change", () => {
+        console.debug("proxy value = " + proxyInput.value);
+        sendMessage({ type: "setSetting", setting: "proxyId", value: proxyInput.value });
+    })
+
     getAllSettings();
 }
 
 function getAllSettings() {
     sendMessage({ type: "getSetting", setting: "startUrl" });
     sendMessage({ type: "getSetting", setting: "searchEngineUrl" });
+    sendMessage({ type: "getSetting", setting: "proxyId" });
 }
 
 function resetAllSettings() {
@@ -45,6 +55,11 @@ function settingSetCallback(msg) {
         setTimeout(() => {
             searchEngineUrlStatus.innerText = "";
         }, 1000)
+    } else if (msg.setting == "proxyId") {
+        proxyStatus.innerText = "Saved!";
+        setTimeout(() => {
+            proxyStatus.innerText = "";
+        }, 1000)
     }
 }
 
@@ -53,5 +68,7 @@ function settingValueCallback(msg) {
         startUrlInput.value = msg.value;
     } else if (msg.setting == "searchEngineUrl") {
         searchEngineUrlInput.value = msg.value;
+    } else if (msg.setting == "proxyId") {
+        proxyInput.value = msg.value;
     }
 }

@@ -4,6 +4,7 @@ html,
 body {
   margin: 0;
   height: 100%;
+  color-scheme: dark;
 }
 
 .container {
@@ -95,4 +96,12 @@ footer {
 .bookmarksBtn {
   position: absolute;
   right: 0.5em;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }

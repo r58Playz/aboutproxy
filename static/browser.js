@@ -88,13 +88,15 @@ function unfuckChrome() {
 }
 
 function initSettings() {
-  currentProxyId = "DIP";
+  currentProxyId = "UV";
   searchEngineUrl = 'https://www.google.com/search?q='
   startUrl = 'aboutbrowser://start';
   var searchEngineUrlSetting = getSetting("searchEngineUrl");
-  if (searchEngineUrlSetting) searchEngineUrl = searchEngineUrlSetting
+  if (searchEngineUrlSetting) searchEngineUrl = searchEngineUrlSetting;
   var startUrlSetting = getSetting("startUrl");
-  if (startUrlSetting) startUrl = startUrlSetting
+  if (startUrlSetting) startUrl = startUrlSetting;
+  var proxyIdSetting = getSetting("currentProxyId");
+  if (proxyIdSetting) currentProxyId = proxyIdSetting;
 }
 
 function initTabs() {

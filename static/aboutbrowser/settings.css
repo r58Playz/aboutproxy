@@ -5,7 +5,9 @@ settings setting settingTitle {
     padding-bottom: 0;
 }
 
-settings setting settingTitle input {
+settings setting settingTitle input,
+settings setting settingTitle select,
+settings setting settingTitle button {
     overflow: hidden;
     height: 28px;
     padding: 4px;
