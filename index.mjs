@@ -17,7 +17,6 @@ var users = [
 	["r58playz", "SecurlyIsBad"],
 	["Rohandoesntknow", "password sussy"], // sungame7
 	["misael", "wNy6Hhd2XK86i"], // aandy j lee / snek on cb / misael / andrew lee
-	["abhiram", "abhiram"], //self explanatory
 	["errorcodezero", "zLWxEe9oH5AFQP"], // mr venkit
 ]
 
