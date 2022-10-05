@@ -1,0 +1,31 @@
+.bookmarksContainer {
+    display: flex;
+    border-radius: 2px;
+    background-color: rgb(53, 54, 58);
+    overflow: auto;
+    height: 2em;
+    border-bottom: 1px solid black;
+}
+
+.bookmark {
+    flex-shrink: 0;
+    background-color: transparent;
+    border: none;
+    border-radius: 5px;
+    margin: 4px;
+    font-size: 1em;
+    transition: background-color .2s ease-in-out;
+    color: white;
+}
+
+.bookmark:hover {
+    background-color: rgb(69, 70, 73);
+}
+
+.bookmark:active {
+    background-color: rgb(80, 81, 84);
+}
+
+.bookmarkIcon {
+    margin-right: 5px;
+}

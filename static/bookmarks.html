@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>about:blank</title>
+    <link href="/style.css" rel="stylesheet" type="text/css" />
+    <link href="/aboutbrowser/dark-theme.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="bookmarks.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="/helpers.js"></script>
+</head>
+
+<body onload="init();">
+    <div class="container containerPadding">
+        <div class="bookmarksContainer"></div>
+        <button
+            onclick="testBookmarks.add(document.querySelector('#bTitle').value, document.querySelector('#bUrl').value);">Add
+            new bookmark</button>
+        <input type="text" placeholder="Bookmark title" id="bTitle">
+        <input type="text" placeholder="Bookmark URL" id="bUrl">
+        <br>
+        <input type="number" placeholder="Bookmark index" id="bIndex">
+        <button onclick="testBookmarks.delete(document.querySelector('#bIndex').value);">Delete
+            bookmark</button>
+        <br>
+        <button
+            onclick="testBookmarks.changeName(document.querySelector('#bIndex').value, document.querySelector('#bTitle').value);">Change
+            bookmark name</button>
+        <button
+            onclick="testBookmarks.changeUrl(document.querySelector('#bIndex').value, document.querySelector('#bUrl').value);">Change
+            bookmark URL</button>
+        <br>
+        <button onclick="testBookmarks.save();">Save</button>
+        <button onclick="testBookmarks.load();">Load (autoloads on reload)</button>
+        <script src="bookmarks.js"></script>
+    </div>
+</body>
+
+</html>

@@ -14,14 +14,8 @@ function resetSettings() {
   localStorage.clear();
 }
 
-var browserAddressBar = document.getElementById("browserUrl");
-var browserIframeContainer = document.getElementById("tabContents");
-var browser = undefined;
-var currentProxyId;
-var searchEngineUrl;
+var browserIframeContainer, browserAddressBar, currentProxyId, startUrl, searchEngineUrl, chromeTabs, browser;
 var tabContents = [];
-var startUrl;
-var chromeTabs = undefined;
 
 function h(type, inner) {
   var tmp = document.createElement(type);
@@ -59,6 +53,8 @@ function probeForChrome() {
 }
 
 function init() {
+  browserAddressBar = document.getElementById("browserUrl");
+  browserIframeContainer = document.getElementById("tabContents");
   initSettings();
   initTabs();
   if (probeForChrome()) unfuckChrome();
@@ -82,8 +78,18 @@ function getHeightOfElement(element) {
 
 function unfuckChrome() {
   console.error("stupid chrome is broken so i have to go unfuck it")
-  var bSettings = document.getElementById("browserSettings");
-  bSettings.style.setProperty('width', getHeightOfElement(bSettings) + 2 + 'px');
+  var el = document.getElementById("browserSettings");
+  el.style.setProperty('width', getHeightOfElement(el) + 2 + 'px');
+  el = document.getElementById("browserBack");
+  el.style.setProperty('width', getHeightOfElement(el) + 2 + 'px');
+  el = document.getElementById("browserForward");
+  el.style.setProperty('width', getHeightOfElement(el) + 2 + 'px');
+  el = document.getElementById("browserReload");
+  el.style.setProperty('width', getHeightOfElement(el) + 2 + 'px');
+  el = document.getElementById("browserExtensions");
+  el.style.setProperty('width', getHeightOfElement(el) + 2 + 'px');
+  el = document.getElementById("games");
+  el.style.setProperty('width', getHeightOfElement(el) + 2 + 'px');
   console.error('unfucked chrome');
 }
 
@@ -135,6 +141,9 @@ function initTabs() {
     }
   })
   addTab();
+}
+
+function initBookmarks() {
 }
 
 function changeUrl(url) {

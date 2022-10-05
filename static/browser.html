@@ -4,10 +4,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
+  <!-- ******** CSS ******** -->
   <link href="style.css" rel="stylesheet" type="text/css" />
+  <!-- bookmarks -->
+  <link href="bookmarks.css" rel="stylesheet" type="text/css" />
+  <!-- chrome tabs -->
   <link href="chrome-tabs/css/chrome-tabs.css" rel="stylesheet" />
   <link href="chrome-tabs/css/chrome-tabs-dark-theme.css" rel="stylesheet" />
+  <!-- external -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- ******** JS ******** -->
   <!-- DIP stuff -->
   <script src="dip/dip.config.js"></script>
   <script src="dip/dip.page.js"></script>
@@ -45,7 +51,7 @@
     </div>
     <div class="navbar">
       <button class="navbarBtn" id="browserBack" onclick="browserBack()"><i class="fa-solid fa-arrow-left"></i></button>
-      <button class="navbarBtn" id="browserBack" onclick="browserForward()"><i
+      <button class="navbarBtn" id="browserForward" onclick="browserForward()"><i
           class="fa-solid fa-arrow-right"></i></button>
       <button class="navbarBtn" id="browserReload" onclick="browserReload();"><i
           class="fa-solid fa-rotate-right"></i></button>
@@ -58,6 +64,7 @@
       <button class="navbarBtn" id="browserSettings" onclick="browserSettings();"><i
           class="fa-solid fa-ellipsis-vertical"></i></button>
     </div>
+    <div class="bookmarksContainer"></div>
     <div id="tabContents" class="browser"></div>
   </div>
   <script src="browser.js"></script>
