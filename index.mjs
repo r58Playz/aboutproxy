@@ -18,6 +18,7 @@ var users = [
 	["Rohandoesntknow", "password sussy"], // sungame7
 	["misael", "wNy6Hhd2XK86i"], // aandy j lee / snek on cb / misael / andrew lee
 	["errorcodezero", "zLWxEe9oH5AFQP"], // mr venkit
+	["pmgames", "password12345"] // Pratyush
 ]
 
 server.on('request', (req, res) => {
