@@ -14,11 +14,7 @@ function authenticationStatus(resp) {
 };
 
 var users = [
-	["r58playz", "SecurlyIsBad"],
-	["Rohandoesntknow", "password sussy"], // sungame7
-	["misael", "wNy6Hhd2XK86i"], // aandy j lee / snek on cb / misael / andrew lee
-	["errorcodezero", "zLWxEe9oH5AFQP"], // mr venkit
-	["pmgames", "password12345"] // Pratyush
+	["r58playz", "SecurlyIsBad"]
 ]
 
 server.on('request', (req, res) => {
