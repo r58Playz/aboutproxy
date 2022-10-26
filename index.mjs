@@ -14,10 +14,11 @@ function authenticationStatus(resp) {
 };
 
 var users = [
-	["r58playz", "SecurlyIsBad"]
+	["frogOS", "frogOS"]
 ]
 
 server.on('request', (req, res) => {
+	res.setHeader('Access-Control-Allow-Origin', '*')
 	if (bare.shouldRoute(req)) {
 		bare.routeRequest(req, res);
 		return;

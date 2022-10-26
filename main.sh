@@ -1,4 +1,5 @@
 #!/bin/bash
+cd $(dirname $0)
 # Set this to 1 to automatically attempt a fix when an error occurs while running npm start.
 fix=0
 
