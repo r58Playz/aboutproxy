@@ -271,3 +271,7 @@ function addTab(url) {
   })
   changeUrl(url);
 }
+
+function makeHTMLPopup(title, text, isPrompt) {
+  let container = document.getElementById("popupContainer");
+}

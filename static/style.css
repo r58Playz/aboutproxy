@@ -104,3 +104,49 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+.popupWrapper {
+  display: flex;
+  position: absolute;
+  z-index: 999999;
+  top: 6em;
+  justify-content: center;
+  width: 100%;
+}
+
+.popup { 
+  background-color: rgb(41, 42, 45);
+  padding: 0 1em 0.5em 1em;
+  border-radius: 0.5em;
+  border-color: black;
+  border-style: solid;
+  visibility: hidden;
+}
+
+.popupButtonMain {
+  padding: 0.5em 1.5em;
+  color: rgba(0, 0, 0, 1.0);
+  border: rgb(142,170,255);
+  background-color: rgb(142,170,255);
+  text-decoration: none;
+  border-radius: 4px;
+  float: right;
+}
+
+.popupButtonMain:hover {
+  border: rgb(141,169,224);
+  background-color: rgb(141,169,224);
+}
+
+.popupButtonMain:active {
+  border: rgb(126,149,191);
+  background-color: rgb(126,149,191);
+}
+
+.popupTitle {
+  font-size: larger;
+  font-weight: bold;
+}
+.popupContent {
+  font-size: smaller;
+}

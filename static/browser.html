@@ -55,7 +55,7 @@
           class="fa-solid fa-arrow-right"></i></button>
       <button class="navbarBtn" id="browserReload" onclick="browserReload();"><i
           class="fa-solid fa-rotate-right"></i></button>
-      <input class="navbarUrl" id="browserUrl"></input>
+      <input class="navbarUrl" id="browserUrl" style="padding-right: 2.75em !important;"></input>
       <div class="bookmarksBtnWrapper"><button class="navbarBtn bookmarksBtn" id="browserBookmarks"
           onclick="browserBookmarks();"><i class="fa-regular fa-star"></i></button></div>
       <button class="navbarBtn" id="browserExtensions" onclick="browserExtensions();"><i
@@ -65,6 +65,13 @@
           class="fa-solid fa-ellipsis-vertical"></i></button>
     </div>
     <div class="bookmarksContainer"></div>
+    <div class="popupWrapper" id="popupContainer">
+      <div class="popup">
+        <p class="popupTitle">Title</p>
+        <p class="popupContent">Lorem ipsum dolor sit amet.</p>
+        <button class="popupButtonMain">OK</button>
+      </div>
+    </div>
     <div id="tabContents" class="browser"></div>
   </div>
   <script src="browser.js"></script>
