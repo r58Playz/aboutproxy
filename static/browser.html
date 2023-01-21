@@ -29,9 +29,11 @@
   <div class="container browserContainer">
     <div class="chrome-tabs" style="--tab-content-margin: 9px">
       <div class="chrome-tabs-content-wrapper">
-        <div class="chrome-tabs-content"></div>
-        <div class="chrome-tabs-content-after"><button class="chrome-tabs-btn" data-add-tab><i
-              class="fa-solid fa-plus fa-xl tabBtnIcon"></i></button></div>
+        <button id="addtab" class="chrome-tabs-btn" data-add-tab style="position:absolute;"><i
+          class="fa-solid fa-plus fa-xl tabBtnIcon"></i></button>
+        <div class="chrome-tabs-content">
+        </div>
+        <div class="chrome-tabs-content-after"></div>
       </div>
       <div class="chrome-tabs-bottom-bar"></div>
       <!-- Styles to prevent flash after JS initialization -->

@@ -95,6 +95,7 @@ footer {
 .bookmarksBtn {
   position: absolute;
   right: 0.5em;
+  bottom: 0;
 }
 
 a {

@@ -112,7 +112,7 @@
 
     get tabContentWidths() {
       const numberOfTabs = this.tabEls.length
-      const tabsContentWidth = this.tabContentEl.clientWidth
+      const tabsContentWidth = this.tabContentEl.clientWidth - 35
       const tabsCumulativeOverlappedWidth = (numberOfTabs - 1) * TAB_CONTENT_OVERLAP_DISTANCE
       const targetWidth = (tabsContentWidth - (2 * TAB_CONTENT_MARGIN) + tabsCumulativeOverlappedWidth) / numberOfTabs
       const clampedTargetWidth = Math.max(TAB_CONTENT_MIN_WIDTH, Math.min(TAB_CONTENT_MAX_WIDTH, targetWidth))
@@ -128,6 +128,7 @@
         widths.push(flooredClampedTargetWidth + extraWidth)
         if (extraWidthRemaining > 0) extraWidthRemaining -= 1
       }
+      widths.push(55);
 
       return widths
     }
@@ -174,14 +175,16 @@
       })
 
       let styleHTML = ''
+      let lastPos=0;
       this.tabPositions.forEach((position, i) => {
         styleHTML += `
           .chrome-tabs[data-chrome-tabs-instance-id="${this.instanceId}"] .chrome-tab:nth-child(${i + 1}) {
             transform: translate3d(${position}px, 0, 0)
           }
-        `
+        `; lastPos=position;
       })
       this.styleEl.innerHTML = styleHTML
+      document.getElementById("addtab").style.transform = `translate3d(clamp(0px, ${lastPos+10}px, calc(100vw - 45px)), 0, 0)`;
     }
 
     createNewTabEl() {
