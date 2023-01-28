@@ -19,6 +19,10 @@ var users = [
 
 server.on('request', (req, res) => {
 	res.setHeader('Access-Control-Allow-Origin', '*')
+	if (req.url.includes(".well-known/acme-challenge")) {
+		serve.serve(req, res);
+		return;
+	}
 	if (bare.shouldRoute(req)) {
 		bare.routeRequest(req, res);
 		return;
