@@ -54,7 +54,7 @@ body {
   background-color: transparent;
   border: none;
   border-radius: 100%;
-  margin: 4px;
+  margin: 2px;
   aspect-ratio: 1 / 1;
   flex-shrink: 0;
   font-size: 1em;
@@ -113,6 +113,7 @@ a:hover {
   top: 6em;
   justify-content: center;
   width: 100%;
+  visibility: hidden;
 }
 
 .popup { 
@@ -121,7 +122,6 @@ a:hover {
   border-radius: 0.5em;
   border-color: black;
   border-style: solid;
-  visibility: hidden;
 }
 
 .popupButtonMain {

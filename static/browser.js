@@ -14,7 +14,7 @@ function resetSettings() {
   localStorage.clear();
 }
 
-var browserIframeContainer, browserAddressBar, currentProxyId, startUrl, searchEngineUrl, chromeTabs, browser;
+var browserIframeContainer, browserAddressBar, currentProxyId, startUrl, searchEngineUrl, chromeTabs, browser, browserCurrentTitle, bookmarksClass;
 var tabContents = [];
 
 function h(type, inner) {
@@ -63,6 +63,8 @@ function init() {
       changeUrl(browserAddressBar.value);
     }
   });
+  bookmarksClass = new Bookmarks(document.querySelector(".bookmarksContainer"));
+  bookmarksClass.load();
 }
 
 function getHeightOfElement(element) {
@@ -143,9 +145,6 @@ function initTabs() {
   addTab();
 }
 
-function initBookmarks() {
-}
-
 function changeUrl(url) {
   if (url == "" || url.startsWith("aboutbrowser://")) {
     if (url == "") {
@@ -187,6 +186,15 @@ function browserOnload() {
     url = decodeUrl(url, currentProxyId);
   }
   browserAddressBar.value = url;
+  // get title of iframe and stick it in tab title
+  var title = browser.contentWindow.document.title;
+  if(title == "") {
+    title = "New Tab";
+  }
+  console.debug(title);
+  var titleEl = chromeTabs.activeTabEl.getElementsByClassName("chrome-tab-title")[0];
+  titleEl.innerText = title;
+  browserCurrentTitle = title;
 }
 
 function browserReload() {
@@ -206,7 +214,7 @@ function browserForward() {
 }
 
 function browserBookmarks() {
-  addTab("aboutbrowser://bookmarks")
+  bookmarksClass.add(browserCurrentTitle, browserAddressBar.value);
 }
 
 function browserExtensions() {
@@ -275,3 +283,11 @@ function addTab(url) {
 function makeHTMLPopup(title, text, isPrompt) {
   let container = document.getElementById("popupContainer");
 }
+
+window.addEventListener("bookmarkClicked", (event) => {
+    changeUrl(event.detail.url)
+});
+
+window.addEventListener('beforeunload', (event) => {
+  bookmarksClass.save();
+});

@@ -61,7 +61,7 @@ class Bookmarks {
     }
 
     load(localStorageKey = "bookmarks") {
-        var localStorageData = JSON.parse(localStorage.getItem(localStorageKey));
+        var localStorageData = this.archive(localStorageKey);
         for (const bookmark of localStorageData) {
             this.add(bookmark.name, bookmark.url);
         }
@@ -73,18 +73,7 @@ class Bookmarks {
 
     loadFromArchive(localStorageData) {
         for (const bookmark of localStorageData) {
-            newBookmark(bookmark.name, bookmark.url);
+            add(bookmark.name, bookmark.url);
         }
     }
-}
-
-var testBookmarks;
-
-function init() {
-    testBookmarks = new Bookmarks(document.querySelector(".bookmarksContainer"));
-    testBookmarks.load();
-    window.addEventListener("bookmarkClicked", (event) => {
-        data = event.detail
-        console.info(data.el, data.name, data.url);
-    })
 }
