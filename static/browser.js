@@ -186,15 +186,29 @@ function browserOnload() {
     url = decodeUrl(url, currentProxyId);
   }
   browserAddressBar.value = url;
-  // get title of iframe and stick it in tab title
+  // get title of iframe
   var title = browser.contentWindow.document.title;
   if(title == "") {
     title = "New Tab";
   }
   console.debug(title);
-  var titleEl = chromeTabs.activeTabEl.getElementsByClassName("chrome-tab-title")[0];
-  titleEl.innerText = title;
   browserCurrentTitle = title;
+
+  // get favicon of iframe
+  var favicon = browser.contentWindow.document.querySelector('link[rel="icon"]')?.href;
+  if(url.startsWith("aboutbrowser://") || url == "") {
+    favicon = "/aboutbrowser/darkfavi.png";
+  } else if(favicon == null) {
+    console.warn("could not get favicon via querySelector");
+    favicon = getFavi(baseUrlFor("UV")+encodeUrl(url.split('/').splice(0,3).join('/')+'/favicon.ico', "UV"));
+    if(favicon == null) {
+      console.warn("could not get favicon via root of site try 1");
+      favicon = "/aboutbrowser/darkfavi.png";
+    }
+  }
+
+  // update tab
+  chromeTabs.updateTab(chromeTabs.activeTabEl, {favicon: favicon, title: title});
 }
 
 function browserReload() {

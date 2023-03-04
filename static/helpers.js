@@ -29,3 +29,15 @@ function htmlToElements(html) {
     template.innerHTML = html;
     return template.content.childNodes;
 }
+
+function getFavi(url)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", url, false ); // false for synchronous request
+    xmlHttp.send("");
+    console.debug(xmlHttp);
+    if(xmlHttp.status != 200 || xmlHttp.responseType != "blob") {
+        return null;
+    }
+    return URL.createObjectURL(xmlHttp.response);
+}

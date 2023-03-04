@@ -195,7 +195,6 @@
 
     addTab(tabProperties, { animate = true, background = false } = {}) {
       const tabEl = this.createNewTabEl()
-      //const addBefore = this.tabContentEl.querySelector(".chrome-tab-content-add-tabs-before-this")
 
       if (animate) {
         tabEl.classList.add('chrome-tab-was-just-added')
@@ -204,7 +203,6 @@
 
       tabProperties = Object.assign({}, defaultTapProperties, tabProperties)
       this.tabContentEl.appendChild(tabEl)
-      //this.tabContentEl.insertBefore(tabEl, addBefore);
       this.setTabCloseEventListener(tabEl)
       this.updateTab(tabEl, tabProperties)
       this.emit('tabAdd', { tabEl })

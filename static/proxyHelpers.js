@@ -28,6 +28,16 @@ function decodeUrl(url, proxy) {
     }
 }
 
+function encodeUrl(url, proxy) {
+    if (proxy === "DIP") {
+        return window.__DIP.encodeURL(url)
+    } else if (proxy === "UV") {
+        return __uv$config.encodeUrl(url);
+    } else {
+        console.error("Invalid proxy!");
+    }
+}
+
 function proxyUsingDIP(url) {
     window.navigator.serviceWorker.register('./sw.js', {
         scope: window.__DIP.config.prefix
