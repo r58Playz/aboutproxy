@@ -30,7 +30,7 @@ body {
   padding-bottom: 0.5em;
   display: flex;
   flex-flow: row;
-  background-color: rgb(53, 54, 58);
+  background-color: #303446;
 }
 
 .browser {
@@ -59,15 +59,15 @@ body {
   flex-shrink: 0;
   font-size: 1em;
   transition: background-color .2s ease-in-out;
-  color: white;
+  color: #c6d0f5;
 }
 
 .navbarBtn:hover {
-  background-color: rgb(69, 70, 73);
+  background-color: #292c3c;
 }
 
 .navbarBtn:active {
-  background-color: rgb(80, 81, 84);
+  background-color: #232634;
 }
 
 .navbarUrl {
@@ -77,9 +77,35 @@ body {
   padding-left: 1em;
   padding-right: 2.75em;
   border-radius: 25px;
-  background-color: rgb(32, 33, 36);
+  background-color: #292c3c;
   border: none;
-  color: white;
+  color: #c6d0f5;
+}
+
+input {
+  background-color: #292c3c;
+  color: #c6d0f5;
+  border-radius: 5px;
+  border: none;
+}
+
+button {
+  color: #c6d0f5;
+  background-color: #292c3c;
+  border: none;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #232634;
+}
+
+button:active {
+  background-color: #191c2a;
+}
+
+.navbarUrl::placeholder {
+  color: #c6d0f5;
 }
 
 footer {
@@ -118,7 +144,7 @@ a:hover {
   visibility: hidden;
 }
 
-.popup { 
+.popup {
   background-color: rgb(41, 42, 45);
   padding: 0 1em 0.5em 1em;
   border-radius: 0.5em;

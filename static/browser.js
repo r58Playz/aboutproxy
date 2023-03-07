@@ -196,14 +196,19 @@ function browserOnload() {
 
   // get favicon of iframe
   var favicon = browser.contentWindow.document.querySelector('link[rel="icon"]')?.href;
-  if(url.startsWith("aboutbrowser://") || url == "") {
+  if(url == "") {
     favicon = "/aboutbrowser/darkfavi.png";
   } else if(favicon == null) {
     console.warn("could not get favicon via querySelector");
-    favicon = getFavi(baseUrlFor("UV")+encodeUrl(url.split('/').splice(0,3).join('/')+'/favicon.ico', "UV"));
-    if(favicon == null) {
-      console.warn("could not get favicon via root of site try 1");
+    if (url.startsWith("aboutbrowser://")) {
+      console.warn("falling back to default to avoid query to something i know doesn't exist");
       favicon = "/aboutbrowser/darkfavi.png";
+    } else {
+      favicon = getFavi(baseUrlFor("UV")+encodeUrl(url.split('/').splice(0,3).join('/')+'/favicon.ico', "UV"));
+      if(favicon == null) {
+        console.warn("could not get favicon via root of site try 1");
+        favicon = "/aboutbrowser/darkfavi.png";
+      }
     }
   }
 
