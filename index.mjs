@@ -18,9 +18,9 @@ var users = [
 ]
 
 server.on('request', (req, res) => {
-	res.setHeader('Access-Control-Allow-Origin', '*')
-	res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin') // CORS stop being a fucking bitch
-	res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp') // clearly you didn't listen. STOP IT CORS!!!!
+	// res.setHeader('Access-Control-Allow-Origin', '*')
+	// res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin') // CORS stop being a fucking bitch
+	// res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp') // clearly you didn't listen. STOP IT CORS!!!!
 	if (req.url.includes(".well-known/acme-challenge")) {
 		serve.serve(req, res);
 		return;
@@ -29,14 +29,15 @@ server.on('request', (req, res) => {
 		bare.routeRequest(req, res);
 		return;
 	}
-	var authentication, loginInfo;
-	if (typeof req.signedCookies != 'undefined' && req.signedCookies.signedIn === 'yes') {
-		serve.serve(req, res);
-	}
-	if (!req.headers.authorization) {
-		authenticationStatus(res);
-		return;
-	}
+	// var authentication, loginInfo;
+	// if (typeof req.signedCookies != 'undefined' && req.signedCookies.signedIn === 'yes') {
+	serve.serve(req, res);
+	return;
+	// }
+	// if (!req.headers.authorization) {
+	// 	authenticationStatus(res);
+	// 	return;
+	// }
 	authentication = req.headers.authorization.replace(/^Basic/, '');
 	authentication = (new Buffer.from(authentication, 'base64')).toString('utf8');
 	loginInfo = authentication.split(':');
