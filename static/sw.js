@@ -6,5 +6,5 @@ const uv = new UVServiceWorker();
 
 self.addEventListener('fetch', event => {
     if (event.request.url.startsWith(location.origin + '/dip/')) { event.respondWith(dip.fetch(event)) }
-    else if (event.request.url.startsWith(location.origin + '/uv/')) { event.respondWith(uv.fetch(event)) }
+    else if (event.request.url.startsWith(location.origin + '/ultraviolet/')) { event.respondWith(uv.fetch(event)) }
 });
