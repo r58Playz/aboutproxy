@@ -1,3 +1,23 @@
+var browserHistory = {
+  push(url) {
+    try {
+      if (url.startsWith("http") || url.startsWith("aboutbrowser://")) {
+        let history = JSON.parse(localStorage.history)
+        history.history.push(url)
+        localStorage.history = JSON.stringify(history)
+      }
+    } catch (e) {
+      console.error(e)
+    }
+  },
+  get() {
+    return JSON.parse(localStorage.history)
+  },
+  clear() {
+    localStorage.history = "{\"history\": []}"
+  }
+}
+
 function setSetting(setting, value) {
   localStorage.setItem(setting, value);
 }
@@ -53,6 +73,8 @@ function probeForChrome() {
 }
 
 function init() {
+  if (typeof(localStorage.history) != 'string') 
+    localStorage.history = "{\"history\": []}"
   browserAddressBar = document.getElementById("browserUrl");
   browserIframeContainer = document.getElementById("tabContents");
   initSettings();
@@ -186,6 +208,10 @@ function browserOnload() {
     url = decodeUrl(url, currentProxyId);
   }
   browserAddressBar.value = url;
+  console.log(url)
+  browserHistory.push(url)
+  // browserHistory.push(url)
+  
   // get title of iframe
   var title = browser.contentWindow.document.title;
   if(title == "") {
@@ -225,11 +251,11 @@ function browserSettings() {
 }
 
 function browserBack() {
-  addTab("aboutbrowser://history")
+  browser.contentWindow.history.back();
 }
 
 function browserForward() {
-  addTab("aboutbrowser://history")
+  browser.contentWindow.history.forward();
 }
 
 function browserBookmarks() {
