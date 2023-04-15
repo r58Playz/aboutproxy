@@ -30,7 +30,10 @@ function htmlToElements(html) {
     return template.content.childNodes;
 }
 
+function getIconNoFallback(doc) {
+    return (Array.from(doc.head.querySelectorAll("link[rel~='icon']")).slice(-1)[0] || 0).href
+}
 
 function getIcon(doc, winLocation) {
-    return (Array.from(doc.head.querySelectorAll("link[rel~='icon']")).slice(-1)[0]||0).href||winLocation.origin+"/favicon.ico"
+    return getIconNoFallback(doc) || winLocation.origin + "/favicon.ico"
 }

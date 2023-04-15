@@ -1,3 +1,9 @@
+function h(type, inner) { // used by apparently chrome-tabs?
+    var tmp = document.createElement(type);
+    tmp.innerHTML = inner;
+    return tmp;
+}
+
 ((window, factory) => {
   if (typeof define == 'function' && define.amd) {
     define(['draggabilly'], Draggabilly => factory(window, Draggabilly))

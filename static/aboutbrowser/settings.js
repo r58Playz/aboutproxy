@@ -8,8 +8,14 @@ function init() {
     startUrlStatus = startUrlSetting.querySelector("settingStatus");
     startUrlInput.addEventListener("input", () => {
         console.debug("startUrl value = " + startUrlInput.value)
-        if (startUrlInput.value == "") { return; }
-        sendMessage({ type: "setSetting", setting: "startUrl", value: startUrlInput.value });
+        if (startUrlInput.value == "") {
+            return;
+        }
+        sendMessage({
+            type: "setSetting",
+            setting: "startUrl",
+            value: startUrlInput.value
+        });
     })
 
     var searchEngineUrlSetting = document.querySelector("settings setting#searchEngineUrl");
@@ -17,8 +23,14 @@ function init() {
     searchEngineUrlStatus = searchEngineUrlSetting.querySelector("settingStatus");
     searchEngineUrlInput.addEventListener("input", () => {
         console.debug("searchEngineUrl value = " + searchEngineUrlInput.value)
-        if (searchEngineUrlInput.value == "") { return; }
-        sendMessage({ type: "setSetting", setting: "searchEngineUrl", value: searchEngineUrlInput.value });
+        if (searchEngineUrlInput.value == "") {
+            return;
+        }
+        sendMessage({
+            type: "setSetting",
+            setting: "searchEngineUrl",
+            value: searchEngineUrlInput.value
+        });
     })
 
     var proxySetting = document.querySelector("settings setting#proxy");
@@ -26,22 +38,39 @@ function init() {
     proxyStatus = proxySetting.querySelector("settingStatus");
     proxyInput.addEventListener("change", () => {
         console.debug("proxy value = " + proxyInput.value);
-        sendMessage({ type: "setSetting", setting: "proxyId", value: proxyInput.value });
+        sendMessage({
+            type: "setSetting",
+            setting: "currentProxyId",
+            value: proxyInput.value
+        });
     })
 
     getAllSettings();
 }
 
 function getAllSettings() {
-    sendMessage({ type: "getSetting", setting: "startUrl" });
-    sendMessage({ type: "getSetting", setting: "searchEngineUrl" });
-    sendMessage({ type: "getSetting", setting: "proxyId" });
+    sendMessage({
+        type: "getSetting",
+        setting: "startUrl"
+    });
+    sendMessage({
+        type: "getSetting",
+        setting: "searchEngineUrl"
+    });
+    sendMessage({
+        type: "getSetting",
+        setting: "currentProxyId"
+    });
 }
 
 function resetAllSettings() {
     console.debug("resetting all settings...");
-    sendMessage({ type: "resetSettings" });
-    setTimeout(() => { getAllSettings(); }, 100);
+    sendMessage({
+        type: "resetSettings"
+    });
+    setTimeout(() => {
+        getAllSettings();
+    }, 100);
 }
 
 function settingSetCallback(msg) {
@@ -55,7 +84,7 @@ function settingSetCallback(msg) {
         setTimeout(() => {
             searchEngineUrlStatus.innerText = "";
         }, 1000)
-    } else if (msg.setting == "proxyId") {
+    } else if (msg.setting == "currentProxyId") {
         proxyStatus.innerText = "Saved!";
         setTimeout(() => {
             proxyStatus.innerText = "";
@@ -68,7 +97,7 @@ function settingValueCallback(msg) {
         startUrlInput.value = msg.value;
     } else if (msg.setting == "searchEngineUrl") {
         searchEngineUrlInput.value = msg.value;
-    } else if (msg.setting == "proxyId") {
+    } else if (msg.setting == "currentProxyId") {
         proxyInput.value = msg.value;
     }
 }

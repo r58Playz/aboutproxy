@@ -10,44 +10,23 @@ window.addEventListener("message", (event) => {
     let sender = event.source;
     if (msg.type === "setSetting") {
         console.debug("recieved setSetting for setting " + msg.setting + " and value " + msg.value);
-        if (msg.setting === "searchEngineUrl") {
-            // add checks here and send errcode over
-            searchEngineUrl = msg.value;
-            setSetting("searchEngineUrl", msg.value);
-            sendMessage({ type: "settingSet", setting: "searchEngineUrl", errCode: 0 }, sender)
-        } else if (msg.setting === "startUrl") {
-            startUrl = msg.value;
-            setSetting("startUrl", msg.value);
-            sendMessage({ type: "settingSet", setting: "startUrl", errCode: 0 }, sender)
-        } else if (msg.setting === "proxyId") {
-            currentProxyId = msg.value;
-            setSetting("currentProxyId", msg.value);
-            sendMessage({ type: "settingSet", setting: "proxyId", errCode: 0 }, sender)
-        } else {
-            sendMessage({ type: "settingSet", setting: "unknown", errCode: 1 }, sender)
-        }
+        // add checks? maybe?
+        aboutBrowser.settings.setSetting(msg.setting, msg.value);
+        sendMessage({type: "settingSet", setting: msg.setting, errcode: 0}, sender);
     } else if (msg.type === "getSetting") {
         console.debug("recieved getSetting for setting " + msg.setting);
-        if (msg.setting == "searchEngineUrl") {
-            sendMessage({ type: "settingValue", setting: "searchEngineUrl", value: searchEngineUrl }, sender);
-        } else if (msg.setting == "currentProxyId") {
-            sendMessage({ type: "settingValue", setting: "currentProxyId", value: currentProxyId }, sender);
-        } else if (msg.setting == "startUrl") {
-            sendMessage({ type: "settingValue", setting: "startUrl", value: startUrl }, sender);
-        } else if (msg.setting == "proxyId") {
-            sendMessage({ type: "settingValue", setting: "proxyId", value: currentProxyId }, sender);
-        }
+        sendMessage({type: "settingValue", setting: msg.setting, value: aboutBrowser.settings.getSetting(msg.setting), errcode: 0}, sender);
     } else if (msg.type === "resetSettings") {
-        resetSettings();
-        initSettings();
+        console.debug("recieved resetSettings");
+        aboutBrowser.settings.reset();
     } else if (msg.type === "openUrl") {
-        addTab(msg.value);
+        console.debug("recieved openUrl for url " + msg.value);
+        aboutBrowser.openTab(msg.value);
     } else if (msg.type === "setUrl") {
         console.debug("recieved setUrl for url " + msg.value);
-        changeUrl(msg.value);
+        aboutBrowser.navigateTo(msg.value);
     } else if (msg.type === "reloadBookmarks") {
         console.debug("recieved reloadBookmarks");
-        document.querySelector(".bookmarksContainer").innerHTML = ''
-        bookmarksClass.load();
+        aboutBrowser.bookmarks.reload();
     }
 })

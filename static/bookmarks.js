@@ -21,7 +21,9 @@ class Bookmarks {
     bookmarkHandler() {
         dispatchEvent(new CustomEvent("bookmarkClicked", {
             'detail': {
-                el: this, name: this.childNodes[1].data, url: this.dataset.url
+                el: this,
+                name: this.childNodes[1].data,
+                url: this.dataset.url
             }
         }));
     }
@@ -55,7 +57,10 @@ class Bookmarks {
     save(localStorageKey = "bookmarks") {
         var localStorageData = [];
         for (const bookmark of this.bookmarkContainer.childNodes) {
-            localStorageData.push({ name: bookmark.childNodes[1].data, url: bookmark.dataset.url })
+            localStorageData.push({
+                name: bookmark.childNodes[1].data,
+                url: bookmark.dataset.url
+            })
         }
         localStorage.setItem(localStorageKey, JSON.stringify(localStorageData));
     }
@@ -65,6 +70,11 @@ class Bookmarks {
         for (const bookmark of localStorageData) {
             this.add(bookmark.name, bookmark.url);
         }
+    }
+
+    reload(localStorageKey = "bookmarks") {
+        this.bookmarkContainer.innerHTML = "";
+        this.load(localStorageKey);
     }
 
     archive(localStorageKey = "bookmarks") {

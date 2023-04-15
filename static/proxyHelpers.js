@@ -40,12 +40,12 @@ function encodeUrl(url, proxy) {
 
 function proxyUsingDIP(url) {
     window.navigator.serviceWorker.register('./sw.js').then(() => {
-        setUrl(window.__DIP.config.prefix + window.__DIP.encodeURL(url))
+        aboutBrowser.setUrl(window.__DIP.config.prefix + window.__DIP.encodeURL(url))
     });
 }
 
 function proxyUsingUV(url) {
     window.navigator.serviceWorker.register('./sw.js').then(() => {
-        setUrl(__uv$config.prefix + __uv$config.encodeUrl(url));
+        aboutBrowser.setUrl(__uv$config.prefix + __uv$config.encodeUrl(url));
     });
 }

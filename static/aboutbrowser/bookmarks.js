@@ -25,7 +25,7 @@ currentlySelectedBookmark = null;
 
 function onclickBookmark(event) {
     el = event.currentTarget;
-    if(currentlySelectedBookmark) {
+    if (currentlySelectedBookmark) {
         currentlySelectedBookmark.style.removeProperty("background-color");
         currentlySelectedBookmark.querySelector(".bookmarkTitle").style.removeProperty("color");
         currentlySelectedBookmark.querySelector(".bookmarkUrl").style.removeProperty("color");
@@ -37,7 +37,7 @@ function onclickBookmark(event) {
 }
 
 function init() {
-    localStorageData.forEach(function (bookmark, i) {
+    localStorageData.forEach(function(bookmark, i) {
         addBookmark(bookmark.name, bookmark.url, i)
     });
 }
@@ -63,7 +63,9 @@ function deleteBookmark(event) {
     index = bookmarkEl.getAttribute("data-index");
     localStorageData.splice(index, 1);
     save();
-    sendMessage({type: "reloadBookmarks"});
+    sendMessage({
+        type: "reloadBookmarks"
+    });
     reloadBookmarks();
 }
 
@@ -75,7 +77,9 @@ function updateBookmark(event) {
     localStorageData[index].name = title;
     localStorageData[index].url = url;
     save();
-    sendMessage({type: "reloadBookmarks"});
+    sendMessage({
+        type: "reloadBookmarks"
+    });
 }
 
 function reloadBookmarks() {
