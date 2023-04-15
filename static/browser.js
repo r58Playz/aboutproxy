@@ -37,7 +37,7 @@ function resetSettings() {
 var browserIframeContainer, browserAddressBar, currentProxyId, startUrl, searchEngineUrl, chromeTabs, browser, browserCurrentTitle, bookmarksClass;
 var tabContents = [];
 
-function h(type, inner) {
+function h(type, inner) { // used by apparently chrome-tabs?
   var tmp = document.createElement(type);
   tmp.innerHTML = inner;
   return tmp;
