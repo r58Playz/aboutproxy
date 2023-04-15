@@ -1,0 +1,36 @@
+.topBar {
+    display: flex; /* 💪🏾 box number: how many was it? */
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    background-color: #292c3c;
+    height: 3.5em;
+}
+
+.topBar .title {
+    font-size: 1.25em;
+    margin-left: 0.5em;
+    font-weight: bold;
+}
+
+.topBar .icon {
+    width: 24px;
+    height: 24px;
+    padding-left: 1.3em;
+    margin-right: 1em;
+}
+
+.topBar .navbarUrl {
+    background-color: #232634;
+    height: 3em;
+    width: 680px;
+    flex-grow: 0;
+    padding-right: 1em;
+}
+
+.topBar .navbarUrlContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-grow: 1;
+}

@@ -13,5 +13,8 @@ window.addEventListener("message", (event) => {
     } else if (msg.type == "settingValue") {
         console.debug("recieved settingValue for " + msg.setting + " and value is " + msg.value)
         settingValueCallback(msg);
+    } else if (msg.type == "reloadBookmarks") {
+        console.debug("recieved reloadBookmarks");
+        reloadBookmarksCallback(msg);
     }
 })

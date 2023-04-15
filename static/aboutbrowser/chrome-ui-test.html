@@ -4,22 +4,21 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <title>Bookmarks</title>
+    <title>Chrome UI Test</title>
     <link href="/style.css" rel="stylesheet" type="text/css" />
-    <link href="/aboutbrowser/bookmarks.css" rel="stylesheet" type="text/css" />
     <link href="/aboutbrowser/dark-theme.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="/helpers.js"></script>
-    <script src="/browser-api-tab.js"></script>
+    <link rel="stylesheet" href="/aboutbrowser/chrome-ui.css">
 </head>
 
-<body onload="init()">
-    <div class="container containerPadding">
-        <div id="bookmarksTable">
+<body>
+    <div class="container">
+        <div class="topBar">
+            <img class="icon" src="/aboutbrowser/darkfavi.png"></img>
+            <div class="title">Settings</div>
+            <div class="navbarUrlContainer"><input class="navbarUrl" placeholder="Don't search settings"></input></div>
         </div>
     </div>
-    <script src="/bookmarks.js"></script>
-    <script src="bookmarks.js"></script>
 </body>
 
 </html>

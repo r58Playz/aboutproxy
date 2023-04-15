@@ -45,5 +45,9 @@ window.addEventListener("message", (event) => {
     } else if (msg.type === "setUrl") {
         console.debug("recieved setUrl for url " + msg.value);
         changeUrl(msg.value);
+    } else if (msg.type === "reloadBookmarks") {
+        console.debug("recieved reloadBookmarks");
+        document.querySelector(".bookmarksContainer").innerHTML = ''
+        bookmarksClass.load();
     }
 })

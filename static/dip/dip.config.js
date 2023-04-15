@@ -1,7 +1,7 @@
 if (!self.__DIP) self.__DIP={};
 
 self.__DIP.config = {
-  prefix: '/dip/',
+  prefix: '/dynamicip/',
   encoding: 'xor',
   ws: true,
   cookies: true,

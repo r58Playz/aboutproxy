@@ -199,6 +199,9 @@ function setUrlFor(url, iframe) {
 
 function browserOnload() {
   var url = browser.contentWindow.location.toString();
+  if(url == "about:blank") {
+    return;
+  }
   if (url.startsWith(window.location.protocol + "//" + window.location.host + '/aboutbrowser/')) {
     url = url.replace(window.location.protocol + "//" + window.location.host + '/aboutbrowser/', '');
     url = url.substring(0, url.length - 5);
@@ -208,9 +211,8 @@ function browserOnload() {
     url = decodeUrl(url, currentProxyId);
   }
   browserAddressBar.value = url;
-  console.log(url)
+  console.debug(url)
   browserHistory.push(url)
-  // browserHistory.push(url)
   
   // get title of iframe
   var title = browser.contentWindow.document.title;
@@ -219,27 +221,25 @@ function browserOnload() {
   }
   console.debug(title);
   browserCurrentTitle = title;
-
-  // get favicon of iframe
-  var favicon = browser.contentWindow.document.querySelector('link[rel="icon"]')?.href;
-  if(url == "") {
-    favicon = "/aboutbrowser/darkfavi.png";
-  } else if(favicon == null) {
-    console.warn("could not get favicon via querySelector");
-    if (url.startsWith("aboutbrowser://")) {
-      console.warn("falling back to default to avoid query to something i know doesn't exist");
-      favicon = "/aboutbrowser/darkfavi.png";
-    } else {
-      favicon = getFavi(baseUrlFor("UV")+encodeUrl(url.split('/').splice(0,3).join('/')+'/favicon.ico', "UV"));
-      if(favicon == null) {
-        console.warn("could not get favicon via root of site try 1");
-        favicon = "/aboutbrowser/darkfavi.png";
+  (async function() {
+    // get favicon of iframe
+    favi = null;
+    if(url != "" && !url.startsWith("aboutbrowser://")) {
+      var faviUrl = getIcon(browser.contentWindow.document, new URL(url));
+      const blob = await fetch(baseUrlFor("UV") + encodeUrl(faviUrl, "UV")).then((r) => r.blob())
+      if(blob != null) {
+        favi = URL.createObjectURL(blob);
       }
     }
-  }
 
-  // update tab
-  chromeTabs.updateTab(chromeTabs.activeTabEl, {favicon: favicon, title: title});
+    if(favi == null) {
+      console.warn("falling back to default icon");
+      favi = "/aboutbrowser/darkfavi.png";
+    }
+
+    // update tab
+    chromeTabs.updateTab(chromeTabs.activeTabEl, {favicon: favi, title: title});
+  })();
 }
 
 function browserReload() {
@@ -260,6 +260,8 @@ function browserForward() {
 
 function browserBookmarks() {
   bookmarksClass.add(browserCurrentTitle, browserAddressBar.value);
+  bookmarksClass.save();
+  propagateMessage({type: "reloadBookmarks"});
 }
 
 function browserExtensions() {
@@ -325,6 +327,13 @@ function addTab(url) {
   changeUrl(url);
 }
 
+function propagateMessage(msg) {
+  for(const iframe of tabContents) {
+    console.log(iframe);
+    iframe.iframe.contentWindow.postMessage(msg);
+  }
+}
+
 function makeHTMLPopup(title, text, isPrompt) {
   let container = document.getElementById("popupContainer");
 }
@@ -333,6 +342,3 @@ window.addEventListener("bookmarkClicked", (event) => {
     changeUrl(event.detail.url)
 });
 
-window.addEventListener('beforeunload', (event) => {
-  bookmarksClass.save();
-});

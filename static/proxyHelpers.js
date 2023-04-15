@@ -39,17 +39,13 @@ function encodeUrl(url, proxy) {
 }
 
 function proxyUsingDIP(url) {
-    window.navigator.serviceWorker.register('./sw.js', {
-        scope: window.__DIP.config.prefix
-    }).then(() => {
+    window.navigator.serviceWorker.register('./sw.js').then(() => {
         setUrl(window.__DIP.config.prefix + window.__DIP.encodeURL(url))
     });
 }
 
 function proxyUsingUV(url) {
-    window.navigator.serviceWorker.register('./sw.js', {
-        scope: __uv$config.prefix
-    }).then(() => {
+    window.navigator.serviceWorker.register('./sw.js').then(() => {
         setUrl(__uv$config.prefix + __uv$config.encodeUrl(url));
     });
 }
