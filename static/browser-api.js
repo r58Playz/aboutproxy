@@ -28,5 +28,8 @@ window.addEventListener("message", (event) => {
     } else if (msg.type === "reloadBookmarks") {
         console.debug("recieved reloadBookmarks");
         aboutBrowser.bookmarks.reload();
+    } else if (msg.type === "reloadHistory") {
+        console.debug("recieved reloadHistory");
+        aboutBrowser.history.reload();
     }
 })

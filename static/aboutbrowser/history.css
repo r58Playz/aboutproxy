@@ -1,0 +1,57 @@
+.historyTableWrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#historyTable {
+    background-color: #292c3c;
+    padding: 1em 0em;
+    margin: 1em;
+    border-radius: 1em;
+    display: grid;
+    grid-template-columns: min-content minmax(5em, 1fr) minmax(5em, 1fr) min-content;
+    grid-auto-rows: 2em;
+}
+
+#historyTable .historyRow {
+    display: contents;
+}
+
+#historyTable .siteUrl,
+#historyTable .siteTitle {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
+#historyTable .siteUrl > span,
+#historyTable .siteTitle > span {
+    vertical-align: middle;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#historyTable .siteIcon {
+    height: 1em;
+    padding: 2px;
+    padding-left: 1em !important;
+    padding-top: 0.5em !important;
+    padding-bottom: 0.5em !important;
+}
+
+#historyTable .navbarBtn:hover {
+    background-color: #232634;
+}
+
+#historyTable .historyRow > * {
+    padding: 0em 0.5em;
+}
+
+#historyTable .selected > * {
+    background-color: color-mix(in srgb, rgb(140, 170, 238) 75%, rgb(41, 44, 60));
+    color: rgb(41, 44, 60);
+}

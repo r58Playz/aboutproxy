@@ -6,40 +6,33 @@
     <meta name="viewport" content="width=device-width">
     <title>History</title>
     <link href="/style.css" rel="stylesheet" type="text/css" />
-    <link href="dark-theme.css" rel="stylesheet" type="text/css" />
-    <script>
-        function loadHist() {
-            const history = window.parent.browserHistory.get().history
-            console.log(history)
-            var historyTable = document.getElementById("historyTable")
-            for (let index = 0; index < history.length; index++) {
-                const element = history[index];
-                let row = document.createElement("tr")
-                let link = document.createElement("a")
-                link.href = element
-                link.innerText = element
-                row.appendChild(link)
-                historyTable.appendChild(row)
-            }
-        }
-    </script>
+    <link href="history.css" rel="stylesheet" type="text/css" />
+    <link href="/aboutbrowser/dark-theme.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/aboutbrowser/chrome-ui.css">
+    <script src="/helpers.js"></script>
+    <script src="/browser-api-tab.js"></script>
 </head>
 
-<body onload="loadHist()">
-    <div class="container containerPadding">
-        <h1>Coming Very Soon™!</h1>
-        <a href="https://wowwiki-archive.fandom.com/wiki/Soon">
-            Now ← Very Soon™ - Soon (Not Soon™) - Soon™ - Soon-ish™ → End of
-            Time
-        </a>
-        <table id="historyTable">
-            <tr>
-                <th> URL </th>
-            </tr>
-
-        </table>
-
+<body onload="init()">
+    <div class="container">
+        <div class="topBar">
+            <img class="icon" src="/aboutbrowser/darkfavi.png"></img>
+            <div class="title">History</div>
+            <div class="navbarUrlContainer"><input class="navbarUrl" placeholder="Don't search settings"></input></div>
+        </div>
+        <div class="content">
+            <div class="sideBar">
+            <button onclick="clearHistory();">Clear history</button>
+            </div>
+            <div class="actualContent">
+                <div class="historyTableWrapper">
+                    <div id="historyTable"></div>
+                </div>
+            </div>
+        </div>
     </div>
+    <script src="history.js"></script>
 </body>
 
 </html>

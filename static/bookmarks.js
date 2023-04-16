@@ -1,13 +1,14 @@
 class Bookmarks {
     constructor(bookmarkEl) {
         this.bookmarkContainer = bookmarkEl;
-        this.bookmarkTemplate = '<button class="bookmark"><img class="bookmarkIcon" src="/aboutbrowser/darkfavi.png"></img></button>'
+        this.bookmarkTemplate = '<button class="bookmark"><img class="bookmarkIcon"></img></button>'
     }
 
-    add(title = 'A', url = "https://google.com") {
+    add(title = 'A', url = "https://google.com", favicon = "/aboutbrowser/darkfavi.png") {
         var node = htmlToElement(this.bookmarkTemplate);
         node.onclick = this.bookmarkHandler;
         node.setAttribute("data-url", url)
+        node.childNodes[0].setAttribute("src", favicon)
         var bookmarkTitle = document.createTextNode(title);
         node.appendChild(bookmarkTitle);
         this.bookmarkContainer.appendChild(node);
@@ -59,7 +60,8 @@ class Bookmarks {
         for (const bookmark of this.bookmarkContainer.childNodes) {
             localStorageData.push({
                 name: bookmark.childNodes[1].data,
-                url: bookmark.dataset.url
+                url: bookmark.dataset.url,
+                favicon: bookmark.childNodes[0].getAttribute("src")
             })
         }
         localStorage.setItem(localStorageKey, JSON.stringify(localStorageData));
@@ -68,7 +70,7 @@ class Bookmarks {
     load(localStorageKey = "bookmarks") {
         var localStorageData = this.archive(localStorageKey);
         for (const bookmark of localStorageData) {
-            this.add(bookmark.name, bookmark.url);
+            this.add(bookmark.name, bookmark.url, bookmark.favicon);
         }
     }
 

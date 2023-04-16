@@ -179,3 +179,27 @@ a:hover {
 .popupContent {
   font-size: smaller;
 }
+
+.settingsCtxMenu {
+  position: absolute;
+  right: 0;
+  top: 5.75em;
+  background: #292c3c;
+  width: 18em;
+  height:auto;
+}
+
+.settingsCtxMenu button {
+  width: 100%;
+  text-align: left;
+  padding-left: 3em;
+  height: 2em;
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
+}
+
+.settingsCtxMenu .sep {
+  border-bottom: 1px solid rgba(198, 208, 245, 25);
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}

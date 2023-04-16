@@ -37,13 +37,12 @@ class Settings {
 
 class History {
     constructor() {
-        this.history = JSON.parse(localStorage.getItem("history"));
-        if(this.history == null) this.history = {history: [], statistics: {domainViewCounts: []}};
+        this.reload();
     }
 
-    push(url) {
-        this.history.history.push(url);
-        // recalculate domainViewCounts here
+    push(url, title, icon) {
+        this.history.history.push({url: url, title: title, icon: icon});
+        this.recalculateDomainViewCounts();
         this.save();
     }
 
@@ -57,13 +56,31 @@ class History {
         localStorage.setItem("history", JSON.stringify(this.history));
     }
 
+    reload() {
+        this.history = JSON.parse(localStorage.getItem("history"));
+        if(this.history == null) this.history = {history: [], statistics: {domainViewCounts: {}}}; this.save();
+    }
+
     getList() {
         return this.history.history;
     }
 
+    recalculateDomainViewCounts() {
+        var domainViewCounts = {};
+        for(const site of this.history.history) {
+            var sSite = JSON.stringify(site);
+            if(domainViewCounts[sSite]) {
+                domainViewCounts[sSite] += 1;
+            } else {
+                domainViewCounts[sSite] = 1;
+            }
+        }
+        this.history.statistics.domainViewCounts = domainViewCounts;
+        this.save();
+    }
+
     getSortedDomainViewCounts() {
-        // sort here
-        return [];
+        return Object.entries(this.history.statistics.domainViewCounts).sort(([,a],[,b]) => b-a);
     }
 }
 
@@ -83,8 +100,10 @@ class AboutBrowser {
         this.aboutBrowserPrefix = window.location.protocol + "//" + window.location.host + "/aboutbrowser/";
 
         this.browserTitle = "New Tab - AboutBrowser";
+        document.title = this.browserTitle;
         this.activeTabTitle = "New Tab";
         this.activeTabUrl = "aboutbrowser://blank";
+        this.activeTabIcon = "/aboutbrowser/darkfavi.png";
 
         this.activeIframe = null;
 
@@ -125,6 +144,11 @@ class AboutBrowser {
                 self.navigateTo(self.addressBar.value);
             }
         });
+
+        this.settingsCtxMenu = document.querySelector(".settingsCtxMenu");
+        this.settingsCtxMenu.addEventListener("mouseleave", (e) => {
+            self.settingsCtxMenu.style.setProperty("display", "none");
+        })
 
         window.addEventListener("bookmarkClicked", (event) => { self.navigateTo(event.detail.url) });
 
@@ -221,8 +245,8 @@ class AboutBrowser {
 
     closeTab(detail) {
         var tabEl = detail.tabEl;
-        var tabIndex = this.tabContents.indexOf(this.tabContents.find(obj => { obj.tabEl === tabEl }));
-        this.tabContents[index].iframe.remove();
+        var tabIndex = this.findTabIndexFromTabEl(tabEl);
+        this.tabContents[tabIndex].iframe.remove();
         this.tabContents.splice(tabIndex, 1);
     }
 
@@ -279,7 +303,6 @@ class AboutBrowser {
             url = decodeUrl(url, this.settings.getSetting("currentProxyId"));
         }
         this.addressBar.value = url;
-        this.history.push(url)
 
         // get title of iframe
         var title = this.activeIframe.contentWindow.document.title;
@@ -288,6 +311,7 @@ class AboutBrowser {
         }
         this.activeTabTitle = title;
         this.browserTitle = title + " - AboutBrowser";
+        document.title = this.browserTitle;
         this.activeTabUrl = url;
 
         var self = this;
@@ -300,7 +324,7 @@ class AboutBrowser {
                 var faviUrl = getIcon(self.activeIframe.contentWindow.document, new URL(url));
                 var blob = await fetch(baseUrlFor("UV") + encodeUrl(faviUrl, "UV")).then((r) => r.blob())
                 if (blob != null) {
-                    favi = URL.createObjectURL(blob);
+                    favi = faviUrl;
                 }
             }
 
@@ -310,6 +334,9 @@ class AboutBrowser {
                 console.warn("falling back to default icon");
                 favi = "/aboutbrowser/darkfavi.png";
             }
+
+            this.history.push(url, title, favi);
+            this.activeTabIcon = favi;
 
             // update tab
             self.tabs.updateTab(self.tabs.activeTabEl, {
@@ -324,7 +351,31 @@ class AboutBrowser {
     }
 
     handleSettings() {
-        this.openTab("aboutbrowser://settings");
+        this.settingsCtxMenu.style.removeProperty("display");
+    }
+
+    handleSettingsCtxMenu(menuItem) {
+        this.settingsCtxMenu.style.setProperty("display", "none");
+        switch(menuItem) {
+            case "newTab":
+                this.openTab();
+                break;
+            case "history":
+                this.openTab("aboutbrowser://history");
+                break;
+            case "downloads":
+                this.openTab("aboutbrowser://downloads");
+                break;
+            case "bookmarks":
+                this.openTab("aboutbrowser://bookmarks");
+                break;
+            case "settings":
+                this.openTab("aboutbrowser://settings");
+                break;
+            case "about":
+                this.openTab("aboutbrowser://versionHistory");
+                break;
+        }
     }
 
     handleBack() {
@@ -336,7 +387,7 @@ class AboutBrowser {
     }
 
     handleBookmarks() {
-        this.bookmarks.add(this.activeTabTitle, this.activeTabUrl);
+        this.bookmarks.add(this.activeTabTitle, this.activeTabUrl, this.activeTabIcon);
         this.bookmarks.save();
         this.propagateMessage({ type: "reloadBookmarks" });
     }

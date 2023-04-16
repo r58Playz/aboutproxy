@@ -67,6 +67,16 @@
       <button class="navbarBtn" id="browserSettings" onclick="aboutBrowser.handleSettings();"><i
           class="fa-solid fa-ellipsis-vertical"></i></button>
     </div>
+    <div><div class="settingsCtxMenu" style="display: none;">
+      <button onclick="aboutBrowser.handleSettingsCtxMenu('newTab');">New tab</button>
+      <div class="sep"></div>
+      <button onclick="aboutBrowser.handleSettingsCtxMenu('history');">History</button>
+      <button onclick="aboutBrowser.handleSettingsCtxMenu('downloads');">Downloads</button>
+      <button onclick="aboutBrowser.handleSettingsCtxMenu('bookmarks');">Bookmarks</button>
+      <button onclick="aboutBrowser.handleSettingsCtxMenu('settings');">Settings</button>
+      <div class="sep"></div>
+      <button onclick="aboutBrowser.handleSettingsCtxMenu('about');">About AboutBrowser</button>
+    </div></div>
     <div class="bookmarksContainer"></div>
     <div class="popupWrapper" id="popupContainer">
       <div class="popup">
