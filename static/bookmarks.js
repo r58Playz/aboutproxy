@@ -80,7 +80,7 @@ class Bookmarks {
     }
 
     archive(localStorageKey = "bookmarks") {
-        return JSON.parse(localStorage.getItem(localStorageKey));
+        return JSON.parse(localStorage.getItem(localStorageKey))||[];
     }
 
     loadFromArchive(localStorageData) {
