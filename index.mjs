@@ -18,9 +18,9 @@ var users = [
 ]
 
 server.on('request', (req, res) => {
+	res.setHeader('Cross-Origin-Embedder-Policy'. 'require-corp')
 	// res.setHeader('Access-Control-Allow-Origin', '*')
 	// res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin') // CORS stop being a fucking bitch
-	// res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp') // clearly you didn't listen. STOP IT CORS!!!!
 	if (req.url.includes(".well-known/acme-challenge")) {
 		serve.serve(req, res);
 		return;
