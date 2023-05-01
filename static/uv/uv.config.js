@@ -1,3 +1,4 @@
+/*global Ultraviolet*/
 self.__uv$config = {
     prefix: '/ultraviolet/',
     bare: '/bare/',

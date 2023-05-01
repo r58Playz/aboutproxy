@@ -1,5 +1,7 @@
 importScripts('./dip/dip.worker.js');
-importScripts('./uv/uv.sw.js')
+importScripts('./uv/uv.bundle.js');
+importScripts('./uv/uv.config.js');
+importScripts('./uv/uv.sw.js');
 
 const dip = new DIPServiceWorker('./dip/dip.worker.js');
 const uv = new UVServiceWorker();
