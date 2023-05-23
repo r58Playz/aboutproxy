@@ -31,7 +31,7 @@
     <div class="chrome-tabs" style="--tab-content-margin: 9px">
       <div class="chrome-tabs-content-wrapper">
         <button id="addtab" class="chrome-tabs-btn" data-add-tab style="position:absolute;"><i
-          class="fa-solid fa-plus fa-xl tabBtnIcon"></i></button>
+            class="fa-solid fa-plus fa-xl tabBtnIcon"></i></button>
         <div class="chrome-tabs-content">
         </div>
         <div class="chrome-tabs-content-after"></div>
@@ -53,30 +53,42 @@
       </style>
     </div>
     <div class="navbar">
-      <button class="navbarBtn" id="browserBack" onclick="aboutBrowser.handleBack()"><i class="fa-solid fa-arrow-left"></i></button>
-      <button class="navbarBtn" id="browserForward" onclick="aboutBrowser.handleForward()"><i
-          class="fa-solid fa-arrow-right"></i></button>
-      <button class="navbarBtn" id="browserReload" onclick="aboutBrowser.handleReload();"><i
-          class="fa-solid fa-rotate-right"></i></button>
+      <button class="navbarBtn" id="browserBack" onclick="window.aboutbrowser.handleBack()">
+        <i class="fa-solid fa-arrow-left"></i>
+      </button>
+      <button class="navbarBtn" id="browserForward" onclick="window.aboutbrowser.handleForward()">
+        <i class="fa-solid fa-arrow-right"></i>
+      </button>
+      <button class="navbarBtn" id="browserReload" onclick="window.aboutbrowser.handleReload();">
+        <i class="fa-solid fa-rotate-right"></i></button>
       <input class="navbarUrl" id="browserUrl"></input>
-      <div class="bookmarksBtnWrapper"><button class="navbarBtn bookmarksBtn" id="browserBookmarks"
-          onclick="aboutBrowser.handleBookmarks();"><i class="fa-regular fa-star"></i></button></div>
-      <button class="navbarBtn" id="browserExtensions" onclick="aboutBrowser.handleExtensions();"><i
-          class="fa-solid fa-puzzle-piece"></i></button>
-      <button class="navbarBtn" id="games" onclick="aboutBrowser.handleGames();"><i class="fa-solid fa-gamepad"></i></button>
-      <button class="navbarBtn" id="browserSettings" onclick="aboutBrowser.handleSettings();"><i
-          class="fa-solid fa-ellipsis-vertical"></i></button>
+      <div class="bookmarksBtnWrapper">
+        <button class="navbarBtn bookmarksBtn" id="browserBookmarks" onclick="window.aboutbrowser.handleBookmarks();">
+          <i class="fa-regular fa-star"></i>
+        </button>
+      </div>
+      <button class="navbarBtn" id="browserExtensions" onclick="window.aboutbrowser.handleExtensions();">
+        <i class="fa-solid fa-puzzle-piece"></i>
+      </button>
+      <button class="navbarBtn" id="games" onclick="window.aboutbrowser.handleGames();">
+        <i class="fa-solid fa-gamepad"></i>
+      </button>
+      <button class="navbarBtn" id="browserSettings" onclick="window.aboutbrowser.handleSettings();">
+        <i class="fa-solid fa-ellipsis-vertical"></i>
+      </button>
     </div>
-    <div><div class="settingsCtxMenu" style="display: none;">
-      <button onclick="aboutBrowser.handleSettingsCtxMenu('newTab');">New tab</button>
-      <div class="sep"></div>
-      <button onclick="aboutBrowser.handleSettingsCtxMenu('history');">History</button>
-      <button onclick="aboutBrowser.handleSettingsCtxMenu('downloads');">Downloads</button>
-      <button onclick="aboutBrowser.handleSettingsCtxMenu('bookmarks');">Bookmarks</button>
-      <button onclick="aboutBrowser.handleSettingsCtxMenu('settings');">Settings</button>
-      <div class="sep"></div>
-      <button onclick="aboutBrowser.handleSettingsCtxMenu('about');">About AboutBrowser</button>
-    </div></div>
+    <div>
+      <div class="settingsCtxMenu" style="display: none;">
+        <button onclick="window.aboutbrowser.handleSettingsCtxMenu('newTab');">New tab</button>
+        <div class="sep"></div>
+        <button onclick="window.aboutbrowser.handleSettingsCtxMenu('history');">History</button>
+        <button onclick="window.aboutbrowser.handleSettingsCtxMenu('downloads');">Downloads</button>
+        <button onclick="window.aboutbrowser.handleSettingsCtxMenu('bookmarks');">Bookmarks</button>
+        <button onclick="window.aboutbrowser.handleSettingsCtxMenu('settings');">Settings</button>
+        <div class="sep"></div>
+        <button onclick="window.aboutbrowser.handleSettingsCtxMenu('about');">About AboutBrowser</button>
+      </div>
+    </div>
     <div class="bookmarksContainer"></div>
     <div class="popupWrapper" id="popupContainer">
       <div class="popup">

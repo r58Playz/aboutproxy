@@ -1,8 +1,8 @@
-function proxyUsing(url, proxy) {
+function proxyUsing(url, proxy, callback) {
     if (proxy === "DIP") {
-        proxyUsingDIP(url);
+        proxyUsingDIP(url, callback);
     } else if (proxy === "UV") {
-        proxyUsingUV(url);
+        proxyUsingUV(url, callback);
     } else {
         console.error("Invalid proxy!");
     }
@@ -38,14 +38,14 @@ function encodeUrl(url, proxy) {
     }
 }
 
-function proxyUsingDIP(url) {
+function proxyUsingDIP(url, callback) {
     window.navigator.serviceWorker.register('./sw.js').then(() => {
-        aboutBrowser.setUrl(window.__DIP.config.prefix + window.__DIP.encodeURL(url))
+        callback(baseUrlFor("DIP") + encodeUrl(url, "DIP"))
     });
 }
 
-function proxyUsingUV(url) {
+function proxyUsingUV(url, callback) {
     window.navigator.serviceWorker.register('./sw.js').then(() => {
-        aboutBrowser.setUrl(__uv$config.prefix + __uv$config.encodeUrl(url));
+        callback(baseUrlFor("UV") + encodeUrl(url, "UV"));
     });
 }

@@ -1,5 +1,189 @@
 // todo private methods+variables maybe?
 
+class ElementMap {
+    constructor() {
+        this.internalList = [];
+    }
+
+    set(key, value) {
+        this.internalList.push({ key: key, value: value });
+    }
+
+    get(key) {
+        for (const pair of this.internalList) {
+            console.log(pair, key)
+            if(key.isSameNode(pair.key)) {
+                return pair.value;
+            }
+        }
+        return undefined;
+    }
+
+    remove(key) {
+        for (var i=0; i<this.internalList.length; i++) {
+            if(this.internalList[i].key.isSameNode(key)) {
+                delete this.internalList[i]; // may not be necessary but ok
+                this.internalList.splice(i, 1);
+                return;
+            }
+        }
+    }
+
+    // alias
+    delete(key) {
+        this.remove(key);
+    }
+}
+
+class Tab {
+    constructor(browser, background = false) {
+        this.browser = browser;
+
+        this.tabEl = this.browser.chromeTabs.addTab({}, {background: true});
+        this.browser.tabs.set(this.tabEl, this);
+        
+        this.iframe = document.createElement("iframe");
+        this.iframe.classList.add("browserTabContents");
+        this.iframe.style.setProperty("display", "none");
+        var self = this;
+        this.iframe.onload = () => { self.handleOnload() };
+        this.browser.iFrameContainer.appendChild(this.iframe);
+
+        this.currentUrl = '';
+        this.currentTitle = '';
+        this.currentFavi = '';
+        this.isActive = false;
+
+        if(!background) this.browser.chromeTabs.setCurrentTab(this.tabEl);
+    }
+
+    handleOnload() {
+        var url = this.iframe.contentWindow.location.toString();
+        if (url == "about:blank") {
+            return;
+        }
+        if (url.startsWith(this.browser.aboutBrowserPrefix)) {
+            url = url.replace(this.browser.aboutBrowserPrefix, '');
+            url = url.substring(0, url.length - 5);
+            url = "aboutbrowser://" + url;
+        } else {
+            url = url.replace(window.location.protocol + "//" + window.location.host + baseUrlFor(this.browser.settings.getSetting("currentProxyId")), '')
+            url = decodeUrl(url, this.browser.settings.getSetting("currentProxyId"));
+        }
+        this.currentUrl = url;
+
+        // get title of iframe
+        var title = this.iframe.contentWindow.document.title;
+        if (title == "") {
+            title = url;
+        }
+        this.currentTitle = title;
+
+        this.iframe.contentWindow.document.querySelectorAll("a").forEach((e) => {
+            e.removeAttribute("target");
+        });
+
+        if(this.isActive) this.setBrowserAttributes();
+
+        var self = this;
+        (async (url) => {
+            // get favicon of iframe
+            var favi = null;
+            if(url.startsWith("aboutbrowser://")) {
+                favi = getIconNoFallback(self.iframe.contentWindow.document);
+            } else if (url != "") {
+                var faviUrl = getIcon(self.iframe.contentWindow.document, new URL(url));
+                var blob = await fetch(baseUrlFor("UV") + encodeUrl(faviUrl, "UV")).then((r) => r.blob())
+                if (blob != null) {
+                    favi = faviUrl;
+                }
+            }
+
+            console.debug("got favi: ", favi);
+
+            if (favi == null) {
+                console.warn("falling back to default icon");
+                favi = "/aboutbrowser/darkfavi.png";
+            }
+
+            this.browser.history.push(url, title, favi);
+            this.currentFavi = favi;
+
+            // update tab
+            self.browser.chromeTabs.updateTab(self.tabEl, {
+                favicon: favi,
+                title: title
+            });
+        })(url);
+    }
+
+    handleSwitchAway() {
+        this.iframe.style.setProperty("display", "none");
+        this.isActive = false;
+    }
+
+    handleSwitchTo() {
+        this.isActive = true;
+        this.browser.activeTab = this;
+        this.iframe.style.removeProperty("display");
+        this.setBrowserAttributes();
+    }
+
+    handleHistoryBack() {
+        this.iframe.contentWindow.history.back();
+    }
+
+    handleHistoryForward() {
+        this.iframe.contentWindow.history.forward();
+    }
+
+    handleReload() {
+        this.iframe.contentWindow.location.reload();
+    }
+
+    handleClose() {
+        this.iframe.remove();
+    }
+
+    setBrowserAttributes() {
+        this.browser.addressBar.value = this.currentUrl;
+        this.browser.browserTitle = this.currentTitle + this.browser.titleSuffix;
+        document.title = this.browser.browserTitle;
+    }
+    
+    navigateTo(url, callback) {
+        var self = this;
+        if (url == "" || url.startsWith("aboutbrowser://")) {
+            if (url == "") {
+                url = this.browser.aboutBrowserPrefix + "blank.html";
+            } else if (url.startsWith("aboutbrowser://")) {
+                url = url.replace('aboutbrowser://', this.browser.aboutBrowserPrefix);
+                url = url + ".html"
+            }
+            this.iframe.src = url;
+            if(callback) callback();
+        } else if (isUrl(url)) {
+            if (hasHttps(url)) {
+                proxyUsing(url, this.browser.settings.getSetting("currentProxyId"), (url) => {
+                    self.iframe.src = url;
+                    if(callback) callback();
+                });
+            } else {
+                proxyUsing('https://' + url, this.browser.settings.getSetting("currentProxyId"), (url) => {
+                    self.iframe.src = url;
+                    if(callback) callback();
+                })
+            }
+            return;
+        } else {
+            proxyUsing(this.settings.getSetting("searchEngineUrl") + url, this.browser.settings.getSetting("currentProxyId"), (url) => {
+                self.iframe.src = url;
+                if(callback) callback();
+            });
+        }
+    }
+}
+
 class Settings {
     constructor() {
         this.defaults = {currentProxyId: "UV", searchEngineUrl: "https://www.google.com/search?q=", startUrl: "aboutbrowser://start"};
@@ -99,21 +283,19 @@ class AboutBrowser {
 
         this.aboutBrowserPrefix = window.location.protocol + "//" + window.location.host + "/aboutbrowser/";
 
-        this.browserTitle = "New Tab - AboutBrowser";
+        this.titleSuffix = " - AboutBrowser";
+        this.browserTite = "New Tab" + this.titleSuffix;
         document.title = this.browserTitle;
-        this.activeTabTitle = "New Tab";
-        this.activeTabUrl = "aboutbrowser://blank";
-        this.activeTabIcon = "/aboutbrowser/darkfavi.png";
 
         this.activeIframe = null;
 
 
-        this.tabs = new ChromeTabs();
+        this.chromeTabs = new ChromeTabs();
         var tabsEl = document.querySelector(".chrome-tabs");
-        this.tabs.init(tabsEl);
+        this.chromeTabs.init(tabsEl);
         tabsEl.classList.add("chrome-tabs-dark-theme");
 
-        this.tabContents = [];
+        this.tabs = new ElementMap();
 
         var self = this;
 
@@ -124,7 +306,7 @@ class AboutBrowser {
 
         tabsEl.addEventListener("tabAdd", (event) => {
             console.debug("Tab created: ", event.detail.tabEl);
-            self.createTab(event.detail); // make private maybe idk
+            // we no longer handle this event since each `Tab` recieves its tabEl when calling the tab create function
         });
 
         tabsEl.addEventListener("tabRemove", (event) => {
@@ -137,7 +319,6 @@ class AboutBrowser {
         })
 
         this.openTab();
-
 
         this.addressBar.addEventListener("keydown", (e) => {
             if (e.code === "Enter") {
@@ -210,144 +391,36 @@ class AboutBrowser {
 
 
     propagateMessage(msg) {
-        for (const iframe of this.tabContents) {
-            iframe.iframe.contentWindow.postMessage(msg);
+        for (const tab of this.tabs.internalList) {
+            tab.value.iframe.contentWindow.postMessage(msg);
         }
-    }
-
-    findTabIndexFromTabEl(tabEl) {
-        for (const tab of this.tabContents) {
-            if (tab.tabEl == tabEl) return this.tabContents.indexOf(tab);
-        }
-        console.error("failed to find tab!")
-    }
-
-    findTabDictFromTabEl(tabEl) {
-        return this.tabContents[this.findTabIndexFromTabEl(tabEl)];
-    }
-
-    createTab(detail) {
-        var tabEl = detail.tabEl;
-        var iframe = document.createElement("iframe");
-        iframe.classList.add("browserTabContents");
-        iframe.style.setProperty("display", "none");
-        var self = this;
-        iframe.onload = () => {self.handleOnload()};
-        this.iFrameContainer.appendChild(iframe);
-        this.tabContents.push({tabEl: tabEl, iframe: iframe});
     }
 
     openTab(url) {
         if(!url) url = this.settings.getSetting("startUrl");
-        this.tabs.addTab();
-        this.navigateTo(url)
+        var tab = new Tab(this);
+        tab.navigateTo(url);
     }
 
     closeTab(detail) {
         var tabEl = detail.tabEl;
-        var tabIndex = this.findTabIndexFromTabEl(tabEl);
-        this.tabContents[tabIndex].iframe.remove();
-        this.tabContents.splice(tabIndex, 1);
+        this.tabs.get(tabEl).handleClose();
+        this.tabs.delete(tabEl);
     }
 
     switchTabs(detail) {
         var oldTab = detail.active;
         var newTab = detail.tabEl;
-        if(oldTab) {
-            var oldTabIframe = this.findTabDictFromTabEl(oldTab).iframe;
-            oldTabIframe.style.setProperty("display", "none");
-        }
-        var newTabIframe = this.findTabDictFromTabEl(newTab).iframe;
-        newTabIframe.style.removeProperty("display");
-        this.activeIframe = newTabIframe;
-        this.handleOnload();
-    }
-
-    setUrl(url) {
-        this.activeIframe.src = url
+        if(oldTab) this.tabs.get(oldTab).handleSwitchAway();
+        this.tabs.get(newTab).handleSwitchTo(); 
     }
 
     navigateTo(url) {
-        if (url == "" || url.startsWith("aboutbrowser://")) {
-            if (url == "") {
-                url = this.aboutBrowserPrefix + "blank.html";
-            } else if (url.startsWith("aboutbrowser://")) {
-                url = url.replace('aboutbrowser://', this.aboutBrowserPrefix);
-                url = url + ".html"
-            }
-            this.activeIframe.src = url;
-            return;
-        } else if (isUrl(url)) {
-            if (hasHttps(url)) {
-                proxyUsing(url, this.settings.getSetting("currentProxyId"));
-            } else {
-                proxyUsing('https://' + url, this.settings.getSetting("currentProxyId"))
-            }
-            return;
-        } else {
-            proxyUsing(this.settings.getSetting("searchEngineUrl") + url, this.settings.getSetting("currentProxyId"));
-        }
-    }
-
-    handleOnload() {
-        var url = this.activeIframe.contentWindow.location.toString();
-        if (url == "about:blank") {
-            return;
-        }
-        if (url.startsWith(this.aboutBrowserPrefix)) {
-            url = url.replace(this.aboutBrowserPrefix, '');
-            url = url.substring(0, url.length - 5);
-            url = "aboutbrowser://" + url;
-        } else {
-            url = url.replace(window.location.protocol + "//" + window.location.host + baseUrlFor(this.settings.getSetting("currentProxyId")), '')
-            url = decodeUrl(url, this.settings.getSetting("currentProxyId"));
-        }
-        this.addressBar.value = url;
-
-        // get title of iframe
-        var title = this.activeIframe.contentWindow.document.title;
-        if (title == "") {
-            title = url;
-        }
-        this.activeTabTitle = title;
-        this.browserTitle = title + " - AboutBrowser";
-        document.title = this.browserTitle;
-        this.activeTabUrl = url;
-
-        var self = this;
-        (async (url) => {
-            // get favicon of iframe
-            var favi = null;
-            if(url.startsWith("aboutbrowser://")) {
-                favi = getIconNoFallback(self.activeIframe.contentWindow.document);
-            } else if (url != "") {
-                var faviUrl = getIcon(self.activeIframe.contentWindow.document, new URL(url));
-                var blob = await fetch(baseUrlFor("UV") + encodeUrl(faviUrl, "UV")).then((r) => r.blob())
-                if (blob != null) {
-                    favi = faviUrl;
-                }
-            }
-
-            console.debug("got favi: ", favi);
-
-            if (favi == null) {
-                console.warn("falling back to default icon");
-                favi = "/aboutbrowser/darkfavi.png";
-            }
-
-            this.history.push(url, title, favi);
-            this.activeTabIcon = favi;
-
-            // update tab
-            self.tabs.updateTab(self.tabs.activeTabEl, {
-                favicon: favi,
-                title: title
-            });
-        })(url);
+        this.activeTab.navigateTo(url);
     }
 
     handleReload() {
-        this.activeIframe.contentWindow.location.reload();
+        this.activeTab.handleReload();
     }
 
     handleSettings() {
@@ -379,15 +452,15 @@ class AboutBrowser {
     }
 
     handleBack() {
-        this.activeIframe.contentWindow.history.back();
+        this.activeTab.handleHistoryBack();
     }
 
     handleForward() {
-        this.activeIframe.contentWindow.history.forward();
+        this.activeTab.handleHistoryForward();
     }
 
     handleBookmarks() {
-        this.bookmarks.add(this.activeTabTitle, this.activeTabUrl, this.activeTabIcon);
+        this.bookmarks.add(this.activeTab.currentTitle, this.activeTab.currentUrl, this.activeTab.currentFavi);
         this.bookmarks.save();
         this.propagateMessage({ type: "reloadBookmarks" });
     }
@@ -401,8 +474,7 @@ class AboutBrowser {
     }
 }
 
-aboutBrowser = null;
-
 function init() {
-    aboutBrowser = new AboutBrowser();
+    var aboutbrowser = new AboutBrowser();
+    window.aboutbrowser = aboutbrowser;
 }

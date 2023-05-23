@@ -216,6 +216,7 @@ function h(type, inner) { // used by apparently chrome-tabs?
       this.cleanUpPreviouslyDraggedTabs()
       this.layoutTabs()
       this.setupDraggabilly()
+      return tabEl;
     }
 
     setTabCloseEventListener(tabEl) {
