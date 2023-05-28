@@ -37,3 +37,4 @@ function getIconNoFallback(doc) {
 function getIcon(doc, winLocation) {
     return getIconNoFallback(doc) || winLocation.origin + "/favicon.ico"
 }
+

@@ -46,15 +46,25 @@ class Tab {
         this.iframe.classList.add("browserTabContents");
         this.iframe.style.setProperty("display", "none");
         var self = this;
-        this.iframe.onload = () => { self.handleOnload() };
         this.browser.iFrameContainer.appendChild(this.iframe);
 
         this.currentUrl = '';
         this.currentTitle = '';
         this.currentFavi = '';
         this.isActive = false;
+        this.handleUnload();
 
         if(!background) this.browser.chromeTabs.setCurrentTab(this.tabEl);
+    }
+
+    // Needed because you can't listen for DOMContentLoaded from an iframe across navigations
+    handleUnload() {
+        var self = this;
+        setTimeout(() => {
+            if(!self.iframe || !self.iframe.contentWindow) return;
+            self.iframe.contentWindow.addEventListener("DOMContentLoaded", () => { self.handleOnload() });
+            self.iframe.contentWindow.addEventListener("unload", () => { self.handleUnload() });
+        }, 0);
     }
 
     handleOnload() {
@@ -95,7 +105,7 @@ class Tab {
                 var faviUrl = getIcon(self.iframe.contentWindow.document, new URL(url));
                 var blob = await fetch(baseUrlFor("UV") + encodeUrl(faviUrl, "UV")).then((r) => r.blob())
                 if (blob != null) {
-                    favi = faviUrl;
+                    favi = baseUrlFor("UV") + encodeUrl(faviUrl, "UV");
                 }
             }
 
