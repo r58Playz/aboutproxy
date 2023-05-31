@@ -63,7 +63,7 @@
     width: 100%;
     border-radius: 0 5em 5em 0;
     height: 3em;
-    background-color: #303446;
+    background-color: var(--selected-ui);
 }
 
 .sideBar button:hover {

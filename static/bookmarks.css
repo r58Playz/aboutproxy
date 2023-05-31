@@ -1,15 +1,15 @@
 .bookmarksContainer {
     display: flex;
     border-radius: 2px;
-    background-color: #303446;
+    background-color: var(--selected-ui);
     overflow: scroll;
     overflow-y: hidden;
     height: 3em;
-    border-bottom: 1px solid #737994;
+    border-bottom: 1px solid #606164;
 }
 
 .bookmarksContainer::-webkit-scrollbar {
-  background-color: #292c3c;
+  background-color: var(--selected-ui);
 }
 .bookmarksContainer::-webkit-scrollbar-thumb {
   background-color: #232634;

@@ -1,5 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
 
+:root {
+  --tab-bg: #202124;
+  --selected-ui: #35363a;
+  --button-hover: #454649;
+  --button-color: #f1f3f4;
+  --text-color: #ffffff;
+}
+
+
 html,
 body {
   margin: 0;
@@ -30,7 +39,7 @@ body {
   padding-bottom: 0.5em;
   display: flex;
   flex-flow: row;
-  background-color: #303446;
+  background-color: var(--selected-ui);
 }
 
 .browser {
@@ -59,15 +68,15 @@ body {
   flex-shrink: 0;
   font-size: 1em;
   transition: background-color .2s ease-in-out;
-  color: #c6d0f5;
+  color: var(--button-color);
 }
 
 .navbarBtn:hover {
-  background-color: #292c3c;
+  background-color: var(--button-hover);
 }
 
 .navbarBtn:active {
-  background-color: #232634;
+  background-color: var(--tab-bg);
 }
 
 .navbarUrl {
@@ -77,35 +86,35 @@ body {
   padding-left: 1em;
   padding-right: 2.75em;
   border-radius: 25px;
-  background-color: #292c3c;
+  background-color: var(--tab-bg);
   border: none;
-  color: #c6d0f5;
+  color: var(--text-color);
 }
 
 input {
   background-color: #292c3c;
-  color: #c6d0f5;
+  color: var(--text-color);
   border-radius: 5px;
   border: none;
 }
 
 button {
-  color: #c6d0f5;
-  background-color: #292c3c;
+  color: var(--text-color);
+  background-color: var(--tab-bg);
   border: none;
   border-radius: 5px;
 }
 
 button:hover {
-  background-color: #232634;
+  background-color: var(--button-hover);;
 }
 
 button:active {
-  background-color: #191c2a;
+  background-color: var(--button-hover);;
 }
 
 .navbarUrl::placeholder {
-  color: #c6d0f5;
+  color: var(--text-color);
 }
 
 footer {
@@ -163,8 +172,8 @@ a:hover {
 }
 
 .popupButtonMain:hover {
-  border: rgb(141,169,224);
-  background-color: rgb(141,169,224);
+  border: var(--button-hover);
+  background-color: var(--button-hover);
 }
 
 .popupButtonMain:active {
@@ -184,7 +193,7 @@ a:hover {
   position: absolute;
   right: 0;
   top: 5.75em;
-  background: #292c3c;
+  background: var(--tab-bg);
   width: 18em;
   height:auto;
 }
@@ -199,7 +208,7 @@ a:hover {
 }
 
 .settingsCtxMenu .sep {
-  border-bottom: 1px solid rgba(198, 208, 245, 25);
+  border-bottom: 1px solid #3c4043;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
 }
