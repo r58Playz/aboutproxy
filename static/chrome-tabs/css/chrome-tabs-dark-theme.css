@@ -13,7 +13,7 @@
   fill: var(--selected-ui);
 }
 .chrome-tabs.chrome-tabs-dark-theme .chrome-tab .chrome-tab-title {
-  color: var(--tab-bg);
+  color: var(--text-color);
 }
 .chrome-tabs.chrome-tabs-dark-theme .chrome-tab[active] .chrome-tab-title {
   color: var(--text-color);
