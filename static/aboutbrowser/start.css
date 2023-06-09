@@ -12,3 +12,46 @@
     bottom: 0;
     right: 0;
 }
+
+#recentsWrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#recents {
+    display: grid;
+    grid-template-columns: 5em 5em 5em;
+    grid-template-rows: 5em 5em;
+}
+
+.recent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.recentIconWrapper {
+    background-color: #202124;
+    border-radius: 3em;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    width: 3em;
+    height: 3em;
+}
+
+.recent img {
+    width: 1.5em;
+    height: 1.5em;
+}
+
+.recent span {
+    width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    text-align: center;
+    font-size: 12px;
+}

@@ -31,5 +31,8 @@ window.addEventListener("message", (event) => {
     } else if (msg.type === "reloadHistory") {
         console.debug("recieved reloadHistory");
         window.aboutbrowser.history.reload();
+    } else if (msg.type === "getHistoryDomainViewCounts") {
+        console.debug("recieved getHistoryDomainViewCounts");
+        sendMessage({ type: "historyDomainViewCounts", data: window.aboutbrowser.history.getSortedDomainViewCounts() }, sender);
     }
 })

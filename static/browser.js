@@ -57,8 +57,10 @@ class AboutBrowser {
         });
 
         this.settingsCtxMenu = document.querySelector(".settingsCtxMenu");
-        this.settingsCtxMenu.addEventListener("mouseleave", (e) => {
-            self.settingsCtxMenu.style.setProperty("display", "none");
+        this.ctxMenuClickChecker = document.querySelector(".ctxMenuClickChecker");
+        this.ctxMenuClickChecker.addEventListener("click", () => {
+            self.settingsCtxMenu.style.setProperty('display', 'none');
+            self.ctxMenuClickChecker.style.setProperty('display', 'none');
         })
 
         window.addEventListener("bookmarkClicked", (event) => { self.navigateTo(event.detail.url) });
@@ -155,6 +157,7 @@ class AboutBrowser {
 
     handleSettings() {
         this.settingsCtxMenu.style.removeProperty("display");
+        this.ctxMenuClickChecker.style.removeProperty("display");
     }
 
     handleSettingsCtxMenu(menuItem) {

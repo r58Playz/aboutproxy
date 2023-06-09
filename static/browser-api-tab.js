@@ -16,5 +16,8 @@ window.addEventListener("message", (event) => {
     } else if (msg.type == "reloadBookmarks") {
         console.debug("recieved reloadBookmarks");
         reloadBookmarksCallback(msg);
+    } else if (msg.type == "historyDomainViewCounts") {
+        console.debug("recieved historyDomainViewCounts - redacted because it may be giant");
+        historyDomainViewCountsCallback(msg);
     }
 })

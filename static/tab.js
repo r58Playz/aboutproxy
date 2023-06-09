@@ -66,9 +66,9 @@ class Tab {
                 favi = getIconNoFallback(self.iframe.contentWindow.document);
             } else if (url != "") {
                 var faviUrl = getIcon(self.iframe.contentWindow.document, new URL(url));
-                var blob = await fetch(baseUrlFor("UV") + encodeUrl(faviUrl, "UV")).then((r) => r.blob())
+                var blob = await fetch(window.location.origin + baseUrlFor("UV") + encodeUrl(faviUrl, "UV")).then((r) => r.blob())
                 if (blob != null) {
-                    favi = baseUrlFor("UV") + encodeUrl(faviUrl, "UV");
+                    favi = window.location.origin + baseUrlFor("UV") + encodeUrl(faviUrl, "UV");
                 }
             }
 
@@ -79,7 +79,7 @@ class Tab {
                 favi = this.browser.resourcesPrefix + "darkfavi.png";
             }
 
-            this.browser.history.push(url, title, favi);
+            if(url != this.browser.settings.getSetting("startUrl")) this.browser.history.push(url, title, favi);
             this.currentFavi = favi;
 
             // update tab
