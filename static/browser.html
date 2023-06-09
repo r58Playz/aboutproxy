@@ -6,24 +6,23 @@
   <meta name="viewport" content="width=device-width">
   <!-- ******** CSS ******** -->
   <link href="style.css" rel="stylesheet" type="text/css" />
-  <!-- bookmarks -->
   <link href="bookmarks.css" rel="stylesheet" type="text/css" />
-  <!-- chrome tabs -->
   <link href="chrome-tabs/css/chrome-tabs.css" rel="stylesheet" />
   <link href="chrome-tabs/css/chrome-tabs-dark-theme.css" rel="stylesheet" />
-  <!-- external -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <!-- ******** JS ******** -->
-  <!-- DIP stuff -->
   <script src="dip/dip.config.js"></script>
   <script src="dip/dip.page.js"></script>
-  <!-- UV stuff -->
   <script src="/uv/uv.bundle.js"></script>
   <script src="/uv/uv.config.js"></script>
-  <!-- Helpers -->
   <script src="helpers.js"></script>
   <script src="proxyHelpers.js"></script>
   <script src="bookmarks.js"></script>
+  <script src="elementmap.js"></script>
+  <script src="settings.js"></script>
+  <script src="history.js"></script>
+  <script src="tab.js"></script>
+  <script src="browser.js"></script>
 </head>
 
 <body onload="init();">
@@ -99,7 +98,6 @@
     </div>
     <div id="tabContents" class="browser"></div>
   </div>
-  <script src="browser.js"></script>
   <script src="browser-api.js"></script>
   <script src="/draggabilly.pkgd.min.js"></script>
   <script src="chrome-tabs/js/chrome-tabs.js"></script>
