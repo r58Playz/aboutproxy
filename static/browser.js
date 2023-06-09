@@ -72,12 +72,12 @@ class Tab {
         if (url == "about:blank") {
             return;
         }
-        if (url.startsWith(this.browser.aboutBrowserPrefix)) {
-            url = url.replace(this.browser.aboutBrowserPrefix, '');
+        if (url.startsWith(this.browser.resourcesPrefix)) {
+            url = url.replace(this.browser.resourcesPrefix, '');
             url = url.substring(0, url.length - 5);
-            url = "aboutbrowser://" + url;
+            url = this.browser.resourcesProtocol + url;
         } else {
-            url = url.replace(window.location.protocol + "//" + window.location.host + baseUrlFor(this.browser.settings.getSetting("currentProxyId")), '')
+            url = url.replace(window.location.origin + baseUrlFor(this.browser.settings.getSetting("currentProxyId")), '')
             url = decodeUrl(url, this.browser.settings.getSetting("currentProxyId"));
         }
         this.currentUrl = url;
@@ -99,7 +99,7 @@ class Tab {
         (async (url) => {
             // get favicon of iframe
             var favi = null;
-            if(url.startsWith("aboutbrowser://")) {
+            if(url.startsWith(this.browser.resourcesProtocol)) {
                 favi = getIconNoFallback(self.iframe.contentWindow.document);
             } else if (url != "") {
                 var faviUrl = getIcon(self.iframe.contentWindow.document, new URL(url));
@@ -112,8 +112,8 @@ class Tab {
             console.debug("got favi: ", favi);
 
             if (favi == null) {
-                console.warn("falling back to default icon");
-                favi = "/aboutbrowser/darkfavi.png";
+                console.debug("falling back to default icon");
+                favi = this.browser.resourcesPrefix + "darkfavi.png";
             }
 
             this.browser.history.push(url, title, favi);
@@ -163,11 +163,11 @@ class Tab {
     
     navigateTo(url, callback) {
         var self = this;
-        if (url == "" || url.startsWith("aboutbrowser://")) {
+        if (url == "" || url.startsWith(this.browser.resourcesProtocol)) {
             if (url == "") {
-                url = this.browser.aboutBrowserPrefix + "blank.html";
-            } else if (url.startsWith("aboutbrowser://")) {
-                url = url.replace('aboutbrowser://', this.browser.aboutBrowserPrefix);
+                url = this.browser.resourcesPrefix + "blank.html";
+            } else if (url.startsWith(this.browser.resourcesProtocol)) {
+                url = url.replace(this.browser.resourcesProtocol, this.browser.resourcesPrefix);
                 url = url + ".html"
             }
             this.iframe.src = url;
@@ -196,7 +196,7 @@ class Tab {
 
 class Settings {
     constructor() {
-        this.defaults = {currentProxyId: "UV", searchEngineUrl: "https://www.google.com/search?q=", startUrl: "aboutbrowser://start"};
+        this.defaults = {currentProxyId: "UV", searchEngineUrl: "https://www.google.com/search?q=", startUrl: this.browser.resourcesProtocol + "start"};
         this.settings = JSON.parse(localStorage.getItem("settings"));
         if(this.settings == null) this.settings = {};
     }
@@ -291,7 +291,8 @@ class AboutBrowser {
 
         this.settings = new Settings();
 
-        this.aboutBrowserPrefix = window.location.protocol + "//" + window.location.host + "/aboutbrowser/";
+        this.resourcesProtocol = "aboutbrowser://"
+        this.resourcesPrefix = window.location.origin + "/aboutbrowser/";
 
         this.titleSuffix = " - AboutBrowser";
         this.browserTite = "New Tab" + this.titleSuffix;
@@ -444,19 +445,19 @@ class AboutBrowser {
                 this.openTab();
                 break;
             case "history":
-                this.openTab("aboutbrowser://history");
+                this.openTab(this.browser.resourcesProtocol + "history");
                 break;
             case "downloads":
-                this.openTab("aboutbrowser://downloads");
+                this.openTab(this.browser.resourcesProtocol + "downloads");
                 break;
             case "bookmarks":
-                this.openTab("aboutbrowser://bookmarks");
+                this.openTab(this.browser.resourcesProtocol + "bookmarks");
                 break;
             case "settings":
-                this.openTab("aboutbrowser://settings");
+                this.openTab(this.browser.resourcesProtocol + "settings");
                 break;
             case "about":
-                this.openTab("aboutbrowser://versionHistory");
+                this.openTab(this.browser.resourcesProtocol + "versionHistory");
                 break;
         }
     }
@@ -476,11 +477,11 @@ class AboutBrowser {
     }
 
     handleExtensions() {
-        this.openTab("aboutbrowser://extensions");
+        this.openTab(this.browser.resourcesProtocol + "extensions");
     }
 
     handleGames() {
-        this.openTab("aboutbrowser://games/index");
+        this.openTab(this.browser.resourcesProtocol + "games/index");
     }
 }
 
