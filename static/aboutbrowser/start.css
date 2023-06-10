@@ -10,7 +10,15 @@
 .footerRight {
     position: absolute;
     bottom: 0;
-    right: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.footerRight div {
+    flex-grow: 1;
 }
 
 #recentsWrapper {
@@ -20,9 +28,10 @@
 }
 
 #recents {
+    padding-top: 2em;
     display: grid;
-    grid-template-columns: 5em 5em 5em;
-    grid-template-rows: 5em 5em;
+    grid-template-columns: 6em 6em 6em 6em 6em;
+    grid-template-rows: 7em 7em;
 }
 
 .recent {
@@ -30,6 +39,13 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 0.5em;
+    border-radius: 0.5em;
+    transition: background-color 0.1s linear;
+}
+
+.recent:active {
+    background-color: #202124;
 }
 
 .recentIconWrapper {
@@ -40,6 +56,7 @@
     justify-content: center;
     width: 3em;
     height: 3em;
+    margin-bottom: 1em;
 }
 
 .recent img {
@@ -54,4 +71,21 @@
     overflow: hidden;
     text-align: center;
     font-size: 12px;
+}
+
+.themedBtn {
+    background-color: transparent;
+    border: none;
+    border-radius: 100%;
+    margin: 2px;
+    transition: background-color .2s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+}
+
+.themedBtn:hover {
+    background-color: #454649; 
 }

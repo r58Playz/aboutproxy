@@ -66,48 +66,9 @@ class AboutBrowser {
         window.addEventListener("bookmarkClicked", (event) => { self.navigateTo(event.detail.url) });
 
         // the best line of code in this codebase
-        if (this.probeForChrome()) this.unfuckChrome();
-    }
-
-    probeForChrome() {
-        // chrome is trash but firefox breaks proxies so :/
-        var isChromium = window.chrome;
-        var winNav = window.navigator;
-        var vendorName = winNav.vendor;
-        var isOpera = typeof window.opr !== "undefined";
-        var isIEedge = winNav.userAgent.indexOf("Edg") > -1;
-        var isIOSChrome = winNav.userAgent.match("CriOS");
-
-        if (isIOSChrome) {
-            return false;
-        } else if (
-            isChromium !== null &&
-            typeof isChromium !== "undefined" &&
-            vendorName === "Google Inc." &&
-            isOpera === false &&
-            isIEedge === false
-        ) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    unfuckChrome() {
-        console.error("stupid chrome is broken so i have to go unfuck it")
-        var el = document.getElementById("browserSettings");
-        el.style.setProperty('width', this.getHeightOfElement(el) + 2 + 'px');
-        el = document.getElementById("browserBack");
-        el.style.setProperty('width', this.getHeightOfElement(el) + 2 + 'px');
-        el = document.getElementById("browserForward");
-        el.style.setProperty('width', this.getHeightOfElement(el) + 2 + 'px');
-        el = document.getElementById("browserReload");
-        el.style.setProperty('width', this.getHeightOfElement(el) + 2 + 'px');
-        el = document.getElementById("browserExtensions");
-        el.style.setProperty('width', this.getHeightOfElement(el) + 2 + 'px');
-        el = document.getElementById("games");
-        el.style.setProperty('width', this.getHeightOfElement(el) + 2 + 'px');
-        console.error('unfucked chrome');
+        // it used to be:
+        // if(probeForChrome()) unfuckChrome();
+        // sadly got removed
     }
 
     getHeightOfElement(element) {
@@ -201,11 +162,8 @@ class AboutBrowser {
     handleExtensions() {
         this.openTab(this.resourcesProtocol + "extensions");
     }
-
-    handleGames() {
-        this.openTab(this.resourcesProtocol + "games/index");
-    }
 }
+
 function init() {
     try{
         var aboutbrowser = new AboutBrowser();

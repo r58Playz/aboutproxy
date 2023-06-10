@@ -20,10 +20,12 @@ function openVerHistory() {
 function historyDomainViewCountsCallback(msg) {
     var domainViewCounts = msg.data;
     var topSix = domainViewCounts.slice(0, 6);
-    for(const site of topSix) {
-        var siteData = JSON.parse(site[0]);
+    for(const site in topSix) {
+        var siteData = JSON.parse(topSix[site][0]);
         var el = document.createElement('div');
         el.className = "recent";
+        el.setAttribute("data-url", siteData.url); // for some reason just directly using siteData.url doesn't work properly
+        el.addEventListener('click', (event) => {sendMessage({type: "setUrl", value: event.currentTarget.getAttribute("data-url")})});
         var imgWrapperEl = document.createElement('div');
         imgWrapperEl.className = "recentIconWrapper";
         var imgEl = document.createElement('img');

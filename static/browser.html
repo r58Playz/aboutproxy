@@ -9,7 +9,7 @@
   <link href="bookmarks.css" rel="stylesheet" type="text/css" />
   <link href="chrome-tabs/css/chrome-tabs.css" rel="stylesheet" />
   <link href="chrome-tabs/css/chrome-tabs-dark-theme.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="material-symbols-outlined.css" rel="stylesheet" />
   <!-- ******** JS ******** -->
   <script src="dip/dip.config.js"></script>
   <script src="dip/dip.page.js"></script>
@@ -29,8 +29,9 @@
   <div class="container browserContainer">
     <div class="chrome-tabs" style="--tab-content-margin: 9px">
       <div class="chrome-tabs-content-wrapper">
-        <button id="addtab" class="chrome-tabs-btn" data-add-tab style="position:absolute;"><i
-            class="fa-solid fa-plus fa-xl tabBtnIcon"></i></button>
+        <button id="addtab" class="chrome-tabs-btn" data-add-tab style="position:absolute;">
+          <span class="material-symbols-outlined">add</span>
+        </button>
         <div class="chrome-tabs-content">
         </div>
         <div class="chrome-tabs-content-after"></div>
@@ -53,27 +54,25 @@
     </div>
     <div class="navbar">
       <button class="navbarBtn" id="browserBack" onclick="window.aboutbrowser.handleBack()">
-        <i class="fa-solid fa-arrow-left"></i>
+        <span class="material-symbols-outlined">arrow_back</span>
       </button>
       <button class="navbarBtn" id="browserForward" onclick="window.aboutbrowser.handleForward()">
-        <i class="fa-solid fa-arrow-right"></i>
+        <span class="material-symbols-outlined">arrow_forward</span>
       </button>
       <button class="navbarBtn" id="browserReload" onclick="window.aboutbrowser.handleReload();">
-        <i class="fa-solid fa-rotate-right"></i></button>
-      <input class="navbarUrl" id="browserUrl"></input>
+        <span class="material-symbols-outlined">refresh</span>
+      </button>
+        <input class="navbarUrl" id="browserUrl"></input>
       <div class="bookmarksBtnWrapper">
         <button class="navbarBtn bookmarksBtn" id="browserBookmarks" onclick="window.aboutbrowser.handleBookmarks();">
-          <i class="fa-regular fa-star"></i>
+          <span class="material-symbols-outlined">star</span>
         </button>
       </div>
       <button class="navbarBtn" id="browserExtensions" onclick="window.aboutbrowser.handleExtensions();">
-        <i class="fa-solid fa-puzzle-piece"></i>
-      </button>
-      <button class="navbarBtn" id="games" onclick="window.aboutbrowser.handleGames();">
-        <i class="fa-solid fa-gamepad"></i>
+        <span class="material-symbols-outlined">extension</span>
       </button>
       <button class="navbarBtn" id="browserSettings" onclick="window.aboutbrowser.handleSettings();">
-        <i class="fa-solid fa-ellipsis-vertical"></i>
+        <span class="material-symbols-outlined">more_vert</span>
       </button>
     </div>
     <div>

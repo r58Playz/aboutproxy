@@ -64,11 +64,16 @@ body {
   border: none;
   border-radius: 100%;
   margin: 2px;
-  aspect-ratio: 1 / 1;
   flex-shrink: 0;
   font-size: 1em;
   transition: background-color .2s ease-in-out;
+  padding: 1px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--button-color);
+  height: 26px;
+  width: 26px;
 }
 
 .navbarBtn:hover {
@@ -131,8 +136,12 @@ footer {
   position: absolute;
   right: 0.5em;
   bottom: 0;
-  width: 32px;
-  height: 32px;
+  width: 26px;
+  height: 26px;
+}
+
+.bookmarksBtn > span {
+  transform: translate(0px, -2px);
 }
 
 a {

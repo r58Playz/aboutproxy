@@ -5,11 +5,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>New Tab</title>
-    <link href="/style.css" rel="stylesheet" type="text/css" />
     <link href="dark-theme.css" rel="stylesheet" type="text/css" />
     <link href="start.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="robot.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/material-symbols-outlined.css" />
+    <link rel="stylesheet" href="/style.css" />
 </head>
 
 <body>
@@ -20,9 +20,11 @@
             <div id="recentsWrapper"><div id="recents"></div></div>
         </div>
         <div class="footerRight">
-            AboutBrowser 0.8.1
-            <button class="navbarBtn" id="browserBack" onclick="openVerHistory();"><i
-                    class="fa-solid fa-clock-rotate-left"></i></button>
+            <div></div>
+            <span>AboutBrowser 0.8.1</span>
+            <button class="themedBtn" id="browserBack" onclick="openVerHistory();">
+                <span class="material-symbols-outlined">history</span>
+            </button>
         </div>
     </div>
     <script src="/browser-api-tab.js"></script>
