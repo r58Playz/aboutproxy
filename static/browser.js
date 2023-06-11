@@ -1,6 +1,10 @@
 // todo private methods+variables maybe?
 class AboutBrowser {
     constructor() {
+        // initialize themes as early as possible
+        this.themes = new ThemeController();
+        this.themes.applyTheme();
+
         this.resourcesProtocol = "aboutbrowser://"
         this.resourcesPrefix = window.location.origin + "/aboutbrowser/";
         this.titleSuffix = " - AboutBrowser";

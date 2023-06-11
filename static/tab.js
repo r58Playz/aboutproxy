@@ -35,6 +35,9 @@ class Tab {
         if (url == "about:blank") {
             return;
         }
+
+        this.browser.themes.applyThemeToFrame(this.iframe, url == this.browser.settings.getSetting("startUrl"));
+
         if (url.startsWith(this.browser.resourcesPrefix)) {
             url = url.replace(this.browser.resourcesPrefix, '');
             url = url.substring(0, url.length - 5);

@@ -1,14 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
 
-:root {
-  --tab-bg: #202124;
-  --selected-ui: #35363a;
-  --button-hover: #454649;
-  --button-color: #f1f3f4;
-  --text-color: #ffffff;
-}
-
-
 html,
 body {
   margin: 0;
@@ -39,7 +30,7 @@ body {
   padding-bottom: 0.5em;
   display: flex;
   flex-flow: row;
-  background-color: var(--selected-ui);
+  background-color: var(--aboutbrowser-toolbar-bg);
 }
 
 .browser {
@@ -71,17 +62,17 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--button-color);
+  color: var(--aboutbrowser-toolbar-button-fg);
   height: 26px;
   width: 26px;
 }
 
 .navbarBtn:hover {
-  background-color: var(--button-hover);
+  background-color: blend(in srgb, var(--aboutbrowser-toolbar-bg), var(--aboutbrowser-toolbar-button-fg), 25%);
 }
 
 .navbarBtn:active {
-  background-color: var(--tab-bg);
+  background-color: blend(in srgb, var(--aboutbrowser-toolbar-bg), var(--aboutbrowser-toolbar-button-fg), 25%);
 }
 
 .navbarUrl {
@@ -91,35 +82,13 @@ body {
   padding-left: 1em;
   padding-right: 2.75em;
   border-radius: 25px;
-  background-color: var(--tab-bg);
+  background-color: var(--aboutbrowser-omnibox-bg);
   border: none;
-  color: var(--text-color);
-}
-
-input {
-  background-color: #292c3c;
-  color: var(--text-color);
-  border-radius: 5px;
-  border: none;
-}
-
-button {
-  color: var(--text-color);
-  background-color: var(--tab-bg);
-  border: none;
-  border-radius: 5px;
-}
-
-button:hover {
-  background-color: var(--button-hover);;
-}
-
-button:active {
-  background-color: var(--button-hover);;
+  color: var(--aboutbrowser-omnibox-fg);
 }
 
 .navbarUrl::placeholder {
-  color: var(--text-color);
+  color: blend(in srgb, var(--aboutbrowser-omnibox-bg), var(--aboutbrowser-omnibox-fg), 50%);
 }
 
 footer {
@@ -152,6 +121,9 @@ a:hover {
   text-decoration: underline;
 }
 
+.popupWrapper {display:none};
+
+/*
 .popupWrapper {
   display: flex;
   position: absolute;
@@ -197,12 +169,13 @@ a:hover {
 .popupContent {
   font-size: smaller;
 }
+*/
 
 .settingsCtxMenu {
   position: absolute;
   right: 0;
   top: 5.75em;
-  background: var(--tab-bg);
+  background: var(--aboutbrowser-frame-bg);
   width: 18em;
   height:auto;
   z-index: 101;

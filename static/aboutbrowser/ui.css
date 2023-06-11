@@ -1,0 +1,18 @@
+body {
+    background-color: var(--aboutbrowser-ui-bg);
+    color: var(--aboutbrowser-ui-fg);
+}
+
+
+.container {
+    font-family: 'Roboto', sans-serif;
+}
+
+
+a:link {
+    color: var(--aboutbrowser-ui-link-fg);
+}
+
+a:visited {
+    color: var(--aboutbrowser-ui-link-fg);
+}
