@@ -40,7 +40,23 @@ colorMap can optionally contain (for aboutbrowser themes):
 
 
 class Theme {
-  constructor(name, colorMap, themeVersion) {
+  constructor(themeJson) {
+    // Sanity check the json
+    
+    // Ignore manifest_version as that is for Chrome.
+    // Will be needed for extension parsing
+    if(
+      !themeJson.version ||
+      !themeJson.name || 
+      !themeJson.theme ||
+      !themeJson.theme.colors
+    ) throw new Error("Invalid theme");
+
+    this.version = themeJson.version;
+    this.name = themeJson.name;
+    this.isAboutBrowserTheme = !!themeJson.aboutbrowser;
+    colorMap = this.colorMap = themeJson.theme.colors;
+
     // Sanity check the theme
     let colorMapContains = Object.keys(colorMap);
     for(const k of [
@@ -60,11 +76,6 @@ class Theme {
     if(!colorMapContains.includes("toolbar_text")) colorMap.toolbar_text = colorMap.tab_text;
     if(!colorMapContains.includes("bookmark_text")) colorMap.bookmark_text = colorMap.tab_text;
 
-    this.name = name;
-    this.colorMap = colorMap;
-    this.version = themeVersion;
-    this.isAboutBrowserTheme = themeVersion.endsWith('-aboutbrowser');
-    
     // Check aboutbrowser theme
     if(this.isAboutBrowserTheme) {
       // Sanity check
@@ -161,35 +172,40 @@ let gcp = new GoogleColorPalette();
 window.googlecolorpalette = gcp;
 
 
-Theme.default = new Theme(
-  "Chrome Dark",
-  {
-    frame: gcp.Grey900,
-    toolbar: gcp.Grey800,
-    tab_text: gcp.Grey050,
-    tab_background_text: gcp.Grey300,
-    button_background: gcp.Grey800,
-    ntp_background: gcp.Grey800,
-    ntp_link: gcp.Blue800,
-    ntp_text: gcp.Grey050,
-    omnibox_background: gcp.Grey900,
-    omnibox_text: gcp.Grey050,
-    toolbar_button_icon: gcp.Grey050,
-    toobar_text: gcp.Grey050,
-    bookmark_text: gcp.Grey050,
-    accent_color: gcp.Blue700,
-    ui_search_background: gcp.Grey900,
-    ui_search_foreground: gcp.Grey050,
-    ui_sidebar_background: gcp.Grey800,
-    ui_sidebar_foreground: gcp.Grey050,
-    ui_toolbar_background: gcp.Grey800,
-    ui_toolbar_foreground: gcp.Grey050,
-    ui_sidebar_active_background: gcp.Grey900,
-    ui_sidebar_active_foreground: gcp.Blue700,
-    ui_layer1_background: gcp.Grey800,
-    ui_layer1_foreground: gcp.Grey050
+Theme.default = new Theme({
+  manifest_version: 3,
+  version: "0.2_alpha",
+  name: "Chrome Dark",
+  theme: {
+    images: {
+      frame: gcp.Grey900,
+      toolbar: gcp.Grey800,
+      tab_text: gcp.Grey050,
+      tab_background_text: gcp.Grey300,
+      button_background: gcp.Grey800,
+      ntp_background: gcp.Grey800,
+      ntp_link: gcp.Blue800,
+      ntp_text: gcp.Grey050,
+      omnibox_background: gcp.Grey900,
+      omnibox_text: gcp.Grey050,
+      toolbar_button_icon: gcp.Grey050,
+      toobar_text: gcp.Grey050,
+      bookmark_text: gcp.Grey050,
+      accent_color: gcp.Blue700,
+      ui_search_background: gcp.Grey900,
+      ui_search_foreground: gcp.Grey050,
+      ui_sidebar_background: gcp.Grey800,
+      ui_sidebar_foreground: gcp.Grey050,
+      ui_toolbar_background: gcp.Grey800,
+      ui_toolbar_foreground: gcp.Grey050,
+      ui_sidebar_active_background: gcp.Grey900,
+      ui_sidebar_active_foreground: gcp.Blue700,
+      ui_layer1_background: gcp.Grey800,
+      ui_layer1_foreground: gcp.Grey050
+    },
   },
-  '0.1_alpha-aboutbrowser');
+  aboutbrowser: "true",
+});
 
 // Inject default theme early so there is no unstyled content as everything else loads
 Theme.default.inject();
