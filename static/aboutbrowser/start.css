@@ -1,6 +1,21 @@
-.navbarUrl {
+.omnibox {
+    padding: 0 1em;
+    border-radius: 25px;
+    background-color: var(--aboutbrowser-omnibox-bg);
+    border: none;
+    color: var(--aboutbrowser-omnibox-fg);
     height: 4em;
     width: 561px;
+}
+
+.omnibox::placeholder {
+  color: color-mix(in srgb, var(--aboutbrowser-omnibox-bg), var(--aboutbrowser-omnibox-fg) 50%);
+}
+
+.omnibox:-webkit-autofill,
+.omnibox:-webkit-autofill:hover,
+.omnibox:-webkit-autofill:active {
+    background-color: var(--aboutbrowser-omnibox-bg);
 }
 
 #content {
@@ -44,12 +59,16 @@
     transition: background-color 0.1s linear;
 }
 
+.recent:hover {
+    background-color: color-mix(in srgb, var(--aboutbrowser-ui-bg), var(--aboutbrowser-frame-bg) 25%);
+}
+
 .recent:active {
-    background-color: #202124;
+    background-color: color-mix(in srgb, var(--aboutbrowser-ui-bg), var(--aboutbrowser-frame-bg) 45%);
 }
 
 .recentIconWrapper {
-    background-color: #202124;
+    background-color: var(--aboutbrowser-frame-bg);
     border-radius: 3em;
     display:flex;
     align-items: center;
@@ -87,5 +106,9 @@
 }
 
 .themedBtn:hover {
-    background-color: #454649; 
+    background-color: color-mix(in srgb, var(--aboutbrowser-ui-bg) var(--aboutbrowser-ui-fg) 15%);
+}
+
+.themedBtn:active  {
+    background-color: color-mix(in srgb, var(--aboutbrowser-ui-bg) var(--aboutbrowser-ui-fg) 25%);
 }

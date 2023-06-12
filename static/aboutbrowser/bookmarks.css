@@ -14,7 +14,8 @@
 }
 
 #bookmarksTable {
-    background-color: #292c3c;
+    background-color: var(--aboutbrowser-ui-layer1-bg);
+    color: var(--aboutbrowser-ui-layer1-fg);
     padding: 1em 0em;
     margin: 1em;
     border-radius: 1em;
@@ -27,6 +28,10 @@
     align-items: center;
 }
 
+#bookmarksTable .bookmarksRow[data-active='true'] {
+    background-color: color-mix(in srgb, var(--aboutbrowser-ui-layer1-bg), var(--aboutbrowser-ui-accent) 50%);
+}
+
 #bookmarksTable .bookmarkTitle {
     margin-right: 1em;
 }
@@ -35,6 +40,8 @@
 #bookmarksTable .bookmarkTitle {
     background-color: transparent;
     flex-grow: 1;
+    border: none;
+    color: var(--aboutbrowser-ui-layer1-fg);
 }
 
 #bookmarksTable .bookmarksIcon {
@@ -47,6 +54,32 @@
     padding: 0em 0.5em 0em 0.5em;
 }
 
-#bookmarksTable .navbarBtn:hover {
-    background-color: #232634;
+#bookmarksTable .themedBtn:hover {
+    background-color: color-mix(in srgb, var(--aboutbrowser-ui-layer1-bg), var(--aboutbrowser-ui-layer1-fg) 15%);
+}
+
+#bookmarksTable .themedBtn:active {
+    background-color: color-mix(in srgb, var(--aboutbrowser-ui-layer1-bg), var(--aboutbrowser-ui-layer1-fg) 25%);
+}
+
+
+.themedBtn {
+    background-color: transparent;
+    border: none;
+    border-radius: 100%;
+    margin: 2px;
+    transition: background-color .2s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+}
+
+.themedBtn:hover {
+    background-color: color-mix(in srgb, var(--aboutbrowser-ui-bg) var(--aboutbrowser-ui-fg) 15%);
+}
+
+.themedBtn:active  {
+    background-color: color-mix(in srgb, var(--aboutbrowser-ui-bg) var(--aboutbrowser-ui-fg) 25%);
 }

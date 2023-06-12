@@ -1,13 +1,112 @@
 body {
     background-color: var(--aboutbrowser-ui-bg);
     color: var(--aboutbrowser-ui-fg);
+    padding:0;
+    margin:0;
 }
 
+span {
+    color: var(--aboutbrowser-ui-fg);
+}
 
 .container {
     font-family: sans-serif;
 }
 
+.containerPadding {
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.topBar {
+    position: fixed;
+    top:0;
+    left:0;
+    display: flex; /* 💪 box number: how many was it? */
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    background-color: var(--aboutbrowser-ui-toolbar-bg);
+    color: var(--aboutbrowser-ui-toolbar-fg);
+    height: 3.5em;
+}
+
+.topBar .title {
+    font-size: 1.25em;
+    margin-left: 0.5em;
+    font-weight: bold;
+}
+
+.topBar .icon {
+    width: 24px;
+    height: 24px;
+    padding-left: 1.3em;
+    margin-right: 1em;
+}
+
+.topBar .searchContainer .search {
+    background-color: var(--aboutbrowser-ui-search-bg);
+    color: var(--aboutbrowser-ui-search-fg);
+    height: 3em;
+    width: 680px;
+    flex-grow: 0;
+    padding-right: 1em;
+    border-radius: 49px;
+    padding: 0 1em;
+    border: none;
+}
+
+.topBar .searchContainer .search::placeholder {
+    color: color-mix(in srgb, var(--aboutbrowser-ui-search-bg), var(--aboutbrowser-ui-search-fg) 20%);
+}
+
+.topBar .searchContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.content {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-top: 3.5em;
+    height: calc(100%);
+}
+
+.actualContent {
+    flex: 1;
+}
+
+.sideBar {
+    background-color: var(--aboutbrowser-ui-sidebar-bg);
+    color: var(--aboutbrowser-ui-sidebar-fg);
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 250px;
+    height: 100%;
+    margin-right: 2em;
+}
+
+.sideBar button {
+    width: 100%;
+    border-radius: 0 5em 5em 0;
+    height: 3em;
+    background-color: transparent;
+    border: none;
+    color: var(--aboutbrowser-ui-sidebar-fg);
+}
+
+.sideBar button:hover {
+    background-color: color-mix(in srgb, var(--aboutbrowser-ui-sidebar-bg), var(--aboutbrowser-ui-sidebar-active-bg) 15%);
+    color: color-mix(in srgb, var(--aboutbrowser-ui-sidebar-fg), var(--aboutbrowser-ui-sidebar-active-fg) 15%);
+}
+
+.sideBar button:active {
+    background-color: color-mix(in srgb, var(--aboutbrowser-ui-sidebar-bg), var(--aboutbrowser-ui-sidebar-active-bg) 25%);
+    color: color-mix(in srgb, var(--aboutbrowser-ui-sidebar-fg), var(--aboutbrowser-ui-sidebar-active-fg) 25%);
+}
 
 a:link {
     color: var(--aboutbrowser-ui-link-fg);

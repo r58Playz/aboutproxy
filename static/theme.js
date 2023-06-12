@@ -25,6 +25,17 @@ colorMap will ignore incognito and inactive variants of colors, and:
 
 colorMap needs to contain (for aboutbrowser themes):
  * accent_color
+ * ui_search_background
+ * ui_toolbar_background
+ * ui_sidebar_background
+ * ui_sidebar_active_background
+ * ui_layer1_background
+ * ui_layer1_foreground
+colorMap can optionally contain (for aboutbrowser themes):
+ * ui_toolbar_foreground
+ * ui_sidebar_foreground
+ * ui_search_foreground
+ * ui_sidebar_active_foreground
  */
 
 
@@ -32,15 +43,12 @@ class Theme {
   constructor(name, colorMap, themeVersion) {
     // Sanity check the theme
     let colorMapContains = Object.keys(colorMap);
-    if(
-      !colorMapContains.includes("frame") ||
-      !colorMapContains.includes("toolbar") ||
-      !colorMapContains.includes("tab_text") ||
-      !colorMapContains.includes("tab_background_text")
-    ) {
-      throw new Error("Invalid theme");
-    }
-
+    for(const k of [
+      "frame",
+      "toolbar",
+      "tab_text",
+      "tab_background_text"
+    ]) if(!colorMapContains.includes(k)) throw new Error("Invalid theme");
     // Set any fallbacks necessary
     if(!colorMapContains.includes("button_background")) colorMap.button_background = colorMap.frame;
     if(!colorMapContains.includes("ntp_background")) colorMap.ntp_background = colorMap.toolbar;
@@ -57,8 +65,24 @@ class Theme {
     this.version = themeVersion;
     this.isAboutBrowserTheme = themeVersion.endsWith('-aboutbrowser');
     
-    // Sanity check the aboutbrowser theme
-    if(this.isAboutBrowserTheme && !colorMapContains.includes("accent_color")) throw new Error("Invalid theme");
+    // Check aboutbrowser theme
+    if(this.isAboutBrowserTheme) {
+      // Sanity check
+      for(const k of [
+        "accent_color",
+        "ui_search_background",
+        "ui_toolbar_background",
+        "ui_sidebar_background",
+        "ui_sidebar_active_foreground",
+        "ui_layer1_background",
+        "ui_layer1_foreground"
+      ]) if(!colorMapContains.includes(k)) throw new Error("Invalid theme");
+      // Fallback
+      if(!colorMapContains.includes("ui_toolbar_foreground")) colorMap.ui_toolbar_foreground = colorMap.tab_text;
+      if(!colorMapContains.includes("ui_sidebar_foreground")) colorMap.ui_sidebar_foreground = colorMap.tab_text;
+      if(!colorMapContains.includes("ui_search_foreground")) colorMap.ui_search_foreground = colorMap.tab_text;
+      if(!colorMapContains.includes("ui_sidebar_active_foreground")) colorMap.ui_sidebar_active_foreground = colorMap.tab_text;
+    }
 
     this.colorToCSSMap = {
       frame: "--aboutbrowser-frame-bg",
@@ -76,7 +100,17 @@ class Theme {
       bookmark_text: "--aboutbrowser-bookmark-fg"
     };
     this.aboutBrowserColorToCSSMap = {
-      accent_color: "--aboutbrowser-ui-accent"
+      accent_color: "--aboutbrowser-ui-accent",
+      ui_search_background: "--aboutbrowser-ui-search-bg",
+      ui_search_foreground: "--aboutbrouser-ui-search-fg",
+      ui_toolbar_background: "--aboutbrowser-ui-toolbar-bg",
+      ui_toolbar_foreground: "--aboutbrowser-ui-toolbar-fg",
+      ui_sidebar_background: "--aboutbrowser-ui-sidebar-bg",
+      ui_sidebar_foreground: "--aboutbrowser-ui-sidebar-fg",
+      ui_sidebar_active_background: "--aboutbrowser-ui-sidebar-active-bg",
+      ui_sidebar_active_foreground: "--aboutbrowser-ui-sidebar-active-fg",
+      ui_layer1_background: "--aboutbrowser-ui-layer1-bg",
+      ui_layer1_foreground: "--aboutbrowser-ui-layer1-fg"
     };
   }
   
@@ -134,12 +168,31 @@ Theme.default = new Theme(
     toolbar: gcp.Grey800,
     tab_text: gcp.Grey050,
     tab_background_text: gcp.Grey300,
-    accent_color: gcp.Blue700
+    button_background: gcp.Grey800,
+    ntp_background: gcp.Grey800,
+    ntp_link: gcp.Blue800,
+    ntp_text: gcp.Grey050,
+    omnibox_background: gcp.Grey900,
+    omnibox_text: gcp.Grey050,
+    toolbar_button_icon: gcp.Grey050,
+    toobar_text: gcp.Grey050,
+    bookmark_text: gcp.Grey050,
+    accent_color: gcp.Blue700,
+    ui_search_background: gcp.Grey900,
+    ui_search_foreground: gcp.Grey050,
+    ui_sidebar_background: gcp.Grey800,
+    ui_sidebar_foreground: gcp.Grey050,
+    ui_toolbar_background: gcp.Grey800,
+    ui_toolbar_foreground: gcp.Grey050,
+    ui_sidebar_active_background: gcp.Grey900,
+    ui_sidebar_active_foreground: gcp.Blue700,
+    ui_layer1_background: gcp.Grey800,
+    ui_layer1_foreground: gcp.Grey050
   },
   '0.1_alpha-aboutbrowser');
 
 // Inject default theme early so there is no unstyled content as everything else loads
-try{Theme.default.inject();}catch(err){alert(err.stack)};
+Theme.default.inject();
 
 class ThemeController {
   constructor(currentTheme = Theme.default) {    

@@ -65,7 +65,7 @@
       <button class="navbarBtn" id="browserReload" onclick="window.aboutbrowser.handleReload();">
         <span class="material-symbols-outlined">refresh</span>
       </button>
-        <input class="navbarUrl" id="browserUrl"></input>
+        <input class="navbarUrl" id="browserUrl" autocomplete="off"></input>
       <div class="bookmarksBtnWrapper">
         <button class="navbarBtn bookmarksBtn" id="browserBookmarks" onclick="window.aboutbrowser.handleBookmarks();">
           <span class="material-symbols-outlined">star</span>
@@ -79,7 +79,7 @@
       </button>
     </div>
     <div>
-      <div class="settingsCtxMenu" style="display: none;">
+      <div class="moreMenu" style="display: none;">
         <button onclick="window.aboutbrowser.handleSettingsCtxMenu('newTab');">New tab</button>
         <div class="sep"></div>
         <button onclick="window.aboutbrowser.handleSettingsCtxMenu('history');">History</button>

@@ -32,6 +32,7 @@ class Tab {
 
     handleOnload() {
         var url = this.iframe.contentWindow.location.toString();
+        let urlEncoded = url;
         if (url == "about:blank") {
             return;
         }
@@ -53,6 +54,7 @@ class Tab {
         if (title == "") {
             title = url;
         }
+        title = title.replace(decodeURIComponent(urlEncoded.split('/').slice(-1)), url);
         this.currentTitle = title;
 
         this.iframe.contentWindow.document.querySelectorAll("a").forEach((e) => {
@@ -63,7 +65,6 @@ class Tab {
 
         var self = this;
         (async (url) => {
-            try{
             // get favicon of iframe
             var favi = null;
             if(url.startsWith(this.browser.resourcesProtocol)) {
@@ -71,7 +72,12 @@ class Tab {
             } else if (url != "") {
                 var faviUrl = getIcon(self.iframe.contentWindow.document, new URL(url));
                 var blob = await fetch(window.location.origin + baseUrlFor("UV") + encodeUrl(faviUrl, "UV")).then((r) => r.blob())
-                if (blob != null) {
+                if (
+                    blob != null &&
+                    // for sites that 200 and send some other non-image data instead of 404ing
+                    // LOOKING AT YOU, mercurywork.shop! seriously, what server does this???
+                    blob.type.includes("image")
+                ) {
                     favi = await blobToDataUrl(blob); 
                 }
             }
@@ -91,7 +97,6 @@ class Tab {
                 favicon: favi,
                 title: title
             });
-            }catch(err){alert(err.stack)}
         })(url);
     }
 

@@ -5,11 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>Bookmarks</title>
-    <link href="/style.css" rel="stylesheet" type="text/css" />
-    <link href="/aboutbrowser/bookmarks.css" rel="stylesheet" type="text/css" />
-    <link href="/aboutbrowser/dark-theme.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="/aboutbrowser/chrome-ui.css">
+    <link href="ui.css" rel="stylesheet" type="text/css" />
+    <link href="bookmarks.css" rel="stylesheet" type="text/css" />
+    <link href="/material-symbols-outlined.css" rel="stylesheet" />
     <script src="/helpers.js"></script>
     <script src="/browser-api-tab.js"></script>
 </head>
@@ -19,14 +17,14 @@
         <div class="topBar">
             <img class="icon" src="/aboutbrowser/darkfavi.png"></img>
             <div class="title">Bookmarks</div>
-            <div class="navbarUrlContainer"><input class="navbarUrl" placeholder="Don't search bookmarks"></input></div>
+            <div class="searchContainer"><input class="search" placeholder="Don't search bookmarks"></input></div>
         </div>
         <div class="content">
         <div class="sideBar">
         </div>
             <div class="actualContent">
                 <div class="bookmarksTableWrapper">
-                    <button id="addBookmark" onclick="createBookmark('Mercury Workshop', 'https://mercurywork.shop')">+</button>
+                    <button id="addBookmark" class="themedBtn" onclick="createBookmark('Mercury Workshop', 'https://mercurywork.shop')"><span class="material-symbols-outlined">add</span></button>
                     <div id="bookmarksTable"></div>
                 </div>
             </div>

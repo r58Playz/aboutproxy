@@ -6,7 +6,8 @@
 }
 
 #historyTable {
-    background-color: #292c3c;
+    background-color: var(--aboutbrowser-ui-layer1-bg);
+    color: var(--aboutbrowser-ui-layer1-fg);
     padding: 1em 0em;
     margin: 1em;
     border-radius: 1em;
@@ -43,8 +44,12 @@
     padding-bottom: 0.5em !important;
 }
 
-#historyTable .navbarBtn:hover {
-    background-color: #232634;
+#historyTable .themedBtn:hover {
+    background-color: color-mix(in srgb, var(--aboutbrowser-ui-layer1-bg), var(--aboutbrowser-ui-layer1-fg) 15%);
+}
+
+#historyTable .themedBtn:active {
+    background-color: color-mix(in srgb, var(--aboutbrowser-ui-layer1-bg), var(--aboutbrowser-ui-layer1-fg) 25%);
 }
 
 #historyTable .historyRow > * {
@@ -52,6 +57,26 @@
 }
 
 #historyTable .selected > * {
-    background-color: color-mix(in srgb, rgb(140, 170, 238) 75%, rgb(41, 44, 60));
-    color: rgb(41, 44, 60);
+    background-color: color-mix(in srgb, var(--aboutbrowser-ui-layer1-bg), var(--aboutbrowser-ui-accent) 50%);
+}
+
+.themedBtn {
+    background-color: transparent;
+    border: none;
+    border-radius: 100%;
+    margin: 2px;
+    transition: background-color .2s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+}
+
+.themedBtn:hover {
+    background-color: color-mix(in srgb, var(--aboutbrowser-ui-bg) var(--aboutbrowser-ui-fg) 15%);
+}
+
+.themedBtn:active  {
+    background-color: color-mix(in srgb, var(--aboutbrowser-ui-bg) var(--aboutbrowser-ui-fg) 25%);
 }

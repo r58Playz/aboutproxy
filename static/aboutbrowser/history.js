@@ -1,5 +1,4 @@
-SITE_TEMPLATE = '<div class="historyRow"><img class="siteIcon"></img><div class="siteTitle"><span></span></div><div class="siteUrl"><span></span></div><div class="siteButtons"><button class="navbarBtn" id="deleteBtn"><i class="fa-solid fa-trash-can"></i></button></div></div>'
-// background-color:color-mix(in srgb, #8caaee 75%, #292c3c); color:#292c3c;
+SITE_TEMPLATE = '<div class="historyRow"><img class="siteIcon"></img><div class="siteTitle"><span></span></div><div class="siteUrl"><span></span></div><div class="siteButtons"><button class="themedBtn" id="deleteBtn"><span class="material-symbols-outlined">delete</span></button></div></div>'
 
 var historyTable = document.querySelector("#historyTable");
 var localStorageData = JSON.parse(localStorage.getItem("history"));
@@ -16,7 +15,7 @@ function onClickSite(event) {
 }
 
 function init() {
-    localStorageData.history.forEach(function(site, i) {
+    localStorageData.history.reverse().forEach(function(site, i) {
         addSite(site.title, site.url, site.icon, i)
     });
     setInterval(reloadHistory, 10000);

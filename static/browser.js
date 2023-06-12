@@ -63,7 +63,7 @@ class AboutBrowser {
             }
         });
 
-        this.settingsCtxMenu = document.querySelector(".settingsCtxMenu");
+        this.settingsCtxMenu = document.querySelector(".moreMenu");
         this.ctxMenuClickChecker = document.querySelector(".ctxMenuClickChecker");
         this.ctxMenuClickChecker.addEventListener("click", () => {
             self.settingsCtxMenu.style.setProperty('display', 'none');
