@@ -63,6 +63,7 @@ class Tab {
 
         var self = this;
         (async (url) => {
+            try{
             // get favicon of iframe
             var favi = null;
             if(url.startsWith(this.browser.resourcesProtocol)) {
@@ -71,7 +72,7 @@ class Tab {
                 var faviUrl = getIcon(self.iframe.contentWindow.document, new URL(url));
                 var blob = await fetch(window.location.origin + baseUrlFor("UV") + encodeUrl(faviUrl, "UV")).then((r) => r.blob())
                 if (blob != null) {
-                    favi = window.location.origin + baseUrlFor("UV") + encodeUrl(faviUrl, "UV");
+                    favi = await blobToDataUrl(blob); 
                 }
             }
 
@@ -90,6 +91,7 @@ class Tab {
                 favicon: favi,
                 title: title
             });
+            }catch(err){alert(err.stack)}
         })(url);
     }
 

@@ -1,14 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
-
 html,
 body {
   margin: 0;
   height: 100%;
   color-scheme: dark;
 }
-
 .container {
-  font-family: 'Roboto', sans-serif;
+
+  font-family: sans-serif;
 }
 
 .browserContainer {
@@ -203,4 +201,10 @@ a:hover {
   top:0;
   left:0;
   z-index: 100;
+}
+
+#addtab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

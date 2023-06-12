@@ -4,6 +4,9 @@ class AboutBrowser {
         // initialize themes as early as possible
         this.themes = new ThemeController();
         this.themes.applyTheme();
+        
+        // initialize sw
+        proxyUsing("https://r58playz.dev", "UV", () => {});
 
         this.resourcesProtocol = "aboutbrowser://"
         this.resourcesPrefix = window.location.origin + "/aboutbrowser/";

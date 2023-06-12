@@ -190,7 +190,7 @@ function h(type, inner) { // used by apparently chrome-tabs?
         `; lastPos=position;
       })
       this.styleEl.innerHTML = styleHTML
-      document.getElementById("addtab").style.transform = `translate3d(clamp(0px, ${lastPos+10}px, calc(100vw - 45px)), 0, 0)`;
+      document.getElementById("addtab").style.transform = `translate3d(clamp(0px, ${lastPos+10}px, calc(100vw - 45px)), -3px, 0)`;
     }
 
     createNewTabEl() {
