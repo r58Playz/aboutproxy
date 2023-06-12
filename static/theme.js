@@ -55,7 +55,8 @@ class Theme {
     this.version = themeJson.version;
     this.name = themeJson.name;
     this.isAboutBrowserTheme = !!themeJson.aboutbrowser;
-    colorMap = this.colorMap = themeJson.theme.colors;
+    this.colorMap = themeJson.theme.colors;
+    let colorMap = this.colorMap;
 
     // Sanity check the theme
     let colorMapContains = Object.keys(colorMap);
@@ -171,13 +172,13 @@ class Theme {
 let gcp = new GoogleColorPalette();
 window.googlecolorpalette = gcp;
 
-
+try{
 Theme.default = new Theme({
   manifest_version: 3,
   version: "0.2_alpha",
   name: "Chrome Dark",
   theme: {
-    images: {
+    colors: {
       frame: gcp.Grey900,
       toolbar: gcp.Grey800,
       tab_text: gcp.Grey050,
@@ -202,11 +203,11 @@ Theme.default = new Theme({
       ui_sidebar_active_foreground: gcp.Blue700,
       ui_layer1_background: gcp.Grey800,
       ui_layer1_foreground: gcp.Grey050
-    },
+    }
   },
-  aboutbrowser: "true",
+  aboutbrowser: "true"
 });
-
+}catch(err){alert(err.stack)};
 // Inject default theme early so there is no unstyled content as everything else loads
 Theme.default.inject();
 
