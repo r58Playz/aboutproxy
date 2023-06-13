@@ -53,3 +53,16 @@ function blobToDataUrl(inputBlob) {
     temporaryFileReader.readAsDataURL(inputBlob);
   });
 };
+
+function unicodebtoa(str) {
+  return btoa(encodeURIComponent(str));
+}
+
+function unicodeatob(str) {
+  return decodeURIComponent(atob(str));
+}
+
+function arraysEqual(a, b) {
+  return a.every(item => b.includes(item)) && b.every(item => a.includes(item));
+}
+

@@ -1,18 +1,21 @@
 // todo private methods+variables maybe?
 class AboutBrowser {
     constructor() {
-        // initialize themes as early as possible
-        this.themes = new ThemeController();
-        this.themes.applyTheme();
-        
-        // initialize sw
-        proxyUsing("https://r58playz.dev", "UV", () => {});
-
         this.resourcesProtocol = "aboutbrowser://"
         this.resourcesPrefix = window.location.origin + "/aboutbrowser/";
         this.titleSuffix = " - AboutBrowser";
         this.browserTite = "New Tab" + this.titleSuffix;
         document.title = this.browserTitle;
+
+        // i have no idea why i wasn't initializing this super early
+        this.settings = new Settings(this);
+
+        // initialize themes as early as possible
+        this.themes = new ThemeController(this);
+        this.themes.applyTheme();
+        
+        // initialize sw
+        proxyUsing("https://r58playz.dev", "UV", () => {});
 
         this.bookmarks = new Bookmarks(document.querySelector(".bookmarksContainer"));
         this.bookmarks.load();
@@ -22,10 +25,7 @@ class AboutBrowser {
 
         this.history = new History();
 
-        this.settings = new Settings(this);
-
         this.activeIframe = null;
-
 
         this.chromeTabs = new ChromeTabs();
         var tabsEl = document.querySelector(".chrome-tabs");
@@ -78,17 +78,12 @@ class AboutBrowser {
         // sadly got removed
     }
 
-    getHeightOfElement(element) {
-        const cs = getComputedStyle(element);
-
-        const paddingY = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
-
-        const borderY =
-            parseFloat(cs.borderTopWidth) + parseFloat(cs.borderBottomWidth);
-
-        return element.offsetHeight - paddingY - borderY;
+    reapplyTheme() {
+        this.themes.applyTheme();
+        for (const tab of this.tabs.internalList) {
+            tab.value.applyTheme();
+        }
     }
-
 
     propagateMessage(msg) {
         for (const tab of this.tabs.internalList) {

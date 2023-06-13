@@ -41,6 +41,7 @@ colorMap can optionally contain (for aboutbrowser themes):
 
 class Theme {
   constructor(themeJson) {
+    this.json = themeJson;
     // Sanity check the json
     
     // Ignore manifest_version as that is for Chrome.
@@ -50,12 +51,13 @@ class Theme {
       !themeJson.name || 
       !themeJson.theme ||
       !themeJson.theme.colors
-    ) throw new Error("Invalid theme");
+    ) throw new Error("Invalid theme, did not contain any of version, name, theme, or theme.colors");
 
     this.version = themeJson.version;
     this.name = themeJson.name;
     this.isAboutBrowserTheme = !!themeJson.aboutbrowser;
     this.colorMap = themeJson.theme.colors;
+    this.flags = [];
     let colorMap = this.colorMap;
 
     // Sanity check the theme
@@ -65,7 +67,8 @@ class Theme {
       "toolbar",
       "tab_text",
       "tab_background_text"
-    ]) if(!colorMapContains.includes(k)) throw new Error("Invalid theme");
+    ]) if(!colorMapContains.includes(k)) throw new Error("Invalid theme, did not contain "+k);
+
     // Set any fallbacks necessary
     if(!colorMapContains.includes("button_background")) colorMap.button_background = colorMap.frame;
     if(!colorMapContains.includes("ntp_background")) colorMap.ntp_background = colorMap.toolbar;
@@ -77,6 +80,8 @@ class Theme {
     if(!colorMapContains.includes("toolbar_text")) colorMap.toolbar_text = colorMap.tab_text;
     if(!colorMapContains.includes("bookmark_text")) colorMap.bookmark_text = colorMap.tab_text;
 
+    // Set flags
+    if(arraysEqual(colorMap.frame, colorMap.toolbar)) this.flags.push("theme-need-tab-contrast")
     // Check aboutbrowser theme
     if(this.isAboutBrowserTheme) {
       // Sanity check
@@ -88,7 +93,7 @@ class Theme {
         "ui_sidebar_active_foreground",
         "ui_layer1_background",
         "ui_layer1_foreground"
-      ]) if(!colorMapContains.includes(k)) throw new Error("Invalid theme");
+      ]) if(!colorMapContains.includes(k)) throw new Error("Invalid theme, did not contain "+k);
       // Fallback
       if(!colorMapContains.includes("ui_toolbar_foreground")) colorMap.ui_toolbar_foreground = colorMap.tab_text;
       if(!colorMapContains.includes("ui_sidebar_foreground")) colorMap.ui_sidebar_foreground = colorMap.tab_text;
@@ -125,6 +130,19 @@ class Theme {
       ui_layer1_foreground: "--aboutbrowser-ui-layer1-fg"
     };
   }
+
+  rgbArrayToCSSDirective(colorData) {
+    // color: [255, 255, 255] turns into
+    // colorDeclaration: "rgb(255, 255, 255)"
+    return "rgb(" + colorData[0] + ", " + colorData[1] + ", " + colorData[2] + ")";
+  }
+
+  removeAllAboutbrowserTagsFromEl(el) {
+    let tags = el.getAttributeNames();
+    for(const tag of tags) {
+      if(tag.startsWith("data-aboutbrowser-")) el.removeAttribute(tag)
+    }
+  }
   
   inject() {
     let style = document.documentElement.style;
@@ -132,12 +150,25 @@ class Theme {
     for(const directive of css) {
       style.setProperty(directive[0], directive[1]);
     }
+    this.removeAllAboutbrowserTagsFromEl(document.documentElement);
+    for(const flag of this.flags) document.documentElement.setAttribute("data-aboutbrowser-"+flag, "");
   }
 
   injectIntoFrame(frame, isNtp) {
     let style = frame.contentWindow.document.documentElement.style;
     let css = this.getCSSForTheme(isNtp);
     for(const directive of css) {
+      style.setProperty(directive[0], directive[1]);
+    }
+    this.removeAllAboutbrowserTagsFromEl(document.documentElement);
+    for(const flag of this.flags) document.documentElement.setAttribute("data-aboutbrowser-"+flag, "");
+
+    if(this.isAboutBrowserTheme || isNtp) return;
+    
+    // Apply default styling if this is not an aboutbrowser theme
+    css = Theme.default.getCSSForTheme(isNtp);
+    for(const directive of css) {
+      if(!directive[0].includes('--aboutbrowser-ui')) continue;
       style.setProperty(directive[0], directive[1]);
     }
   }
@@ -148,31 +179,27 @@ class Theme {
     if(this.isAboutBrowserTheme) {
       // AboutBrowser theme, parse aboutbrowser-only features
       for(const color of Object.entries(this.aboutBrowserColorToCSSMap)) {
-        let colorData = this.colorMap[color[0]];
-        // color: [255, 255, 255] turns into
-        // colorDeclaration: "rgb(255, 255, 255)"
-        let colorDeclaration = "rgb(" + colorData[0] + ", " + colorData[1] + ", " + colorData[2] + ")";
-        themeCSS.push([color[1], colorDeclaration]);
+        themeCSS.push([color[1], this.rgbArrayToCSSDirective(this.colorMap[color[0]])]);
       }
     }
     for(const color of Object.entries(this.colorToCSSMap)) {
       // Don't inject UI theme CSS if this theme is a Chrome theme and this isn't the new tab page
       // This allows only aboutbrowser themes to theme internal pages, similar to the default Chrome behavior
       if(!this.isAboutBrowserTheme && !isNtp && color[1].includes('--aboutbrowser-ui')) continue;
-      let colorData = this.colorMap[color[0]];
-      // color: [255, 255, 255] turns into
-      // colorDeclaration: "rgb(255, 255, 255)"
-      let colorDeclaration = "rgb(" + colorData[0] + ", " + colorData[1] + ", " + colorData[2] + ")";
-      themeCSS.push([color[1], colorDeclaration]);
+      themeCSS.push([color[1], this.rgbArrayToCSSDirective(this.colorMap[color[0]])]);
     }
+
     return themeCSS;
+  }
+  
+  toJSON() {
+    return this.json;
   }
 }
 
 let gcp = new GoogleColorPalette();
 window.googlecolorpalette = gcp;
 
-try{
 Theme.default = new Theme({
   manifest_version: 3,
   version: "0.2_alpha",
@@ -207,15 +234,64 @@ Theme.default = new Theme({
   },
   aboutbrowser: "true"
 });
-}catch(err){alert(err.stack)};
+
 // Inject default theme early so there is no unstyled content as everything else loads
 Theme.default.inject();
 
 class ThemeController {
-  constructor(currentTheme = Theme.default) {    
-    this.currentTheme = currentTheme;
+  constructor(browser) {
+    this.browser = browser;
     this.themeList = [];
-    this.themeList.push(currentTheme);
+    this.loadSettings();
+  }
+
+  loadSettings() {
+    let settingsThemes = JSON.parse(this.browser.settings.getSetting("importedThemes"))
+    settingsThemes = settingsThemes.map((themeJson) => {return new Theme(themeJson)});
+    this.themeList.push(...settingsThemes);
+    this.currentTheme = this.findTheme(this.browser.settings.getSetting("currentTheme"));
+  }
+
+  findTheme(name) {
+    // We must move to extension ids soon, but I don't feel like including web openssl to generate them
+    // So let's just use the name as a sort of ID
+    // It'll be fine (famous last words)
+    for(const theme of this.themeList) if(theme.name === name) return theme;
+    return Theme.default;
+  }
+
+  importTheme(themeJson) {
+    let theme = null;
+    try {
+      theme = new Theme(themeJson)
+    } catch(err) {
+      return err.toString();
+    }
+    this.themeList.push(theme);
+    this.saveSettings();
+    return theme;
+  }
+
+  removeTheme(theme) {
+    this.themeList.splice(this.themeList.indexOf(theme), 1);
+    this.saveSettings();
+  }
+
+  saveSettings() {
+    this.browser.settings.setSetting("importedThemes", JSON.stringify(this.themeList));
+    this.browser.settings.setSetting("currentTheme", this.currentTheme.name);
+  }
+
+  setCurrentTheme(theme) {
+    this.currentTheme = theme;
+    this.saveSettings();
+    this.browser.reapplyTheme();
+  }
+
+  getThemeList() {
+    let themeList = this.themeList.map((theme)=>{return theme.name});
+    themeList.push(Theme.default.name);
+    return themeList; 
   }
 
   applyTheme() {

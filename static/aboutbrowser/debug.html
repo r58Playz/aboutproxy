@@ -5,10 +5,25 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <link href="ui.css" rel="stylesheet" type="text/css" />
+    <script src="/browser-api-tab.js"></script>
+    <script src="debug.js"></script>
+    <title>Homeless code</title>
+    <link rel="icon" href="debug.svg" />
 </head>
 
-<body>
+<body onload="init()">
     <div class="container containerPadding">
+      <h2>Debug: for stuff without a home :(</h2>
+      <div>
+        <h3>Themes</h3>
+        <input id="themeInput" type="text"></input>
+        <button id="addTheme">Add theme</button>
+        <br>
+        <select id="themeList"></select>
+        <button id="setTheme">Set selected theme as default and apply</button>
+        <button id="removeTheme">Remove theme</button>
+        <p id="themeError"></p>
+      </div>
     </div>
 </body>
 

@@ -4,7 +4,7 @@
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-size: 12px;
   height: 46px;
-  padding: 8px 3px 4px 3px;
+  padding: 8px 3px 0 3px;
   background: #dee1e6;
   overflow: hidden;
 }
@@ -311,6 +311,7 @@
 .chrome-tabs:not(.chrome-tabs-is-sorting) .chrome-tab.chrome-tab-was-just-dragged {
   transition: transform 120ms ease-in-out;
 }
+
 
 .chrome-tabs .chrome-tabs-bottom-bar {
   position: absolute;

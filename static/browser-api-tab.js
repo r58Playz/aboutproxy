@@ -7,17 +7,23 @@ window.addEventListener("message", (event) => {
         console.error("get rekt malware");
     }
     let msg = event.data;
-    if (msg.type == "settingSet") {
+    if (msg.type === "settingSet") {
         console.debug("recieved settingSet for " + msg.setting)
         settingSetCallback(msg);
-    } else if (msg.type == "settingValue") {
+    } else if (msg.type === "settingValue") {
         console.debug("recieved settingValue for " + msg.setting + " and value is " + msg.value)
         settingValueCallback(msg);
-    } else if (msg.type == "reloadBookmarks") {
+    } else if (msg.type === "reloadBookmarks") {
         console.debug("recieved reloadBookmarks");
         reloadBookmarksCallback(msg);
-    } else if (msg.type == "historyDomainViewCounts") {
+    } else if (msg.type === "historyDomainViewCounts") {
         console.debug("recieved historyDomainViewCounts - redacted because it may be giant");
         historyDomainViewCountsCallback(msg);
+    } else if (msg.type === "themeList") {
+        console.debug("recieved themeList - redacted because it may be giant");
+        themeListCallback(msg);
+    } else if (msg.type === "importThemeResult") {
+        console.debug("recieved importThemeResult - redacted because it may be giant");
+        importThemeCallback(msg);
     }
 })

@@ -1,7 +1,13 @@
 class Settings {
     constructor(browser) {
         this.browser = browser;
-        this.defaults = {currentProxyId: "UV", searchEngineUrl: "https://www.google.com/search?q=", startUrl: this.browser.resourcesProtocol + "start"};
+        this.defaults = {
+            currentProxyId: "UV",
+            searchEngineUrl: "https://www.google.com/search?q=",
+            startUrl: this.browser.resourcesProtocol + "start",
+            currentTheme: "Chrome Dark",
+            importedThemes: "[]"
+        };
         this.settings = JSON.parse(localStorage.getItem("settings"));
         if(this.settings == null) this.settings = {};
     }

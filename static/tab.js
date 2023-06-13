@@ -20,6 +20,10 @@ class Tab {
         if(!background) this.browser.chromeTabs.setCurrentTab(this.tabEl);
     }
 
+    applyTheme() {
+        this.browser.themes.applyThemeToFrame(this.iframe, this.currentUrl == this.browser.settings.getSetting("startUrl"));
+    }
+
     // Needed because you can't listen for DOMContentLoaded from an iframe across navigations
     handleUnload() {
         var self = this;
@@ -37,8 +41,6 @@ class Tab {
             return;
         }
 
-        this.browser.themes.applyThemeToFrame(this.iframe, url == this.browser.settings.getSetting("startUrl"));
-
         if (url.startsWith(this.browser.resourcesPrefix)) {
             url = url.replace(this.browser.resourcesPrefix, '');
             url = url.substring(0, url.length - 5);
@@ -48,6 +50,8 @@ class Tab {
             url = decodeUrl(url, this.browser.settings.getSetting("currentProxyId"));
         }
         this.currentUrl = url;
+
+        this.applyTheme()
 
         // get title of iframe
         var title = this.iframe.contentWindow.document.title;

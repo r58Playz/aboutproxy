@@ -4,7 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
+  <script src="helpers.js"></script>
   <!-- Themes need to be injected early -->
+  <script src="mix-css-color.js"></script>
   <script src="google_color_palette.js"></script>
   <script src="theme.js"></script>
   <!-- ******** CSS ******** -->
@@ -18,7 +20,6 @@
   <script src="dip/dip.page.js"></script>
   <script src="/uv/uv.bundle.js"></script>
   <script src="/uv/uv.config.js"></script>
-  <script src="helpers.js"></script>
   <script src="proxyHelpers.js"></script>
   <script src="bookmarks.js"></script>
   <script src="elementmap.js"></script>
@@ -40,6 +41,7 @@
         <div class="chrome-tabs-content-after"></div>
       </div>
       <div class="chrome-tabs-bottom-bar"></div>
+      <div class="chrome-tabs-bottom-bar chrome-tabs-second-bottom-bar"></div>
       <!-- Styles to prevent flash after JS initialization -->
       <style>
         .chrome-tabs .chrome-tab {

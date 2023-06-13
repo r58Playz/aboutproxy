@@ -34,5 +34,17 @@ window.addEventListener("message", (event) => {
     } else if (msg.type === "getHistoryDomainViewCounts") {
         console.debug("recieved getHistoryDomainViewCounts");
         sendMessage({ type: "historyDomainViewCounts", data: window.aboutbrowser.history.getSortedDomainViewCounts() }, sender);
+    } else if (msg.type === "getThemes") {
+        console.debug("recieved getThemes");
+        sendMessage({ type: "themeList", data: JSON.stringify(window.aboutbrowser.themes.getThemeList()) }, sender);
+    } else if (msg.type === "importTheme") {
+        console.debug("recieved importTheme");
+        sendMessage({ type: "importThemeResult", data: JSON.stringify(window.aboutbrowser.themes.importTheme(JSON.parse(msg.themeJson)))}, sender);
+    } else if (msg.type === "removeTheme") {
+        console.debug("recieved removeTheme");
+        window.aboutbrowser.themes.removeTheme(window.aboutbrowser.themes.findTheme(msg.theme));
+    } else if (msg.type === "setTheme") {
+        console.debug("recieved setTheme");
+        window.aboutbrowser.themes.setCurrentTheme(window.aboutbrowser.themes.findTheme(msg.theme));
     }
 })

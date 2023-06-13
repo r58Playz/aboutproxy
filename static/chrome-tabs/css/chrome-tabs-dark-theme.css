@@ -9,6 +9,24 @@
 .chrome-tabs.chrome-tabs-dark-theme .chrome-tab .chrome-tab-background > svg .chrome-tab-geometry {
   fill: var(--aboutbrowser-frame-bg);
 }
+.chrome-tabs.chrome-tabs-dark-theme .chrome-tab[active] {
+  z-index: 11;
+}
+[data-aboutbrowser-theme-need-tab-contrast=""] .chrome-tabs.chrome-tabs-dark-theme .chrome-tab[active] .chrome-tab-background > svg .chrome-tab-geometry {
+  stroke-width: 1px;
+  stroke: color-mix(in srgb, var(--aboutbrowser-frame-bg), var(--aboutbrowser-active-tab-fg) 50%)
+}
+[data-aboutbrowser-theme-need-tab-contrast=""] .chrome-tabs.chrome-tabs-dark-theme .chrome-tabs-bottom-bar {
+  border-top: 1px solid color-mix(in srgb, var(--aboutbrowser-frame-bg), var(--aboutbrowser-active-tab-fg) 50%);
+}
+.chrome-tabs.chrome-tabs-dark-theme .chrome-tabs-bottom-bar {
+  height: 5px;
+}
+.chrome-tabs.chrome-tabs-dark-theme .chrome-tabs-second-bottom-bar {
+  height: 4px;
+  border: none !important; 
+  z-index: 12;
+}
 .chrome-tabs.chrome-tabs-dark-theme .chrome-tab[active] .chrome-tab-background > svg .chrome-tab-geometry {
   fill: var(--aboutbrowser-toolbar-bg); /* chrome themes use the toolbar bg as the active tab bg */
 }
