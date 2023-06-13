@@ -4,7 +4,7 @@ class AboutBrowser {
         this.resourcesProtocol = "aboutbrowser://"
         this.resourcesPrefix = window.location.origin + "/aboutbrowser/";
         this.titleSuffix = " - AboutBrowser";
-        this.browserTite = "New Tab" + this.titleSuffix;
+        this.browserTitle = "New Tab" + this.titleSuffix;
         document.title = this.browserTitle;
 
         // i have no idea why i wasn't initializing this super early

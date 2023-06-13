@@ -70,12 +70,13 @@ class Theme {
     ]) if(!colorMapContains.includes(k)) throw new Error("Invalid theme, did not contain "+k);
 
     // Set any fallbacks necessary
+    if(!colorMapContains.includes("background_tab")) colorMap.background_tab = colorMap.frame;
     if(!colorMapContains.includes("button_background")) colorMap.button_background = colorMap.frame;
     if(!colorMapContains.includes("ntp_background")) colorMap.ntp_background = colorMap.toolbar;
     if(!colorMapContains.includes("ntp_link")) colorMap.ntp_link = colorMap.tab_text;
     if(!colorMapContains.includes("ntp_text")) colorMap.ntp_text = colorMap.tab_text;
-    if(!colorMapContains.includes("omnibox_background")) colorMap.omnibox_background = colorMap.frame;
-    if(!colorMapContains.includes("omnibox_text")) colorMap.omnibox_text = colorMap.tab_text;
+    if(!colorMapContains.includes("omnibox_background")) colorMap.omnibox_background = gcp.Grey100; //chrome defaults this to white
+    if(!colorMapContains.includes("omnibox_text")) colorMap.omnibox_text = gcp.Grey900; // black on white
     if(!colorMapContains.includes("toolbar_button_icon")) colorMap.toolbar_button_icon = colorMap.tab_text;
     if(!colorMapContains.includes("toolbar_text")) colorMap.toolbar_text = colorMap.tab_text;
     if(!colorMapContains.includes("bookmark_text")) colorMap.bookmark_text = colorMap.tab_text;
@@ -106,6 +107,7 @@ class Theme {
       toolbar: "--aboutbrowser-toolbar-bg",
       toolbar_button_icon: "--aboutbrowser-toolbar-button-fg",
       toolbar_text: "--aboutbrowser-toolbar-fg",
+      background_tab: "--aboutbrowser-inactive-tab-bg",
       tab_text: "--aboutbrowser-active-tab-fg",
       tab_background_text: "--aboutbrowser-inactive-tab-fg",
       button_background: "--aboutbrowser-button-bg",

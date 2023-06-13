@@ -227,6 +227,9 @@ a:hover {
 }
 
 #addtab {
+  padding: 0;
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;

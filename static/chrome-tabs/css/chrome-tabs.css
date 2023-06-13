@@ -113,10 +113,6 @@
   fill: #fff;
 }
 
-.chrome-tabs .chrome-tab:not([active]) .chrome-tab-background {
-  transition: opacity 0.2s ease;
-  opacity: 0;
-}
 
 @media (hover: hover) {
   .chrome-tabs .chrome-tab:not([active]):hover {
@@ -240,13 +236,6 @@
   color: white;
 }
 
-.chrome-tabs .chrome-tabs-content-wrapper .chrome-tabs-btn:hover {
-  background-color: rgb(69, 70, 73);
-}
-
-.chrome-tabs .chrome-tabs-content-wrapper .chrome-tabs-btn:active {
-  background-color: rgb(80, 81, 84);
-}
 
 @media (hover: hover) {
   .chrome-tabs .chrome-tab .chrome-tab-close:hover {
