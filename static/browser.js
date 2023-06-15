@@ -76,6 +76,7 @@ class AboutBrowser {
         // it used to be:
         // if(probeForChrome()) unfuckChrome();
         // sadly got removed
+        document.querySelector(".browserContainer").style.removeProperty('visibility');
     }
 
     reapplyTheme() {

@@ -133,13 +133,13 @@ class Theme {
     };
   }
 
-  rgbArrayToCSSDirective(colorData) {
+  #rgbArrayToCSSDirective(colorData) {
     // color: [255, 255, 255] turns into
     // colorDeclaration: "rgb(255, 255, 255)"
     return "rgb(" + colorData[0] + ", " + colorData[1] + ", " + colorData[2] + ")";
   }
 
-  removeAllAboutbrowserTagsFromEl(el) {
+  #removeAllAboutbrowserTagsFromEl(el) {
     let tags = el.getAttributeNames();
     for(const tag of tags) {
       if(tag.startsWith("data-aboutbrowser-")) el.removeAttribute(tag)
@@ -152,7 +152,7 @@ class Theme {
     for(const directive of css) {
       style.setProperty(directive[0], directive[1]);
     }
-    this.removeAllAboutbrowserTagsFromEl(document.documentElement);
+    this.#removeAllAboutbrowserTagsFromEl(document.documentElement);
     for(const flag of this.flags) document.documentElement.setAttribute("data-aboutbrowser-"+flag, "");
   }
 
@@ -162,7 +162,7 @@ class Theme {
     for(const directive of css) {
       style.setProperty(directive[0], directive[1]);
     }
-    this.removeAllAboutbrowserTagsFromEl(document.documentElement);
+    this.#removeAllAboutbrowserTagsFromEl(document.documentElement);
     for(const flag of this.flags) document.documentElement.setAttribute("data-aboutbrowser-"+flag, "");
 
     if(this.isAboutBrowserTheme || isNtp) return;
@@ -181,14 +181,14 @@ class Theme {
     if(this.isAboutBrowserTheme) {
       // AboutBrowser theme, parse aboutbrowser-only features
       for(const color of Object.entries(this.aboutBrowserColorToCSSMap)) {
-        themeCSS.push([color[1], this.rgbArrayToCSSDirective(this.colorMap[color[0]])]);
+        themeCSS.push([color[1], this.#rgbArrayToCSSDirective(this.colorMap[color[0]])]);
       }
     }
     for(const color of Object.entries(this.colorToCSSMap)) {
       // Don't inject UI theme CSS if this theme is a Chrome theme and this isn't the new tab page
       // This allows only aboutbrowser themes to theme internal pages, similar to the default Chrome behavior
       if(!this.isAboutBrowserTheme && !isNtp && color[1].includes('--aboutbrowser-ui')) continue;
-      themeCSS.push([color[1], this.rgbArrayToCSSDirective(this.colorMap[color[0]])]);
+      themeCSS.push([color[1], this.#rgbArrayToCSSDirective(this.colorMap[color[0]])]);
     }
 
     return themeCSS;
@@ -242,6 +242,7 @@ Theme.default.inject();
 
 class ThemeController {
   constructor(browser) {
+    throw new Error("ThemeController is deprecated. Use Extensions API instead.")
     this.browser = browser;
     this.themeList = [];
     this.loadSettings();
