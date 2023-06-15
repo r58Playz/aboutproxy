@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width">
   <script src="helpers.js"></script>
   <!-- Themes need to be injected early -->
-  <script src="mix-css-color.js"></script>
-  <script src="google_color_palette.js"></script>
+  <script src="/libs/mix-css-color.min.js"></script>
+  <script src="/libs/google_color_palette.js"></script>
   <script src="theme.js"></script>
   <!-- ******** CSS ******** -->
   <link href="style.css" rel="stylesheet" type="text/css" />
@@ -16,8 +16,10 @@
   <link href="chrome-tabs/css/chrome-tabs-dark-theme.css" rel="stylesheet" />
   <link href="material-symbols-outlined.css" rel="stylesheet" />
   <!-- ******** JS ******** -->
-  <script src="dip/dip.config.js"></script>
-  <script src="dip/dip.page.js"></script>
+  <script src="/libs/draggabilly.min.js"></script>
+  <script src="chrome-tabs/js/chrome-tabs.js"></script>
+  <script src="/dip/dip.config.js"></script>
+  <script src="/dip/dip.page.js"></script>
   <script src="/uv/uv.bundle.js"></script>
   <script src="/uv/uv.config.js"></script>
   <script src="proxyHelpers.js"></script>
@@ -27,6 +29,7 @@
   <script src="history.js"></script>
   <script src="tab.js"></script>
   <script src="browser.js"></script>
+  <script src="browser-api.js"></script>
 </head>
 
 <body onload="init();">
@@ -103,9 +106,6 @@
     <div id="tabContents" class="browser"></div>
     <div class="ctxMenuClickChecker" style="display:none;"></div>
   </div>
-  <script src="browser-api.js"></script>
-  <script src="/draggabilly.pkgd.min.js"></script>
-  <script src="chrome-tabs/js/chrome-tabs.js"></script>
 </body>
 
 </html>
