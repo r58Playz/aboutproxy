@@ -11,8 +11,7 @@ class AboutBrowser {
         this.settings = new Settings(this);
 
         // initialize themes as early as possible
-        this.themes = new ThemeController(this);
-        this.themes.applyTheme();
+        this.extensions = new ExtensionsController();
         
         // initialize sw
         proxyUsing("https://r58playz.dev", "UV", () => {});
@@ -76,11 +75,21 @@ class AboutBrowser {
         // it used to be:
         // if(probeForChrome()) unfuckChrome();
         // sadly got removed
-        document.querySelector(".browserContainer").style.removeProperty('visibility');
+        this.asyncInit();
+    }
+
+    async asyncInit() {
+        this.extensions = new ExtensionsController(this);
+        await this.extensions.setup();
+
+        this.reapplyTheme();
+
+
+        document.querySelector(".container.browserContainer").style.removeProperty("visibility");
     }
 
     reapplyTheme() {
-        this.themes.applyTheme();
+        this.extensions.applyTheme();
         for (const tab of this.tabs.internalList) {
             tab.value.applyTheme();
         }
@@ -168,10 +177,6 @@ class AboutBrowser {
 }
 
 function init() {
-    try{
-        var aboutbrowser = new AboutBrowser();
-        window.aboutbrowser = aboutbrowser;
-    }catch(err){
-        alert(err.stack);
-    }
+    var aboutbrowser = new AboutBrowser();
+    window.aboutbrowser = aboutbrowser;
 }

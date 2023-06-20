@@ -5,7 +5,7 @@
     overflow: scroll;
     overflow-y: hidden;
     height: 3em;
-    border-bottom: 1px solid var(--aboutbrowser-frame-bg);
+    border-bottom: 1px solid color-mix(in srgb, var(--aboutbrowser-frame-bg), var(--aboutbrowser-active-tab-fg) 20%);
 }
 
 .bookmarksContainer::-webkit-scrollbar {

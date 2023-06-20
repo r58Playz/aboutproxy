@@ -66,3 +66,8 @@ function arraysEqual(a, b) {
   return a.every(item => b.includes(item)) && b.every(item => a.includes(item));
 }
 
+function arr2hexstr(arr) {
+  return Array.from(arr)
+    .map((i) => i.toString(16).padStart(2, '0'))
+    .join('');
+}

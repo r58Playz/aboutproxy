@@ -1,2 +1,3 @@
 node_modules
 static/.well-known
+default_themes/*_dist

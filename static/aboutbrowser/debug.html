@@ -4,8 +4,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
+    <link href="/roboto.css" rel="stylesheet" type="text/css" />
     <link href="ui.css" rel="stylesheet" type="text/css" />
     <script src="/browser-api-tab.js"></script>
+    <script src="/helpers.js"></script>
     <script src="debug.js"></script>
     <title>Homeless code</title>
     <link rel="icon" href="debug.svg" />
@@ -15,15 +17,20 @@
     <div class="container containerPadding">
       <h2>Debug: for stuff without a home :(</h2>
       <div>
-        <h3>Themes</h3>
-        <input id="themeInput" type="text"></input>
-        <button id="addTheme">Add theme</button>
+        <h3>Extensions</h3>
+        <select id="extensionList"></select>
         <br>
-        <select id="themeList"></select>
-        <button id="setTheme">Set selected theme as default and apply</button>
-        <button id="removeTheme">Remove theme</button>
-        <p id="themeError"></p>
+        <input type="file" id="fileInput"></input>
+        <button id="installCrx">Install as CRX</button>
+        <button id="installZip">Install as unpacked zip</button>
+        <br>
+        <button id="disableExtension">Disable extension</button>
+        <button id="enableExtension">Enable extension</button>
+        <button id="removeExtension">Uninstall extension</button>
+        <br>
+        <button id="setTheme">Set extension as current theme</button>
       </div>
+
     </div>
 </body>
 

@@ -5,8 +5,9 @@ class Settings {
             currentProxyId: "UV",
             searchEngineUrl: "https://www.google.com/search?q=",
             startUrl: this.browser.resourcesProtocol + "start",
-            currentTheme: "Chrome Dark",
-            importedThemes: "[]"
+            installedExtensions: "[]",
+            disabledExtensions: "[]",
+            themeId: "bdddhkcpnpcaggeblinmcffckoihfdia"
         };
         this.settings = JSON.parse(localStorage.getItem("settings"));
         if(this.settings == null) this.settings = {};

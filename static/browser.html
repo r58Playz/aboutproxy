@@ -5,11 +5,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <script src="helpers.js"></script>
-  <!-- Themes need to be injected early -->
-  <script src="/libs/mix-css-color.min.js"></script>
-  <script src="/libs/google_color_palette.js"></script>
-  <script src="theme.js"></script>
   <!-- ******** CSS ******** -->
+  <link href="roboto.css" rel="stylesheet" type="text/css" />
   <link href="style.css" rel="stylesheet" type="text/css" />
   <link href="bookmarks.css" rel="stylesheet" type="text/css" />
   <link href="chrome-tabs/css/chrome-tabs.css" rel="stylesheet" />
@@ -17,7 +14,11 @@
   <link href="material-symbols-outlined.css" rel="stylesheet" />
   <!-- ******** JS ******** -->
   <script src="/libs/draggabilly.min.js"></script>
-  <script src="chrome-tabs/js/chrome-tabs.js"></script>
+  <script src="/libs/filer.min.js"></script>
+  <script src="/libs/jszip.min.js"></script>
+  <script src="/libs/createhash-browser.min.js"></script>
+  <script src="/libs/pbf.min.js"></script>
+  <script src="/chrome-tabs/js/chrome-tabs.js"></script>
   <script src="/dip/dip.config.js"></script>
   <script src="/dip/dip.page.js"></script>
   <script src="/uv/uv.bundle.js"></script>
@@ -28,6 +29,11 @@
   <script src="settings.js"></script>
   <script src="history.js"></script>
   <script src="tab.js"></script>
+  <script src="theme.js"></script>
+  <script src="extensions/crx3_protobuf.js"></script>
+  <script src="extensions/resources.js"></script>
+  <script src="extensions/extension.js"></script>
+  <script src="extensions/controller.js"></script>
   <script src="browser.js"></script>
   <script src="browser-api.js"></script>
 </head>

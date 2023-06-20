@@ -1,6 +1,7 @@
-class ExtensionResourcesProvider {
+class ExtensionResources {
   constructor(fs) {
-    this.fs = fs;
+    this.fs = fs.promises;
+    this.regularFs = fs;
     this.resourcesUri = "chrome-extension://";
     this.resourcesUrl = window.location.origin + "/extension";
   }
@@ -11,16 +12,12 @@ class ExtensionResourcesProvider {
     // 1
     return new Promise((resolve, reject) => {
       let filesystem = new Filer.FileSystem({ name: fsName }, (err, fs) => {
-        if(err) reject(err); return;
-        // 2
-        resolve(new Promise((res, rej) => {
-          let cls = new ExtensionResourcesProvider(fs.promises);
-          // 3?
-          cls.setUpSw().then(
-            ()=>{res(cls)},
-            (val)=>{rej(val)}
-          );
-        }));
+        if(err) reject(err);
+        let cls = new ExtensionResources(fs);
+        cls.setUpSw().then(
+          ()=>{resolve(cls)},
+          (val)=>{reject(val)}
+        );
       })
     });
   }

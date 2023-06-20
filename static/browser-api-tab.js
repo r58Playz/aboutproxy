@@ -19,11 +19,8 @@ window.addEventListener("message", (event) => {
     } else if (msg.type === "historyDomainViewCounts") {
         console.debug("recieved historyDomainViewCounts - redacted because it may be giant");
         historyDomainViewCountsCallback(msg);
-    } else if (msg.type === "themeList") {
-        console.debug("recieved themeList - redacted because it may be giant");
-        themeListCallback(msg);
-    } else if (msg.type === "importThemeResult") {
-        console.debug("recieved importThemeResult - redacted because it may be giant");
-        importThemeCallback(msg);
+    } else if (msg.type === "extensionList") {
+        console.debug("recieved extensionList - redacted because it may be giant");
+        extensionListCallback(msg);
     }
 })

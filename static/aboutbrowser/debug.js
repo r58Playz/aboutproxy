@@ -1,33 +1,43 @@
-function themeListCallback(msg) {
+function extensionListCallback(msg) {
   let data = JSON.parse(msg.data);
-  document.querySelector("#themeList").innerHTML = '';
-  for(const theme of data) {
+  document.querySelector("#extensionList").innerHTML = '';
+  for(const extension of data) {
     let el = document.createElement("option");
-    el.innerText = theme;
-    document.querySelector("#themeList").appendChild(el);
-  }
-}
-function importThemeCallback(msg) {
-  let data = JSON.parse(msg.data);
-  if(typeof data === "string") { 
-    document.querySelector("#themeError").innerText = data;
-  } else {
-    sendMessage({ type: "getThemes" });
+    el.innerText = "\"" + extension.name + "\" type: " + extension.type + " enabled: " + extension.enabled;
+    el.value = extension.id;
+    document.querySelector("#extensionList").appendChild(el);
   }
 }
 
 function init() {
-  sendMessage({ type: "getThemes" });
-  document.querySelector("#addTheme").onclick = () => {
-    sendMessage({ type: "importTheme", themeJson: document.querySelector("#themeInput").value });
+  sendMessage({ type: "getExtensions" });
+  document.querySelector("#installCrx").onclick = async () => {
+    sendMessage({ type: "importExtensionCrx", base64: await blobToDataUrl(document.querySelector("#fileInput").files[0]) });
+    setTimeout(()=>{sendMessage({ type: "getExtensions" })}, 500)
+  };
+
+  document.querySelector("#installZip").onclick = async () => {
+    sendMessage({ type: "importExtensionZip", base64: await blobToDataUrl(document.querySelector("#fileInput").files[0]), name: document.querySelector("#fileInput").files[0].name });
+    setTimeout(()=>{sendMessage({ type: "getExtensions" })}, 500)
   };
 
   document.querySelector("#setTheme").onclick = () => {
-    sendMessage({ type: "setTheme", theme: document.querySelector("#themeList").value});
+    sendMessage({ type: "setCurrentTheme", id: document.querySelector("#extensionList").value});
+    setTimeout(()=>{sendMessage({ type: "getExtensions" })}, 100)
   };
 
-  document.querySelector("#removeTheme").onclick = () => {
-    sendMessage({ type: "removeTheme", theme: document.querySelector("#themeList").value});
-    sendMessage({ type: "getThemes" })
+  document.querySelector("#removeExtension").onclick = () => {
+    sendMessage({ type: "removeExtension", id: document.querySelector("#extensionList").value});
+    setTimeout(()=>{sendMessage({ type: "getExtensions" })}, 500)
+  }
+
+  document.querySelector("#disableExtension").onclick = () => {
+    sendMessage({ type: "setExtensionEnabled", id: document.querySelector("#extensionList").value, enabled:false}); 
+    setTimeout(()=>{sendMessage({ type: "getExtensions" })}, 100)
+  }
+
+  document.querySelector("#enableExtension").onclick = () => {
+    sendMessage({ type: "setExtensionEnabled", id: document.querySelector("#extensionList").value, enabled:true}); 
+    setTimeout(()=>{sendMessage({ type: "getExtensions" })}, 100)
   }
 }

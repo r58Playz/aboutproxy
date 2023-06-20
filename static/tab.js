@@ -21,7 +21,7 @@ class Tab {
     }
 
     applyTheme() {
-        this.browser.themes.applyThemeToFrame(this.iframe, this.currentUrl == this.browser.settings.getSetting("startUrl"));
+        this.browser.extensions.injectIntoFrame(this.iframe, this.currentUrl);
     }
 
     // Needed because you can't listen for DOMContentLoaded from an iframe across navigations

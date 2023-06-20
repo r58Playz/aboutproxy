@@ -34,17 +34,27 @@ window.addEventListener("message", (event) => {
     } else if (msg.type === "getHistoryDomainViewCounts") {
         console.debug("recieved getHistoryDomainViewCounts");
         sendMessage({ type: "historyDomainViewCounts", data: window.aboutbrowser.history.getSortedDomainViewCounts() }, sender);
-    } else if (msg.type === "getThemes") {
-        console.debug("recieved getThemes");
-        sendMessage({ type: "themeList", data: JSON.stringify(window.aboutbrowser.themes.getThemeList()) }, sender);
-    } else if (msg.type === "importTheme") {
-        console.debug("recieved importTheme");
-        sendMessage({ type: "importThemeResult", data: JSON.stringify(window.aboutbrowser.themes.importTheme(JSON.parse(msg.themeJson)))}, sender);
-    } else if (msg.type === "removeTheme") {
-        console.debug("recieved removeTheme");
-        window.aboutbrowser.themes.removeTheme(window.aboutbrowser.themes.findTheme(msg.theme));
-    } else if (msg.type === "setTheme") {
-        console.debug("recieved setTheme");
-        window.aboutbrowser.themes.setCurrentTheme(window.aboutbrowser.themes.findTheme(msg.theme));
+    } else if (msg.type === "getExtensions") {
+        console.debug("recieved getExtensions");
+        sendMessage({ type: "extensionList", data: JSON.stringify(window.aboutbrowser.extensions.getExtensionMetadata()) }, sender);
+    } else if (msg.type === "importExtensionCrx") {
+        console.debug("recieved importExtensionCrx");
+        (async ()=>{
+            window.aboutbrowser.extensions.installFromCrxBlob(await fetch(msg.base64).then(r=>r.blob()));
+        })();
+    } else if (msg.type === "importExtensionZip") {
+        console.debug("recieved importExtensionZip");
+        (async ()=>{
+            window.aboutbrowser.extensions.installFromUnpackedZipBlob(await fetch(msg.base64).then(r=>r.blob()), msg.name);
+        })();
+    } else if (msg.type === "removeExtension") {
+        console.debug("recieved removeExtension");
+        window.aboutbrowser.extensions.uninstallExtension(msg.id);
+    } else if (msg.type === "setExtensionEnabled") {
+        console.debug("recieved setExtensionEnabled");
+        window.aboutbrowser.extensions.setExtensionEnabled(msg.id, msg.enabled);
+    } else if (msg.type === "setCurrentTheme") {
+        console.debug("recieved setCurrentTheme")
+        window.aboutbrowser.extensions.setCurrentTheme(msg.id)
     }
 })

@@ -168,7 +168,7 @@ class Theme {
     if(this.isAboutBrowserTheme || isNtp) return;
     
     // Apply default styling if this is not an aboutbrowser theme
-    css = Theme.default.getCSSForTheme(isNtp);
+    css = Extension.internalThemeExtension.theme.getCSSForTheme(isNtp);
     for(const directive of css) {
       if(!directive[0].includes('--aboutbrowser-ui')) continue;
       style.setProperty(directive[0], directive[1]);
@@ -196,112 +196,5 @@ class Theme {
   
   toJSON() {
     return this.json;
-  }
-}
-
-let gcp = new GoogleColorPalette();
-window.googlecolorpalette = gcp;
-
-Theme.default = new Theme({
-  manifest_version: 3,
-  version: "0.2_alpha",
-  name: "Chrome Dark",
-  theme: {
-    colors: {
-      frame: gcp.Grey900,
-      toolbar: gcp.Grey800,
-      tab_text: gcp.Grey050,
-      tab_background_text: gcp.Grey300,
-      button_background: gcp.Grey800,
-      ntp_background: gcp.Grey800,
-      ntp_link: gcp.Blue800,
-      ntp_text: gcp.Grey050,
-      omnibox_background: gcp.Grey900,
-      omnibox_text: gcp.Grey050,
-      toolbar_button_icon: gcp.Grey050,
-      toobar_text: gcp.Grey050,
-      bookmark_text: gcp.Grey050,
-      accent_color: gcp.Blue700,
-      ui_search_background: gcp.Grey900,
-      ui_search_foreground: gcp.Grey050,
-      ui_sidebar_background: gcp.Grey800,
-      ui_sidebar_foreground: gcp.Grey050,
-      ui_toolbar_background: gcp.Grey800,
-      ui_toolbar_foreground: gcp.Grey050,
-      ui_sidebar_active_background: gcp.Grey900,
-      ui_sidebar_active_foreground: gcp.Blue700,
-      ui_layer1_background: gcp.Grey800,
-      ui_layer1_foreground: gcp.Grey050
-    }
-  },
-  aboutbrowser: "true"
-});
-
-// Inject default theme early so there is no unstyled content as everything else loads
-Theme.default.inject();
-
-class ThemeController {
-  constructor(browser) {
-    throw new Error("ThemeController is deprecated. Use Extensions API instead.")
-    this.browser = browser;
-    this.themeList = [];
-    this.loadSettings();
-  }
-
-  loadSettings() {
-    let settingsThemes = JSON.parse(this.browser.settings.getSetting("importedThemes"))
-    settingsThemes = settingsThemes.map((themeJson) => {return new Theme(themeJson)});
-    this.themeList.push(...settingsThemes);
-    this.currentTheme = this.findTheme(this.browser.settings.getSetting("currentTheme"));
-  }
-
-  findTheme(name) {
-    // We must move to extension ids soon, but I don't feel like including web openssl to generate them
-    // So let's just use the name as a sort of ID
-    // It'll be fine (famous last words)
-    for(const theme of this.themeList) if(theme.name === name) return theme;
-    return Theme.default;
-  }
-
-  importTheme(themeJson) {
-    let theme = null;
-    try {
-      theme = new Theme(themeJson)
-    } catch(err) {
-      return err.toString();
-    }
-    this.themeList.push(theme);
-    this.saveSettings();
-    return theme;
-  }
-
-  removeTheme(theme) {
-    this.themeList.splice(this.themeList.indexOf(theme), 1);
-    this.saveSettings();
-  }
-
-  saveSettings() {
-    this.browser.settings.setSetting("importedThemes", JSON.stringify(this.themeList));
-    this.browser.settings.setSetting("currentTheme", this.currentTheme.name);
-  }
-
-  setCurrentTheme(theme) {
-    this.currentTheme = theme;
-    this.saveSettings();
-    this.browser.reapplyTheme();
-  }
-
-  getThemeList() {
-    let themeList = this.themeList.map((theme)=>{return theme.name});
-    themeList.push(Theme.default.name);
-    return themeList; 
-  }
-
-  applyTheme() {
-    this.currentTheme.inject();
-  }
-
-  applyThemeToFrame(frame, isNtp) {
-    this.currentTheme.injectIntoFrame(frame, isNtp);
   }
 }

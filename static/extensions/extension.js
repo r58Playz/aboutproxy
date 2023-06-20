@@ -5,14 +5,15 @@
 class Extension {
   constructor(controller) {
     this.controller = controller;
+    this.resources = controller.resources;
     this.enabled = true;
   }
 
   static async #getIdFromUInt8Array(publicKey) {
-    return await CH.createHash("sha256")
+    let hash = await CH.createHash("sha256")
       .update(publicKey) // *should* work since Filer.Buffer is a UInt8Array in disguise
-      .digest('hex')
-      .slice(0, 32)
+      .digest('hex');
+    return hash.slice(0, 32)
       .split('')
       .map(char => {
         return char >= 'a'
@@ -20,6 +21,33 @@ class Extension {
           : String.fromCharCode('a'.charCodeAt() + char.charCodeAt() - '0'.charCodeAt())
       })
       .join('')
+  }
+
+  static #parseCrxV3Header(buf) {
+    let pbf = new Pbf(buf)
+    let hdr = crx3_pb.CrxFileHeader.read(pbf)
+
+    pbf = new Pbf(hdr.signed_header_data)
+    hdr.signed_header_data = crx3_pb.SignedData.read(pbf)
+    return hdr
+  }
+
+  static #mpdecimal(buf) {
+    let a = 'a'.charCodeAt(0)
+    return arr2hexstr(buf.toString('hex').split(',').map(e=>parseInt(e))).split('').map( v => String.fromCharCode((parseInt(v, 16)+a))).join``
+  }
+
+  static #getIdFromCrxV3(buf) {
+    let len = buf => buf.readUInt32LE(0)
+
+    if ("Cr24" !== buf.slice(0, 4).toString()) throw new Error('not a crx file')
+    if (3 !== len(buf.slice(4, 8))) throw new Error('not a crx3 file')
+    let header_size = len(buf.slice(8, 12))
+    let meta = 4*3
+    let header = buf.slice(12, header_size + meta)
+
+    let crx_file_header = Extension.#parseCrxV3Header(header)
+    return Extension.#mpdecimal(crx_file_header.signed_header_data.crx_id); 
   }
 
   static async #extractBuffer(buffer, fs, id) {
@@ -31,6 +59,8 @@ class Extension {
       toExtractArr.push({ path: actualPath, dir: file.dir, file: file })
     });
 
+    await fs.mkdir("/"+id);
+
     for(const entry of toExtractArr) {
       if(entry.dir) {
         await fs.mkdir(entry.path);
@@ -40,52 +70,43 @@ class Extension {
     }
   }
 
-  async readFromUnpackedZipBlob(blob) {
-    let buffer = Filer.buffer.from(await blob.arrayBuffer());
-    let fs = this.controller.fs;
+  async readFromUnpackedZipBlob(blob, name) {
+    let buffer = Filer.Buffer.from(await blob.arrayBuffer());
+    let fs = this.resources.fs;
 
+    const id = await Extension.#getIdFromUInt8Array(Filer.Buffer.from(name));
 
-    const base64url = blobToDataUrl(blob);
-    const base64 = base64url.split(";base64,").pop();
-    const id = Extension.#getIdFromUInt8Array(Filer.buffer.from(base64, 'base64'));
+    await Extension.#extractBuffer(buffer, fs, id);
 
-    Extension.#extractBuffer(buffer, fs, id);
+    this.manifest = JSON.parse(await this.resources.fs.readFile("/"+id+"/manifest.json", 'utf8'));
+    this.id = id;
 
     return id;
   }
 
   async readFromCrxBlob(blob) {
     let buffer = Filer.Buffer.from(await blob.arrayBuffer());
-    let fs = this.controller.fs;
-
-    // holy shit, filer's buffer is basically identical with node buffer
-    // so i can actually just use some repo for getting the extension id in nodejs with minimal changes!
-    // (except i have to use some other crypto lib instead of node's)
-    // https://github.com/zhw2590582/chrome-extensions-id
-    if(buffer.readUInt32LE(0) !== 0x34327243) throw new Error("Unexpected CRX magic number")
-
-    const ver = buffer.readUInt32LE(4);
-    if(ver !== 2) throw new Error("Unexpected version "+ver);
-
-    const pubKeyLen = buffer.readUInt32LE(8);
-    const metaOffset = 16;
-    const publicKey = Filer.Buffer.from(buffer.slice(metaOffset, metaOffset + pubKeyLen));
-    const id = await Extension.#getIdFromUInt8Array(publicKey);
+    let fs = this.resources.fs;
+    
+    const id = Extension.#getIdFromCrxV3(buffer);
 
     // Now we extract the CRX to it's respective folder on the fs
-    Extension.#extractBuffer(buffer, fs, id);
+    await Extension.#extractBuffer(buffer, fs, id);
+
+    this.manifest = JSON.parse(await this.resources.fs.readFile("/"+id+"/manifest.json", 'utf8'));
+    this.id = id;
 
     return id;
   }
 
   // use when extension has already been installed via `readFromCrxBlob`
   async readFromFilerFs(id) {
-    this.manifest = await this.controller.fs.readFile("/"+id+"/manifest.json", 'utf8');
+    this.manifest = JSON.parse(await this.resources.fs.readFile("/"+id+"/manifest.json", 'utf8'));
     this.id = id;
   }
 
   init() {
-    if(this.manifest.theme) {
+    if(this.manifest["theme"]) {
       this.type = "theme";
       this.theme = new Theme(this.manifest, this.id);
       return;

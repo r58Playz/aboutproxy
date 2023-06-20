@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "version": "1.0",
+  "name": "Chrome Dark",
+  "theme": {
+    "colors": {
+      "frame": ${Grey900},
+      "toolbar": ${Grey800},
+      "tab_text": ${Grey050},
+      "tab_background_text": ${Grey300},
+      "button_background": ${Grey800},
+      "ntp_background": ${Grey800},
+      "ntp_link": ${Blue800},
+      "ntp_text": ${Grey050},
+      "omnibox_background": ${Grey900},
+      "omnibox_text": ${Grey050},
+      "toolbar_button_icon": ${Grey050},
+      "toobar_text": ${Grey050},
+      "bookmark_text": ${Grey050},
+      "accent_color": ${Blue700},
+      "ui_search_background": ${Grey900},
+      "ui_search_foreground": ${Grey050},
+      "ui_sidebar_background": ${Grey800},
+      "ui_sidebar_foreground": ${Grey050},
+      "ui_toolbar_background": ${Grey800},
+      "ui_toolbar_foreground": ${Grey050},
+      "ui_sidebar_active_background": ${Grey900},
+      "ui_sidebar_active_foreground": ${Blue700},
+      "ui_layer1_background": ${Grey800},
+      "ui_layer1_foreground": ${Grey050}
+    }
+  },
+  "aboutbrowser": "true"
+}
