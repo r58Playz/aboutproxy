@@ -108,17 +108,33 @@ class Extension {
   init() {
     if(this.manifest["theme"]) {
       this.type = "theme";
+      this.injector = new ExtensionInjectorDummy();
       this.theme = new Theme(this.manifest, this.id);
-      return;
+    } else {
+      this.type = "extension";
+
+      if(this.manifest["manifest_version"] == 2) this.injector = new ExtensionInjectorMV2(this);
+      else if(this.manifest["manifest_version"] == 3) this.injector = new ExtensionInjectorMV3(this);
+      else this.injector = new ExtensionInjectorDummy();
+      this.theme = new ThemeDummy(); 
+      this.injector.parseManifest();
     }
-    // actual extensions not implemented
   }
 
-  applyTheme() {
+  inject() {
     this.theme.inject();
   }
 
-  applyThemeToFrame(frame, isNtp) {
-    this.theme.injectIntoFrame(frame, isNtp);
+  injectTheme(url, frame) {
+    this.theme.injectIntoFrame(frame, url === this.controller.browser.settings.getSetting("startUrl"));
+  }
+
+  injectDOMContentLoaded(url, frame) {
+    this.injectTheme(url, frame);
+    this.injector.injectDOMContentLoaded(url, frame);
+  }
+
+  injectLoaded(url, frame) {
+    this.injector.injectLoaded(url, frame);
   }
 }

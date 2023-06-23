@@ -4,6 +4,13 @@ class ExtensionsController {
     this.extensions = {}; //id: Extension
   }
 
+  async #exists(path) {
+    try{
+      await this.resources.fs.stat(path);
+    }catch(e){return false};
+    return true;
+  }
+
   async setup() {
     // i realize that now i could have just done this for ExtensionResources but it's fine
     this.resources = await ExtensionResources.new();
@@ -11,6 +18,7 @@ class ExtensionsController {
     let installedExtensions = JSON.parse(this.browser.settings.getSetting("installedExtensions"));
     let enabledThemeId = this.browser.settings.getSetting("themeId");
 
+    if(installedExtensions.includes("bdddhkcpnpcaggeblinmcffckoihfdia") && !this.#exists("/bdddhkcpnpcaggeblinmcffckoihfdia")) installedExtensions.splice(installedExtensions.indexOf("bdddhkcpnpcaggeblinmcffckoihfdia"), 1);
     if(!installedExtensions.includes("bdddhkcpnpcaggeblinmcffckoihfdia")) await this.installFromUnpackedZipBlob(await fetch("/themes/chrome_dark.zip").then(r=>r.blob()), "aboutproxy-bad-theme");
 
     for (const id of installedExtensions) {
@@ -108,12 +116,25 @@ class ExtensionsController {
     this.browser.reapplyTheme();
   }
 
-  applyTheme() {
-    this.extensions[this.browser.settings.getSetting("themeId")].applyTheme()
+  injectTheme() {
+    this.extensions[this.browser.settings.getSetting("themeId")].inject();
   }
 
-  async injectIntoFrame(iframe, url) {
+  injectThemeIntoFrame(url, iframe) {
+    this.extensions[this.browser.settings.getSetting("themeId")].injectTheme(url, iframe);
+  }
+
+  async injectDOMContentLoaded(url, iframe) {
     await this.ensureExtensionsAreReady();
-    this.extensions[this.browser.settings.getSetting("themeId")].applyThemeToFrame(iframe, url === this.browser.settings.getSetting("startUrl"));
+    for(const extension of Object.values(this.extensions)) {
+      extension.injectDOMContentLoaded(url, iframe);
+    }
+  }
+
+  async injectLoaded(url, iframe) {
+    await this.ensureExtensionsAreReady();
+    for(const extension of Object.values(this.extensions)) {
+      extension.injectLoaded(url, iframe);
+    }
   }
 }

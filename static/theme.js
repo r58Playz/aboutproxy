@@ -39,6 +39,13 @@ colorMap can optionally contain (for aboutbrowser themes):
  */
 
 
+class ThemeDummy {
+  constructor() {}
+  inject() {}
+  injectIntoFrame() {}
+  getCSSForTheme() {return []}
+}
+
 class Theme {
   constructor(themeJson) {
     this.json = themeJson;

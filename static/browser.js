@@ -84,14 +84,13 @@ class AboutBrowser {
 
         this.reapplyTheme();
 
-
         document.querySelector(".container.browserContainer").style.removeProperty("visibility");
     }
 
     reapplyTheme() {
-        this.extensions.applyTheme();
+        this.extensions.injectTheme();
         for (const tab of this.tabs.internalList) {
-            tab.value.applyTheme();
+            tab.value.reinjectTheme();
         }
     }
 

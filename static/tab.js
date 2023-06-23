@@ -20,8 +20,8 @@ class Tab {
         if(!background) this.browser.chromeTabs.setCurrentTab(this.tabEl);
     }
 
-    applyTheme() {
-        this.browser.extensions.injectIntoFrame(this.iframe, this.currentUrl);
+    reinjectTheme() {
+        this.browser.extensions.injectThemeIntoFrame(this.currentUrl, this.iframe);
     }
 
     // Needed because you can't listen for DOMContentLoaded from an iframe across navigations
@@ -29,7 +29,10 @@ class Tab {
         var self = this;
         setTimeout(() => {
             if(!self.iframe || !self.iframe.contentWindow) return;
-            self.iframe.contentWindow.addEventListener("DOMContentLoaded", () => { self.handleOnload() });
+            self.iframe.contentWindow.addEventListener("DOMContentLoaded", () => { 
+                self.handleOnload();
+            });
+            self.iframe.contentWindow.addEventListener("load", () => { self.browser.extensions.injectLoaded(self.currentUrl, self.iframe) });
             self.iframe.contentWindow.addEventListener("unload", () => { self.handleUnload() });
         }, 0);
     }
@@ -51,7 +54,7 @@ class Tab {
         }
         this.currentUrl = url;
 
-        this.applyTheme()
+        this.browser.extensions.injectDOMContentLoaded(this.currentUrl, this.iframe);
 
         // get title of iframe
         var title = this.iframe.contentWindow.document.title;
