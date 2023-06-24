@@ -36,6 +36,11 @@ class ExtensionInjector {
     if(m.length != 1 && m[3] === "/*") return this.#parseGlob(m[1]+"://"+m[2], url);
   }
 
+  parseChromeGlob(pattern, input) {
+    let re = new RegExp(pattern.replace(/\?/g, '.').replace(/\*/g, '.*'));
+    return re.test(input);
+  }
+
   #parseGlob(pattern, input) {
     var re = new RegExp(pattern.replace(/([.?+^$[\]\\(){}|\/-])/g, "\\$1").replace(/\*/g, '.*'));
     return re.test(input);

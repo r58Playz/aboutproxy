@@ -25,6 +25,7 @@ class ExtensionInjectorMV2 extends ExtensionInjector {
   }
 
   async inject(url, frame, list) {
+    // all_frames and match_about_blank not supported
     let jsToInject = [];
     let cssToInject = [];
     for(const cs of list) {
@@ -34,16 +35,26 @@ class ExtensionInjectorMV2 extends ExtensionInjector {
       // css
       let matches = false;
       let excludes = false;
+      let globMatches = false;
+      let globExcludes = false;
 
       for(const match of cs.matches) {
         if(this.parseMatchSequence(match, url)) {matches = true; break};
       }
 
-      for(const exclude of cs.excludes || []) {
+      for(const exclude of cs.exclude_matches || []) {
         if(this.parseMatchSequence(exclude, url)) {excludes = true; break};
       }
 
-      if(matches && !excludes) {
+      for(const match of cs.include_globs || []) {
+        if(this.parseChromeGlob(match, url)) {globMatches = true; break};
+      }
+
+      for(const exclude of cs.exclude_globs || []) {
+        if(this.parseChromeGlob(exclude, url)) {globExcludes = true; break};
+      }
+
+      if(matches && (cs.include_globs && globMatches) && !excludes && (cs.exclude_globs && !globExcludes)) {
         for(const path of cs.js || []) {
           let code = await this.extension.resources.fs.readFile("/" + this.extension.id + "/" + path, 'utf8');
           // maybe sanitize any URLs in the code?
