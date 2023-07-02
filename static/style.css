@@ -66,8 +66,8 @@ body {
   background-color: color-mix(in srgb, var(--aboutbrowser-toolbar-bg), var(--aboutbrowser-toolbar-button-fg) 15%);
 }
 
-.navbarBtn:active {
-  background-color: color-mix(in srgb, var(--aboutbrowser-toolbar-bg), var(--aboutbrowser-toolbar-button-fg) 25%);
+.navbarBtn:active, .navbarBtn.active {
+  background-color: color-mix(in srgb, var(--aboutbrowser-toolbar-bg), var(--aboutbrowser-toolbar-button-fg) 35%);
 }
 
 .navbarUrl {
@@ -186,25 +186,54 @@ a:hover {
 }
 */
 
+.moreMenu.transition {
+  transition: opacity .15s linear;
+}
+
+.moreMenu.hidden {
+  opacity: 0;
+  height: 0;
+}
+
 .moreMenu {
   position: absolute;
   right: 0;
-  top: 5.75em;
+  top: 5.5em;
   background: var(--aboutbrowser-frame-bg);
-  width: 18em;
+  width: 18.215em;
   height:auto;
   z-index: 101;
+  border-radius: 8px;
+  padding: 8px 0;
+  border: 1px solid;
+  border-color: color-mix(in srgb, var(--aboutbrowser-frame-bg), var(--aboutbrowser-ui-fg) 15%);
 }
 
 .moreMenu > button {
-  width: 100%;
-  text-align: left;
-  padding-left: 3em;
+  width: calc(100% - 4px);
+  margin: 0 2px;
   height: 2em;
-  padding-top: 0.25em;
-  padding-bottom: 0.25em;
-  background: none;
+  background: transparent;
   border: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: left;
+}
+
+.moreMenu > button > .menuIcon {
+  padding: 0 16px 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.moreMenu > button > .menuIcon > .placeholder {
+  width: 20px;
+}
+
+.moreMenu > button > .title {
+  flex: 1;
 }
 
 .moreMenu > button:hover {
@@ -216,9 +245,8 @@ a:hover {
 }
 
 .moreMenu > .sep {
-  border-bottom: 1px solid color-mix(in srgb, var(--aboutbrowser-frame-bg), var(--aboutbrowser-ui-fg) 40%);
-  margin-top: 0.5em;
-  margin-bottom: 0.5em;
+  border-bottom: 1px solid color-mix(in srgb, var(--aboutbrowser-frame-bg), var(--aboutbrowser-ui-fg) 20%);
+  margin: 0.5em 0.75em;
 }
 
 .ctxMenuClickChecker {

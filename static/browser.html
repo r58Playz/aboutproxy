@@ -94,15 +94,27 @@
       </button>
     </div>
     <div>
-      <div class="moreMenu" style="display: none;">
-        <button onclick="window.aboutbrowser.handleSettingsCtxMenu('newTab');">New tab</button>
+      <div class="moreMenu hidden">
+        <button onclick="window.aboutbrowser.handleSettingsCtxMenu('newTab');">
+            <span class="material-symbols-outlined menuIcon">tab</span><span class="title">New tab</span>
+        </button>
         <div class="sep"></div>
-        <button onclick="window.aboutbrowser.handleSettingsCtxMenu('history');">History</button>
-        <button onclick="window.aboutbrowser.handleSettingsCtxMenu('downloads');">Downloads</button>
-        <button onclick="window.aboutbrowser.handleSettingsCtxMenu('bookmarks');">Bookmarks</button>
-        <button onclick="window.aboutbrowser.handleSettingsCtxMenu('settings');">Settings</button>
+        <button onclick="window.aboutbrowser.handleSettingsCtxMenu('history');">
+          <span class="material-symbols-outlined menuIcon">history</span><span class="title">History</span>
+        </button>
+        <button onclick="window.aboutbrowser.handleSettingsCtxMenu('downloads');">
+          <span class="material-symbols-outlined menuIcon">download</span><span class="title">Downloads</span>
+        </button>
+        <button onclick="window.aboutbrowser.handleSettingsCtxMenu('bookmarks');">
+          <span class="material-symbols-outlined menuIcon">bookmark</span><span class="title">Bookmarks</span>
+        </button>
+        <button onclick="window.aboutbrowser.handleSettingsCtxMenu('settings');">
+          <span class="material-symbols-outlined menuIcon">settings</span><span class="title">Settings</span>
+        </button>
         <div class="sep"></div>
-        <button onclick="window.aboutbrowser.handleSettingsCtxMenu('about');">About AboutBrowser</button>
+        <button onclick="window.aboutbrowser.handleSettingsCtxMenu('about');">
+          <span class="menuIcon"><span class="placeholder"></span></span><span class="title">About AboutBrowser</span>
+        </button>
       </div>
     </div>
     <div class="bookmarksContainer"></div>

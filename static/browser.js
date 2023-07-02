@@ -63,10 +63,12 @@ class AboutBrowser {
         });
 
         this.settingsCtxMenu = document.querySelector(".moreMenu");
+        this.settingsCtxBtn = document.querySelector(".navbarBtn#browserSettings");
         this.ctxMenuClickChecker = document.querySelector(".ctxMenuClickChecker");
         this.ctxMenuClickChecker.addEventListener("click", () => {
-            self.settingsCtxMenu.style.setProperty('display', 'none');
+            self.settingsCtxMenu.classList.add("hidden");
             self.ctxMenuClickChecker.style.setProperty('display', 'none');
+            self.settingsCtxBtn.classList.remove("active");
         })
 
         window.addEventListener("bookmarkClicked", (event) => { self.navigateTo(event.detail.url) });
@@ -128,12 +130,18 @@ class AboutBrowser {
     }
 
     handleSettings() {
-        this.settingsCtxMenu.style.removeProperty("display");
+        this.settingsCtxMenu.classList.remove("hidden");
+        this.settingsCtxMenu.classList.add("transition");
+        let self = this;
+        setTimeout(() => {
+            self.settingsCtxMenu.classList.remove("transition");
+        }, 250);
         this.ctxMenuClickChecker.style.removeProperty("display");
+        this.settingsCtxBtn.classList.add("active");
     }
 
     handleSettingsCtxMenu(menuItem) {
-        this.settingsCtxMenu.style.setProperty("display", "none");
+        this.settingsCtxMenu.classList.add("hidden");
         switch(menuItem) {
             case "newTab":
                 this.openTab();
