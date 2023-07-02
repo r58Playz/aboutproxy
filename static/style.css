@@ -53,15 +53,13 @@ body {
   border-radius: 100%;
   margin: 2px;
   flex-shrink: 0;
-  font-size: 1em;
   transition: background-color .2s ease-in-out;
-  padding: 1px 0;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--aboutbrowser-toolbar-button-fg);
-  height: 26px;
-  width: 26px;
+  height: 2.5em;
+  width: 2.5em;
 }
 
 .navbarBtn:hover {
@@ -82,6 +80,7 @@ body {
   background-color: var(--aboutbrowser-omnibox-bg);
   border: none;
   color: var(--aboutbrowser-omnibox-fg);
+  height: 2.5em;
 }
 
 .navbarUrl::placeholder {
@@ -101,15 +100,17 @@ footer {
 }
 
 .bookmarksBtnWrapper {
-  position: relative;
+  position:relative;
 }
 
 .bookmarksBtn {
-  position: absolute;
-  right: 0.5em;
-  bottom: 0;
-  width: 26px;
-  height: 26px;
+  position:absolute;
+  width: 2em;
+  height: 2em;
+  transform: translate(-3.25em, 0.25em);
+  display: flex;
+  justify-content:center;
+  align-items:center;
 }
 
 .bookmarksBtn:hover {
@@ -120,9 +121,12 @@ footer {
   background-color: color-mix(in srgb, var(--aboutbrowser-omnibox-bg), var(--aboutbrowser-omnibox-fg) 25%);
 }
 
+/* this one rule was fucking up the alignment */
+/*
 .bookmarksBtn > span {
-  transform: translate(0px, -2px);
+  transform: translate(0px, -2px);  
 }
+*/
 
 a {
   text-decoration: none;
@@ -233,4 +237,8 @@ a:hover {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+#addtab.transition {
+  transition: transform 0.25s ease-out;
 }

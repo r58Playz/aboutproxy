@@ -134,7 +134,6 @@ function h(type, inner) { // used by apparently chrome-tabs?
         widths.push(flooredClampedTargetWidth + extraWidth)
         if (extraWidthRemaining > 0) extraWidthRemaining -= 1
       }
-      widths.push(55);
 
       return widths
     }
@@ -190,7 +189,7 @@ function h(type, inner) { // used by apparently chrome-tabs?
         `; lastPos=position;
       })
       this.styleEl.innerHTML = styleHTML
-      document.getElementById("addtab").style.transform = `translate3d(clamp(0px, ${lastPos+10}px, calc(100vw - 45px)), -2px, 0)`;
+      document.getElementById("addtab").style.transform = `translate(${lastPos+this.tabContentWidths[this.tabContentWidths.length-1]+16}px, 0)`;
     }
 
     createNewTabEl() {
@@ -204,7 +203,10 @@ function h(type, inner) { // used by apparently chrome-tabs?
 
       if (animate) {
         tabEl.classList.add('chrome-tab-was-just-added')
-        setTimeout(() => tabEl.classList.remove('chrome-tab-was-just-added'), 500)
+        setTimeout(() => {
+          tabEl.classList.remove('chrome-tab-was-just-added')
+          if (!background) this.setCurrentTab(tabEl)
+        }, 250)
       }
 
       tabProperties = Object.assign({}, defaultTapProperties, tabProperties)
@@ -212,7 +214,6 @@ function h(type, inner) { // used by apparently chrome-tabs?
       this.setTabCloseEventListener(tabEl)
       this.updateTab(tabEl, tabProperties)
       this.emit('tabAdd', { tabEl })
-      if (!background) this.setCurrentTab(tabEl)
       this.cleanUpPreviouslyDraggedTabs()
       this.layoutTabs()
       this.setupDraggabilly()
@@ -312,12 +313,15 @@ function h(type, inner) { // used by apparently chrome-tabs?
           this.draggabillyDragging = draggabilly
           tabEl.classList.add('chrome-tab-is-dragging')
           this.el.classList.add('chrome-tabs-is-sorting')
+          document.querySelector("#addtab").classList.remove("transition");
+          if(tabEl!==this.tabEls[this.tabEls.length-1]) tabEl.setAttribute("data-was-not-last-tab-when-started-dragging", "femboy");
         })
 
         draggabilly.on('dragEnd', _ => {
           this.isDragging = false
           const finalTranslateX = parseFloat(tabEl.style.left, 10)
           tabEl.style.transform = `translate3d(0, 0, 0)`
+          tabEl.removeAttribute("data-was-not-last-tab-when-started-dragging");
 
           // Animate dragged tab back into its place
           requestAnimationFrame(_ => {
@@ -327,6 +331,7 @@ function h(type, inner) { // used by apparently chrome-tabs?
             requestAnimationFrame(_ => {
               tabEl.classList.remove('chrome-tab-is-dragging')
               this.el.classList.remove('chrome-tabs-is-sorting')
+              document.querySelector("#addtab").classList.add("transition");
 
               tabEl.classList.add('chrome-tab-was-just-dragged')
 
@@ -352,6 +357,11 @@ function h(type, inner) { // used by apparently chrome-tabs?
           if (currentIndex !== destinationIndex) {
             this.animateTabMove(tabEl, currentIndex, destinationIndex)
           }
+          const lastTab = this.tabEls[this.tabEls.length-1];
+          const lastTabPosition = this.tabPositions[this.tabPositions.length-1];
+          const lastTabWidth = this.tabContentWidths[this.tabContentWidths.length-1];
+          const translatePx = lastTabPosition+lastTabWidth+(tabEl===lastTab ? (tabEl.getAttribute("data-was-not-last-tab-when-started-dragging") ? moveVector.x - this.tabContentWidths[currentIndex] : moveVector.x) : 0)+16;
+          document.querySelector("#addtab").style.transform = `translate(min(${translatePx}px, calc(100vw - 42px)),0px)`
         })
       })
     }

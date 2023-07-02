@@ -19,6 +19,7 @@
   /*width: 100%;*/
   height: 100%;
   flex: 1;
+  margin-right: 32px;
 }
 
 .chrome-tabs .chrome-tabs-content-wrapper {
@@ -102,6 +103,7 @@
 }
 
 .chrome-tabs .chrome-tab .chrome-tab-background>svg .chrome-tab-geometry {
+  visibility: none;
   fill: #f4f5f6;
 }
 
@@ -110,6 +112,7 @@
 }
 
 .chrome-tabs .chrome-tab[active] .chrome-tab-background>svg .chrome-tab-geometry {
+  visibility: visible;
   fill: #fff;
 }
 
@@ -125,8 +128,7 @@
 }
 
 .chrome-tabs .chrome-tab.chrome-tab-was-just-added {
-  top: 10px;
-  animation: chrome-tab-was-just-added 120ms forwards ease-in-out;
+  animation: chrome-tab-was-just-added .15s forwards linear;
 }
 
 .chrome-tabs .chrome-tab .chrome-tab-content {
@@ -272,33 +274,15 @@
   margin-right: auto;
 }
 
-@-moz-keyframes chrome-tab-was-just-added {
-  to {
-    top: 0;
-  }
-}
-
-@-webkit-keyframes chrome-tab-was-just-added {
-  to {
-    top: 0;
-  }
-}
-
-@-o-keyframes chrome-tab-was-just-added {
-  to {
-    top: 0;
-  }
-}
-
 @keyframes chrome-tab-was-just-added {
-  to {
-    top: 0;
+  from {
+    width: 0;
   }
 }
 
 .chrome-tabs.chrome-tabs-is-sorting .chrome-tab:not(.chrome-tab-is-dragging),
 .chrome-tabs:not(.chrome-tabs-is-sorting) .chrome-tab.chrome-tab-was-just-dragged {
-  transition: transform 120ms ease-in-out;
+  transition: transform 0.25s ease-out;
 }
 
 
