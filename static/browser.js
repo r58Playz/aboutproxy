@@ -142,6 +142,8 @@ class AboutBrowser {
 
     handleSettingsCtxMenu(menuItem) {
         this.settingsCtxMenu.classList.add("hidden");
+        this.settingsCtxBtn.classList.remove("active");
+        this.ctxMenuClickChecker.style.setProperty("display", "none");
         switch(menuItem) {
             case "newTab":
                 this.openTab();
