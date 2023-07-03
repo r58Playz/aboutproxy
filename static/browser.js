@@ -85,6 +85,7 @@ class AboutBrowser {
     async asyncInit() {
         this.extensions = new ExtensionsController(this);
         await this.extensions.setup();
+        await this.extensions.injectPlugins();
 
         this.reapplyTheme();
 
@@ -104,7 +105,7 @@ class AboutBrowser {
                 self.ctxMenuClickChecker.style.removeProperty("display");
                 self.settingsCtxBtn.classList.add("active");
             }
-        })
+        });
     }
 
     createEvent(name, detail, cancelable) {

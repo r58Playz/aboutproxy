@@ -110,6 +110,12 @@ class Extension {
       this.type = "theme";
       this.injector = new ExtensionInjectorDummy();
       this.theme = new Theme(this.manifest, this.id);
+      this.plugin = new PluginDummy();
+    } else if(this.manifest["aboutbrowserPluginScript"]) {
+      this.type = "plugin";
+      this.injector = new ExtensionInjectorDummy();
+      this.theme = new ThemeDummy();
+      this.plugin = new Plugin();
     } else {
       this.type = "extension";
 
@@ -117,12 +123,17 @@ class Extension {
       else if(this.manifest["manifest_version"] == 3) this.injector = new ExtensionInjectorMV3(this);
       else this.injector = new ExtensionInjectorDummy();
       this.theme = new ThemeDummy(); 
+      this.plugin = new PluginDummy();
       this.injector.parseManifest();
     }
   }
 
   inject() {
     this.theme.inject();
+  }
+
+  async injectPlugin() {
+    await this.plugin.inject();
   }
 
   injectTheme(url, frame) {
