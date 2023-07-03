@@ -9,7 +9,6 @@ class ElementMap {
 
     get(key) {
         for (const pair of this.internalList) {
-            console.log(pair, key)
             if(key.isSameNode(pair.key)) {
                 return pair.value;
             }

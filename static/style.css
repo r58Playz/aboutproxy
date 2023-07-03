@@ -270,3 +270,5 @@ a:hover {
 #addtab.transition {
   transition: transform 0.25s ease-out;
 }
+
+.aboutbrowser-event-el {display: none};

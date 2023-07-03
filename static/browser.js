@@ -77,6 +77,8 @@ class AboutBrowser {
         // it used to be:
         // if(probeForChrome()) unfuckChrome();
         // sadly got removed
+        this.eventsInit();
+
         this.asyncInit();
     }
 
@@ -87,6 +89,26 @@ class AboutBrowser {
         this.reapplyTheme();
 
         document.querySelector(".container.browserContainer").style.removeProperty("visibility");
+    }
+
+    eventsInit() {
+        let self = this;
+        this.eventsEl = document.querySelector(".aboutbrowser-event-el#aboutbrowser-event-el");
+        this.eventsEl.addEventListener("aboutbrowser-contextmenu", (event)=>{
+            if(event.detail.type === "more") {
+                self.settingsCtxMenu.classList.remove("hidden");
+                self.settingsCtxMenu.classList.add("transition");
+                setTimeout(() => {
+                    self.settingsCtxMenu.classList.remove("transition");
+                }, 250);
+                self.ctxMenuClickChecker.style.removeProperty("display");
+                self.settingsCtxBtn.classList.add("active");
+            }
+        })
+    }
+
+    createEvent(name, detail, cancelable) {
+        return new CustomEvent(name, {detail: detail, bubbles: false, cancelable: cancelable, composed: false});
     }
 
     reapplyTheme() {
@@ -130,14 +152,7 @@ class AboutBrowser {
     }
 
     handleSettings() {
-        this.settingsCtxMenu.classList.remove("hidden");
-        this.settingsCtxMenu.classList.add("transition");
-        let self = this;
-        setTimeout(() => {
-            self.settingsCtxMenu.classList.remove("transition");
-        }, 250);
-        this.ctxMenuClickChecker.style.removeProperty("display");
-        this.settingsCtxBtn.classList.add("active");
+        this.eventsEl.dispatchEvent(this.createEvent("aboutbrowser-contextmenu", {type: "more", browser: this}, true));
     }
 
     handleSettingsCtxMenu(menuItem) {
