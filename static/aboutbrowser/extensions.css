@@ -1,0 +1,71 @@
+.extensionViewWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.extensionView {
+  margin-top: 2em;
+  margin-left: 150px;
+  margin-right: 150px;
+  flex: 0 1 1200px;
+}
+
+.extensionView .tileItem {
+  background-color: var(--aboutbrowser-ui-layer1-bg);
+  color: var(--aboutbrowser-ui-layer1-fg);
+  display: flex;
+  flex-direction: column;
+
+  & .info {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+  }
+
+  & .info img {
+    width: 32px;
+    height: 32px;
+    margin: 1.5em 1em 1em 1.5em;
+  }
+
+  & .info .name {
+    display: flex;
+    flex-direction: column;
+    margin: 1em;
+  }
+
+  & .info .name .version {
+    margin-left: 1em;
+    color: color-mix(in srgb, var(--aboutbrowser-ui-layer1-bg), var(--aboutbrowser-ui-layer1-fg) 50%)
+  }
+
+  & .info .name .desc {
+    color: color-mix(in srgb, var(--aboutbrowser-ui-layer1-bg), var(--aboutbrowser-ui-layer1-fg) 50%)
+  }
+
+  & .info .name .id {
+    color: color-mix(in srgb, var(--aboutbrowser-ui-layer1-bg), var(--aboutbrowser-ui-layer1-fg) 50%)
+  }
+
+  & .controls {
+    flex: 0 0 2.5em;
+    display: flex;
+    flex-direction: row;
+    margin: 0 1em;
+    margin-bottom: 0.5em;
+    align-items: center;
+  }
+
+  & .controls button {
+    background-color: transparent;
+    border: 1px solid;
+    border-color: color-mix(in srgb, var(--aboutbrowser-ui-layer1-bg), var(--aboutbrowser-ui-layer1-fg) 50%);
+    border-radius: 4px;
+    color: var(--aboutbrowser-ui-layer1-fg);
+    height: 2em;
+  }
+}
+
+.expand {flex: 1}

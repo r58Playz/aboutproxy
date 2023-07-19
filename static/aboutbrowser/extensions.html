@@ -7,13 +7,40 @@
     <title>Extensions</title>
     <link href="/roboto.css" rel="stylesheet" type="text/css" />
     <link href="ui.css" rel="stylesheet" type="text/css" />
+    <link href="extensions.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
-    <div class="container containerPadding">
-        <p>
-            Soon.
-        </p>
+    <div class="container">
+        <div class="topBar">
+            <img class="icon" src="/aboutbrowser/darkfavi.png" />
+            <div class="title">Extensions</div>
+            <div class="searchContainer"><input class="search" placeholder="Don't search extensions" /></div>
+        </div>
+        <div class="content">
+            <div class="actualContent">
+                <div class="extensionViewWrapper">
+                    <div class="tileView extensionView" id="extensions">
+                        <div class="tileItem">
+                            <div class="info">
+                                <img class="icon" src="/aboutbrowser/darkfavi.png" />
+                                <div class="name">
+                                    <span>Test Extension <span class="version">Version</span></span>
+                                    <span class="desc">Description</span>
+                                    <div class="expand"></div>
+                                    <span class="id">ID: abcdefghijklmnopqrstuvwxyz</span>
+                                </div>
+                            </div>
+                            <div class="controls">
+                                <button>Remove</button>
+                                <div class="expand"></div>
+                                <span>Enabled: <input type="checkbox" /></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div>
     </div>
 </body>
 
