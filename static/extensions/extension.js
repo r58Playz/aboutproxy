@@ -9,7 +9,7 @@ class Extension {
     this.enabled = true;
   }
 
-  static async #getIdFromUInt8Array(publicKey) {
+  static async getIdFromUInt8Array(publicKey) {
     let hash = await CH.createHash("sha256")
       .update(publicKey) // *should* work since Filer.Buffer is a UInt8Array in disguise
       .digest('hex');
@@ -50,7 +50,7 @@ class Extension {
     return Extension.#mpdecimal(crx_file_header.signed_header_data.crx_id); 
   }
 
-  static async #extractBuffer(buffer, fs, id) {
+  static async extractBuffer(buffer, fs, id) {
     let zipper = new JSZip();
     await zipper.loadAsync(buffer, {createFolders: true});
     let toExtractArr = [];
@@ -74,9 +74,9 @@ class Extension {
     let buffer = Filer.Buffer.from(await blob.arrayBuffer());
     let fs = this.resources.fs;
 
-    const id = await Extension.#getIdFromUInt8Array(Filer.Buffer.from(name));
+    const id = await Extension.getIdFromUInt8Array(Filer.Buffer.from(name));
 
-    await Extension.#extractBuffer(buffer, fs, id);
+    await Extension.extractBuffer(buffer, fs, id);
 
     this.manifest = JSON.parse(await this.resources.fs.readFile("/"+id+"/manifest.json", 'utf8'));
     this.id = id;
@@ -91,7 +91,7 @@ class Extension {
     const id = Extension.#getIdFromCrxV3(buffer);
 
     // Now we extract the CRX to it's respective folder on the fs
-    await Extension.#extractBuffer(buffer, fs, id);
+    await Extension.extractBuffer(buffer, fs, id);
 
     this.manifest = JSON.parse(await this.resources.fs.readFile("/"+id+"/manifest.json", 'utf8'));
     this.id = id;
@@ -110,30 +110,19 @@ class Extension {
       this.type = "theme";
       this.injector = new ExtensionInjectorDummy();
       this.theme = new Theme(this.manifest, this.id);
-      this.plugin = new PluginDummy();
-    } else if(this.manifest["aboutbrowserPluginScript"]) {
-      this.type = "plugin";
-      this.injector = new ExtensionInjectorDummy();
-      this.theme = new ThemeDummy();
-      this.plugin = new Plugin();
-    } else {
+    } 
       this.type = "extension";
 
       if(this.manifest["manifest_version"] == 2) this.injector = new ExtensionInjectorMV2(this);
       else if(this.manifest["manifest_version"] == 3) this.injector = new ExtensionInjectorMV3(this);
       else this.injector = new ExtensionInjectorDummy();
       this.theme = new ThemeDummy(); 
-      this.plugin = new PluginDummy();
       this.injector.parseManifest();
     }
   }
 
   inject() {
     this.theme.inject();
-  }
-
-  async injectPlugin() {
-    await this.plugin.inject();
   }
 
   injectTheme(url, frame) {

@@ -1,0 +1,7 @@
+{
+  "manifest_version": 2,
+  "name": "Test Extension: Plugin",
+  "version": "v1.0.0-femboy",
+  "description": "AboutBrowser test extension: plugin system",
+  "aboutbrowserPluginScript": "main.js"
+}

@@ -1,6 +1,7 @@
 // todo private methods+variables maybe?
 class AboutBrowser {
-    constructor() {
+    constructor(plugins) {
+        this.plugins = plugins;
         this.resourcesProtocol = "aboutbrowser://"
         this.resourcesPrefix = window.location.origin + "/aboutbrowser/";
         this.titleSuffix = " - AboutBrowser";
@@ -14,7 +15,7 @@ class AboutBrowser {
         this.extensions = new ExtensionsController();
         
         // initialize sw
-        proxyUsing("https://r58playz.dev", "UV", () => {});
+        proxyUsing("https://nya.r58playz.dev", "UV", () => {});
 
         this.bookmarks = new Bookmarks(document.querySelector(".bookmarksContainer"));
         this.bookmarks.load();
@@ -77,6 +78,7 @@ class AboutBrowser {
         // it used to be:
         // if(probeForChrome()) unfuckChrome();
         // sadly got removed
+
         this.eventsInit();
 
         this.asyncInit();
@@ -85,7 +87,6 @@ class AboutBrowser {
     async asyncInit() {
         this.extensions = new ExtensionsController(this);
         await this.extensions.setup();
-        await this.extensions.injectPlugins();
 
         this.reapplyTheme();
 
@@ -201,7 +202,9 @@ class AboutBrowser {
     }
 }
 
-function init() {
-    var aboutbrowser = new AboutBrowser();
+async function init(injectNode) {
+    let plugins = new AboutBrowserPlugins();
+    await plugins.inject();
+    let aboutbrowser = new AboutBrowser(plugins);
     window.aboutbrowser = aboutbrowser;
 }

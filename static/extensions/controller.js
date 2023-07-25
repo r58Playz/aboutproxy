@@ -124,12 +124,6 @@ class ExtensionsController {
     this.extensions[this.browser.settings.getSetting("themeId")].injectTheme(url, iframe);
   }
 
-  async injectPlugins() {
-    for(const extension of Object.values(this.extensions)) {
-      await extension.injectPlugin();
-    }
-  }
-
   async injectDOMContentLoaded(url, iframe) {
     await this.ensureExtensionsAreReady();
     for(const extension of Object.values(this.extensions)) {
