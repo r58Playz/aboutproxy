@@ -7,19 +7,19 @@ class AboutBrowserPlugins {
   }
 
   get installedPlugins() {
-    return JSON.parse(window.localstorage["aboutbrowser-plugins-installed"]) || [];
+    return JSON.parse(window.localStorage["aboutbrowser-plugins-installed"] || "[]") || [];
   }
 
   set installedPlugins(newVal) {
-    window.localstorage["aboutbrowser-plugins-installed"] = JSON.stringify(newVal || []);
+    window.localStorage["aboutbrowser-plugins-installed"] = JSON.stringify(newVal || []);
   }
 
   get enabledPlugins() {
-    return JSON.parse(window.localstorage["aboutbrowser-plugins-enabled"]) || [];
+    return JSON.parse(window.localStorage["aboutbrowser-plugins-enabled"] || "[]") || [];
   }
 
   set enabledPlugins(newVal) {
-    window.localstorage["aboutbrowser-plugins-enabled"] = JSON.stringify(newVal || []);
+    window.localStorage["aboutbrowser-plugins-enabled"] = JSON.stringify(newVal || []);
   }
 
   async init() {

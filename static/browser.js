@@ -204,6 +204,7 @@ class AboutBrowser {
 
 async function init(injectNode) {
     let plugins = new AboutBrowserPlugins();
+    await plugins.init();
     await plugins.inject();
     let aboutbrowser = new AboutBrowser(plugins);
     window.aboutbrowser = aboutbrowser;
