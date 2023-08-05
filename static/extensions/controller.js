@@ -19,6 +19,7 @@ class ExtensionsController {
     let enabledThemeId = this.browser.settings.getSetting("themeId");
 
     if(installedExtensions.includes("bdddhkcpnpcaggeblinmcffckoihfdia") && !this.#exists("/bdddhkcpnpcaggeblinmcffckoihfdia")) installedExtensions.splice(installedExtensions.indexOf("bdddhkcpnpcaggeblinmcffckoihfdia"), 1);
+    if(!installedExtensions.includes("bdddhkcpnpcaggeblinmcffckoihfdia") && this.#exists("/bdddhkcpnpcaggeblinmcffckoihfdia")) await ((this.resources.regularFs.Shell()).promises).rm("bdddhkcpnpcaggeblinmcffckoihfdia", {recursive:true})
     if(!installedExtensions.includes("bdddhkcpnpcaggeblinmcffckoihfdia")) await this.installFromUnpackedZipBlob(await fetch("/themes/chrome_dark.zip").then(r=>r.blob()), "aboutproxy-bad-theme");
 
     for (const id of installedExtensions) {
