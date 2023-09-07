@@ -71,7 +71,7 @@ class ExtensionInjectorMV2 extends ExtensionInjector {
       }
     }
 
-    let code = "(()=>{/*aboutbrowserExtensionId="+this.extension.id+"*/"+jsToInject.join(";/*aboutbrowserExtensionInjectedScriptSeparator*/")+"})();";
+    let code = "(()=>{/*aboutBrowserExtensionApisSeparator*//*aboutbrowserExtensionId="+this.extension.id+"*/"+jsToInject.join(";/*aboutbrowserExtensionInjectedScriptSeparator*/")+"})();";
     let el = document.createElement("script");
     el.innerText = code;
     frame.contentWindow.document.head.appendChild(el);

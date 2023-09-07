@@ -48,8 +48,8 @@ span {
     background-color: var(--aboutbrowser-ui-search-bg);
     color: var(--aboutbrowser-ui-search-fg);
     height: 3em;
-    width: 680px;
-    flex-grow: 0;
+    flex: 1 1 680px;
+    margin: 0 3em;
     padding-right: 1em;
     border-radius: 49px;
     padding: 0 1em;
@@ -64,7 +64,7 @@ span {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    flex-grow: 1;
+    flex: 1;
 }
 
 .content {

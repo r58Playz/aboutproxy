@@ -2,6 +2,7 @@ class ExtensionsController {
   constructor(browser) {
     this.browser = browser;
     this.extensions = {}; //id: Extension
+    this.internalThemeId = "bdddhkcpnpcaggeblinmcffckoihfdia";
   }
 
   async #exists(path) {
@@ -18,11 +19,11 @@ class ExtensionsController {
     let installedExtensions = JSON.parse(this.browser.settings.getSetting("installedExtensions"));
     let enabledThemeId = this.browser.settings.getSetting("themeId");
 
-    if(installedExtensions.includes("bdddhkcpnpcaggeblinmcffckoihfdia") && await !this.#exists("/bdddhkcpnpcaggeblinmcffckoihfdia")) installedExtensions.splice(installedExtensions.indexOf("bdddhkcpnpcaggeblinmcffckoihfdia"), 1);
-    if(!installedExtensions.includes("bdddhkcpnpcaggeblinmcffckoihfdia") && await this.#exists("/bdddhkcpnpcaggeblinmcffckoihfdia")) { 
-      await ((new this.resources.regularFs.Shell()).promises).rm("/bdddhkcpnpcaggeblinmcffckoihfdia", {recursive:true})
+    if(installedExtensions.includes(this.internalThemeId) && await !this.#exists(`/${this.internalThemeId}`)) installedExtensions.splice(installedExtensions.indexOf(this.internalThemeId), 1);
+    if(!installedExtensions.includes(this.internalThemeId) && await this.#exists(`/${this.internalThemeId}`)) {
+      await ((new this.resources.regularFs.Shell()).promises).rm(`/${this.internalThemeId}`, {recursive:true})
     }
-    if(!installedExtensions.includes("bdddhkcpnpcaggeblinmcffckoihfdia")) await this.installFromUnpackedZipBlob(await fetch("/themes/chrome_dark.zip").then(r=>r.blob()), "aboutproxy-bad-theme");
+    if(!installedExtensions.includes(this.internalThemeId)) await this.installFromUnpackedZipBlob(await fetch("/themes/chrome_dark.zip").then(r=>r.blob()), "aboutproxy-bad-theme");
 
     for (const id of installedExtensions) {
       let ext = new Extension(this);
@@ -35,7 +36,7 @@ class ExtensionsController {
       }
       if(disabledExtensions.includes(id)) ext.enabled = false;
     }
-    Extension.internalThemeExtension = this.extensions["bdddhkcpnpcaggeblinmcffckoihfdia"];
+    Extension.internalThemeExtension = this.extensions[this.internalThemeId];
     this.extensionsReady = true;
   }
 
@@ -106,7 +107,16 @@ class ExtensionsController {
   getExtensionMetadata() {
     let metadata = [];
     for (const extension of Object.entries(this.extensions)) {
-      metadata.push({id: extension[0], name: extension[1].manifest.name, type: extension[1].type, enabled: extension[1].enabled});
+      metadata.push({
+        id: extension[0],
+        name: extension[1].manifest.name,
+        version: extension[1].manifest.version,
+        description: extension[1].description || "",
+        type: extension[1].type,
+        enabled: extension[1].enabled,
+        internal: extension[0] == this.internalThemeId, /* this is for future internal extensions I may add */
+        internalTheme: extension[0] == this.internalThemeId /* this is so users can't accidentally disable the one internal theme */
+      });
     }
     return metadata;
   }

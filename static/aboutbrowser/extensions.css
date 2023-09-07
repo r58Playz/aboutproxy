@@ -61,7 +61,7 @@
   & .controls button {
     background-color: transparent;
     border: 1px solid;
-    border-color: color-mix(in srgb, var(--aboutbrowser-ui-layer1-bg), var(--aboutbrowser-ui-layer1-fg) 50%);
+    border-color: color-mix(in srgb, var(--aboutbrowser-ui-layer1-bg), var(--aboutbrowser-ui-layer1-fg) 10%);
     border-radius: 4px;
     color: var(--aboutbrowser-ui-layer1-fg);
     height: 2em;
