@@ -19,7 +19,7 @@ class ExtensionsController {
     let installedExtensions = JSON.parse(this.browser.settings.getSetting("installedExtensions"));
     let enabledThemeId = this.browser.settings.getSetting("themeId");
 
-    if(installedExtensions.includes(this.internalThemeId) && await !this.#exists(`/${this.internalThemeId}`)) installedExtensions.splice(installedExtensions.indexOf(this.internalThemeId), 1);
+    if(installedExtensions.includes(this.internalThemeId) && !(await this.#exists(`/${this.internalThemeId}`))) installedExtensions.splice(installedExtensions.indexOf(this.internalThemeId), 1);
     if(!installedExtensions.includes(this.internalThemeId) && await this.#exists(`/${this.internalThemeId}`)) {
       await ((new this.resources.regularFs.Shell()).promises).rm(`/${this.internalThemeId}`, {recursive:true})
     }
