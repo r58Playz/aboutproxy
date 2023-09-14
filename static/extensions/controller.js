@@ -15,6 +15,7 @@ class ExtensionsController {
   async setup() {
     // i realize that now i could have just done this for ExtensionResources but it's fine
     this.resources = await ExtensionResources.new();
+    this.themeExtensions = [];
     let disabledExtensions = JSON.parse(this.browser.settings.getSetting("disabledExtensions"));
     let installedExtensions = JSON.parse(this.browser.settings.getSetting("installedExtensions"));
     let enabledThemeId = this.browser.settings.getSetting("themeId");
@@ -30,7 +31,8 @@ class ExtensionsController {
       await ext.readFromFilerFs(id);
       ext.init();
       this.extensions[id] = ext;
-      if(ext.type === "theme") {
+      if(ext.type == "theme") {
+        this.themeExtensions.push(id);
         if(id !== enabledThemeId) ext.enabled = false;
         continue;
       }
@@ -118,7 +120,7 @@ class ExtensionsController {
         internalTheme: extension[0] == this.internalThemeId /* this is so users can't accidentally disable the one internal theme */
       });
     }
-    return metadata;
+    return {extensions: metadata, themeExtensions: this.themeExtensions};
   }
 
   setCurrentTheme(id) {
@@ -140,14 +142,14 @@ class ExtensionsController {
   async injectDOMContentLoaded(url, iframe) {
     await this.ensureExtensionsAreReady();
     for(const extension of Object.values(this.extensions)) {
-      extension.injectDOMContentLoaded(url, iframe);
+      if(extension.enabled) extension.injectDOMContentLoaded(url, iframe);
     }
   }
 
   async injectLoaded(url, iframe) {
     await this.ensureExtensionsAreReady();
     for(const extension of Object.values(this.extensions)) {
-      extension.injectLoaded(url, iframe);
+      if(extension.enabled) extension.injectLoaded(url, iframe);
     }
   }
 }

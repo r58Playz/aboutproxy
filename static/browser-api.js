@@ -55,6 +55,7 @@ window.addEventListener("message", (event) => {
         window.aboutbrowser.extensions.setExtensionEnabled(msg.id, msg.enabled);
     } else if (msg.type === "setCurrentTheme") {
         console.debug("recieved setCurrentTheme")
-        window.aboutbrowser.extensions.setCurrentTheme(msg.id)
+        const id = msg.id == "default" ? window.aboutbrowser.extensions.internalThemeId : msg.id;
+        window.aboutbrowser.extensions.setCurrentTheme(id);
     }
 })

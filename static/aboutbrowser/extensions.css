@@ -9,7 +9,24 @@
   margin-top: 2em;
   margin-left: 150px;
   margin-right: 150px;
-  flex: 0 1 1200px;
+  flex: 0 1 1400px;
+}
+
+.extensionViewButtons {
+  display: flex;
+  flex-direction: row;
+  padding: 1em;
+  column-gap: 1em;
+  & button, & #fileInput::file-selector-button {
+    background-color: var(--aboutbrowser-ui-layer1-bg);
+    color: var(--aboutbrowser-ui-layer1-fg);
+    padding: 0.5em;
+    border: none;
+    border-radius: 4px;
+  }
+  & #fileInput {
+    color: var(--aboutbrowser-ui-layer0-fg)
+  }
 }
 
 .extensionView .tileItem {
@@ -65,6 +82,9 @@
     border-radius: 4px;
     color: var(--aboutbrowser-ui-layer1-fg);
     height: 2em;
+    &:disabled {
+      color: color-mix(in srgb, var(--aboutbrowser-ui-layer1-bg), var(--aboutbrowser-ui-layer1-fg) 50%);
+    }
   }
 }
 

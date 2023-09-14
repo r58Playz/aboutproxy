@@ -1,7 +1,7 @@
 function extensionListCallback(msg) {
-  let data = JSON.parse(msg.data);
+  let {extensions} = JSON.parse(msg.data);
   document.querySelector("#extensionList").innerHTML = '';
-  for(const extension of data) {
+  for(const extension of extensions) {
     let el = document.createElement("option");
     el.innerText = "\"" + extension.name + "\" type: " + extension.type + " enabled: " + extension.enabled;
     el.value = extension.id;

@@ -107,16 +107,21 @@ class Extension {
 
   init() {
     this.theme = new ThemeDummy(); 
+
     if(this.manifest["theme"]) {
       this.type = "theme";
       this.injector = new ExtensionInjectorDummy();
       this.theme = new Theme(this.manifest, this.id);
+      this.injector.parseManifest();
+      return;
     } 
+
     this.type = "extension";
 
     if(this.manifest["manifest_version"] == 2) this.injector = new ExtensionInjectorMV2(this);
-    else if(this.manifest["manifest_version"] == 3) this.injector = new ExtensionInjectorMV3(this);
+    // else if(this.manifest["manifest_version"] == 3) this.injector = new ExtensionInjectorMV3(this); // TODO
     else this.injector = new ExtensionInjectorDummy();
+
     this.injector.parseManifest();
   }
 

@@ -48,7 +48,7 @@ span {
     background-color: var(--aboutbrowser-ui-search-bg);
     color: var(--aboutbrowser-ui-search-fg);
     height: 3em;
-    flex: 1 1 680px;
+    flex: 0 1 680px; /* took like 10 tries to fix this */
     margin: 0 3em;
     padding-right: 1em;
     border-radius: 49px;
