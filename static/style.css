@@ -4,9 +4,9 @@ body {
   height: 100%;
   color-scheme: dark;
 }
-.container {
-  font-family: Roboto, sans-serif;
-}
+
+/* i'm lazy */
+* {font-family: Roboto, sans-serif}
 
 .browserContainer {
   width: 100%;
@@ -107,7 +107,7 @@ footer {
   position:absolute;
   width: 2em;
   height: 2em;
-  transform: translate(-3.25em, 0.25em);
+  transform: translate(-3.25em, 2px);
   display: flex;
   justify-content:center;
   align-items:center;

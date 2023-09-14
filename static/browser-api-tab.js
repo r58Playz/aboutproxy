@@ -19,8 +19,18 @@ window.addEventListener("message", (event) => {
     } else if (msg.type === "historyDomainViewCounts") {
         console.debug("recieved historyDomainViewCounts - redacted because it may be giant");
         historyDomainViewCountsCallback(msg);
+    } else if (msg.type === "reloadExtensions") {
+        console.debug("recieved reloadExtensions");
+        reloadExtensionsCallback(msg);
     } else if (msg.type === "extensionList") {
         console.debug("recieved extensionList - redacted because it may be giant");
         extensionListCallback(msg);
     }
 })
+
+function settingSetCallback() {}
+function settingValueCallback() {}
+function reloadBookmarksCallback() {}
+function historyDomainViewCountsCallback() {}
+function reloadExtensionsCallback() {}
+function extensionListCallback() {}

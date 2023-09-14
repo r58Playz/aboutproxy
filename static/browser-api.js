@@ -41,21 +41,26 @@ window.addEventListener("message", (event) => {
         console.debug("recieved importExtensionCrx");
         (async ()=>{
             window.aboutbrowser.extensions.installFromCrxBlob(await fetch(msg.base64).then(r=>r.blob()));
+            sendMessage({ type: "reloadExtensions" }, sender);
         })();
     } else if (msg.type === "importExtensionZip") {
         console.debug("recieved importExtensionZip");
         (async ()=>{
             window.aboutbrowser.extensions.installFromUnpackedZipBlob(await fetch(msg.base64).then(r=>r.blob()), msg.name);
+            sendMessage({ type: "reloadExtensions" }, sender);
         })();
     } else if (msg.type === "removeExtension") {
         console.debug("recieved removeExtension");
         window.aboutbrowser.extensions.uninstallExtension(msg.id);
+        sendMessage({ type: "reloadExtensions" }, sender);
     } else if (msg.type === "setExtensionEnabled") {
         console.debug("recieved setExtensionEnabled");
         window.aboutbrowser.extensions.setExtensionEnabled(msg.id, msg.enabled);
+        sendMessage({ type: "reloadExtensions" }, sender);
     } else if (msg.type === "setCurrentTheme") {
         console.debug("recieved setCurrentTheme")
         const id = msg.id == "default" ? window.aboutbrowser.extensions.internalThemeId : msg.id;
         window.aboutbrowser.extensions.setCurrentTheme(id);
+        sendMessage({ type: "reloadExtensions" }, sender);
     }
 })

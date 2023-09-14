@@ -7,9 +7,9 @@ currentlySelectedBookmark = null;
 function onclickBookmark(event) {
     el = event.currentTarget;
     if (currentlySelectedBookmark) {
-        currentlySelectedBookmark.removeProperty("data-active");
+        currentlySelectedBookmark.removeAttribute("data-active");
     }
-    el.setProperty("data-active", "true");
+    el.setAttribute("data-active", "true");
     currentlySelectedBookmark = el;
 }
 
