@@ -45,7 +45,12 @@ class ExtensionsController {
   async installFromCrxBlob(blob) {
     let ext = new Extension(this);
     const id = await ext.readFromCrxBlob(blob);
-    ext.init();
+    try {
+      ext.init();
+    } catch(err) {
+      await (new this.resources.regularFs.Shell()).promises.rm(`/${id}`, {recursive:true});
+      throw err;
+    }
     this.extensions[id] = ext;
 
     let installedArray = JSON.parse(this.browser.settings.getSetting("installedExtensions"));
@@ -57,7 +62,12 @@ class ExtensionsController {
   async installFromUnpackedZipBlob(blob, name) {
     let ext = new Extension(this);
     const id = await ext.readFromUnpackedZipBlob(blob, name);
-    ext.init();
+    try {
+      ext.init();
+    } catch(err) {
+      await (new this.resources.regularFs.Shell()).promises.rm(`/${id}`, {recursive:true});
+      throw err;
+    }
     this.extensions[id] = ext;
 
     let installedArray = JSON.parse(this.browser.settings.getSetting("installedExtensions"));
