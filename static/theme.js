@@ -134,7 +134,7 @@ class Theme {
     this.aboutBrowserColorToCSSMap = {
       accent_color: "--aboutbrowser-ui-accent",
       ui_search_background: "--aboutbrowser-ui-search-bg",
-      ui_search_foreground: "--aboutbrouser-ui-search-fg",
+      ui_search_foreground: "--aboutbrowser-ui-search-fg",
       ui_toolbar_background: "--aboutbrowser-ui-toolbar-bg",
       ui_toolbar_foreground: "--aboutbrowser-ui-toolbar-fg",
       ui_sidebar_background: "--aboutbrowser-ui-sidebar-bg",
@@ -164,19 +164,27 @@ class Theme {
     }
   }
   
-  async inject() {
+  inject() {
     let style = document.documentElement.style;
-    let css = await this.getCSSForTheme(false);
+    let css = this.getCSSForTheme(false);
     for(const directive of css) {
       style.setProperty(directive[0], directive[1]);
     }
     this.#removeAllAboutbrowserTagsFromEl(document.documentElement);
     for(const flag of this.flags) document.documentElement.setAttribute("data-aboutbrowser-"+flag, "");
+    if(this.isAboutBrowserTheme) return;
+    
+    // Apply default styling if this is not an aboutbrowser theme
+    css = Extension.internalThemeExtension.theme.getCSSForTheme(false);
+    for(const directive of css) {
+      if(!directive[0].includes('--aboutbrowser-ui')) continue;
+      style.setProperty(directive[0], directive[1]);
+    }
   }
 
-  async injectIntoFrame(frame, isNtp) {
+  injectIntoFrame(frame, isNtp) {
     let style = frame.contentWindow.document.documentElement.style;
-    let css = await this.getCSSForTheme(isNtp);
+    let css = this.getCSSForTheme(isNtp);
     for(const directive of css) {
       style.setProperty(directive[0], directive[1]);
     }
@@ -186,14 +194,14 @@ class Theme {
     if(this.isAboutBrowserTheme || isNtp) return;
     
     // Apply default styling if this is not an aboutbrowser theme
-    css = await Extension.internalThemeExtension.theme.getCSSForTheme(isNtp);
+    css = Extension.internalThemeExtension.theme.getCSSForTheme(isNtp);
     for(const directive of css) {
       if(!directive[0].includes('--aboutbrowser-ui')) continue;
       style.setProperty(directive[0], directive[1]);
     }
   }
 
-  async getCSSForTheme(isNtp) {
+  getCSSForTheme(isNtp) {
     let themeCSS = [];
 
     if(this.isAboutBrowserTheme) {
@@ -210,14 +218,7 @@ class Theme {
     }
 
     for(const image of Object.entries(this.imageToCSSMap)) {
-      // can't intercept these requests with an SW so guess i'm fetching it here and turning it into a data url
-      try {
-        const binary = await this.extension.controller.resources.fs.readFile(`/${this.extension.id}/${this.imageMap[image[0]]}`);
-        const b64 = binary.toString('base64');
-        themeCSS.push([image[1], `url(data:image/png;base64,${b64})`]);
-      } catch {
-        console.debug(`skipping image "${image[0]}"`);
-      }
+      themeCSS.push([image[1], `url(/extension/${this.extension.id}/${this.imageMap[image[0]]})`]);
     }
 
     return themeCSS;

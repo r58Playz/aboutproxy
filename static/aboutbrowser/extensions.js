@@ -15,6 +15,7 @@ document.querySelector("#loadAsCrx").addEventListener("click", async ()=>{
 
 async function extensionListCallback(msg) {
   const {extensions, themeExtensions} = JSON.parse(msg.data);
+  console.debug("current themeExtensions: ", themeExtensions);
   document.querySelector("#extensions").innerHTML = '';
   for(const extension of extensions) {
     let extIcon = "/aboutbrowser/darkfavi.png";

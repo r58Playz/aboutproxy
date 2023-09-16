@@ -44,9 +44,11 @@
 
 #recents {
     padding-top: 2em;
-    display: grid;
-    grid-template-columns: 6em 6em 6em 6em 6em;
-    grid-template-rows: 7em 7em;
+    display: flex;
+    width: 34em;
+    column-gap: 1em;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .recent {
@@ -57,6 +59,8 @@
     padding: 0.5em;
     border-radius: 0.5em;
     transition: background-color 0.1s linear;
+    width: 6em;
+    height: 7em;
 }
 
 .recent:hover {
@@ -92,6 +96,16 @@
     font-size: 12px;
 }
 
+[data-aboutbrowser-theme-use-image-for-ntp-bg=""] .recent span {
+    background-color: color-mix(in srgb, var(--aboutbrowser-ui-bg), var(--aboutbrowser-frame-bg) 25%);
+    padding: 2px 8px;
+    border-radius: 16px;
+}
+
+[data-aboutbrowser-theme-use-image-for-ntp-bg=""] .recent:active span {
+    background-color: color-mix(in srgb, var(--aboutbrowser-ui-bg), var(--aboutbrowser-frame-bg) 45%);
+}
+
 .themedBtn {
     background-color: transparent;
     border: none;
@@ -117,4 +131,5 @@
 [data-aboutbrowser-theme-use-image-for-ntp-bg=""] body {
     background: var(--aboutbrowser-image-ui-bg) no-repeat;
     background-position: center bottom;
+    background-size: cover;
 }

@@ -25,6 +25,9 @@ window.addEventListener("message", (event) => {
     } else if (msg.type === "extensionList") {
         console.debug("recieved extensionList - redacted because it may be giant");
         extensionListCallback(msg);
+    } else if (msg.type === "branding") {
+        console.debug("recieved branding");
+        brandingCallback(msg);
     }
 })
 
@@ -34,3 +37,4 @@ function reloadBookmarksCallback() {}
 function historyDomainViewCountsCallback() {}
 function reloadExtensionsCallback() {}
 function extensionListCallback() {}
+function brandingCallback() {}

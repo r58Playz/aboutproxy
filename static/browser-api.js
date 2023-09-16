@@ -64,5 +64,8 @@ window.addEventListener("message", (event) => {
         const id = msg.id == "default" ? window.aboutbrowser.extensions.internalThemeId : msg.id;
         window.aboutbrowser.extensions.setCurrentTheme(id);
         sendMessage({ type: "reloadExtensions" }, sender);
+    } else if (msg.type === "getBranding") {
+        console.debug("recieved getBranding");
+        sendMessage({ type: "branding", branding: window.aboutbrowser.branding }, sender);
     }
 })

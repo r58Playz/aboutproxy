@@ -125,16 +125,16 @@ class Extension {
     this.injector.parseManifest();
   }
 
-  async inject() {
-    await this.theme.inject();
+  inject() {
+    this.theme.inject();
   }
 
-  async injectTheme(url, frame) {
-    await this.theme.injectIntoFrame(frame, url === this.controller.browser.settings.getSetting("startUrl"));
+  injectTheme(url, frame) {
+    this.theme.injectIntoFrame(frame, url === this.controller.browser.settings.getSetting("startUrl"));
   }
 
-  async injectDOMContentLoaded(url, frame) {
-    await this.injectTheme(url, frame);
+  injectDOMContentLoaded(url, frame) {
+    this.injectTheme(url, frame);
     this.injector.injectDOMContentLoaded(url, frame);
   }
 

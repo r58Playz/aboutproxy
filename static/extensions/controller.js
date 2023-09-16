@@ -56,7 +56,10 @@ class ExtensionsController {
     let installedArray = JSON.parse(this.browser.settings.getSetting("installedExtensions"));
     installedArray.push(id);
     this.browser.settings.setSetting("installedExtensions", JSON.stringify(installedArray));
-    if(ext.type === "theme") this.setExtensionEnabled(id, false);
+    if(ext.type === "theme") {
+      this.setExtensionEnabled(id, false);
+      this.themeExtensions.push(id);
+    }
   }
 
   async installFromUnpackedZipBlob(blob, name) {
@@ -73,7 +76,10 @@ class ExtensionsController {
     let installedArray = JSON.parse(this.browser.settings.getSetting("installedExtensions"));
     installedArray.push(id);
     this.browser.settings.setSetting("installedExtensions", JSON.stringify(installedArray));
-    if(ext.type === "theme") this.setExtensionEnabled(id, false);
+    if(ext.type === "theme") {
+      this.setExtensionEnabled(id, false);
+      this.themeExtensions.push(id);
+    }
   }
 
   setExtensionEnabled(id, enabled) {
@@ -109,6 +115,9 @@ class ExtensionsController {
       let disabledExtensions = JSON.parse(this.browser.settings.getSetting("disabledExtensions"));
       disabledExtensions.splice(disabledExtensions.indexOf(id), 1);
       this.browser.settings.setSetting("disabledExtensions", JSON.stringify(disabledExtensions));
+    }
+    if(this.extensions[id].type === "theme") {
+      this.themeExtensions.splice(this.themeExtensions.indexOf(id), 1);
     }
     let installedExtensions = JSON.parse(this.browser.settings.getSetting("installedExtensions"));
     installedExtensions.splice(installedExtensions.indexOf(id), 1);
@@ -148,12 +157,12 @@ class ExtensionsController {
     this.browser.reapplyTheme();
   }
 
-  async injectTheme() {
-    await this.extensions[this.browser.settings.getSetting("themeId")].inject();
+  injectTheme() {
+    this.extensions[this.browser.settings.getSetting("themeId")].inject();
   }
 
-  async injectThemeIntoFrame(url, iframe) {
-    await this.extensions[this.browser.settings.getSetting("themeId")].injectTheme(url, iframe);
+  injectThemeIntoFrame(url, iframe) {
+    this.extensions[this.browser.settings.getSetting("themeId")].injectTheme(url, iframe);
   }
 
   async injectDOMContentLoaded(url, iframe) {

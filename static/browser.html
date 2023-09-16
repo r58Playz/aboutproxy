@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
+  <meta name="description" content="Chrome in your browser.">
   <script src="helpers.js"></script>
   <!-- ******** CSS ******** -->
   <link href="roboto.css" rel="stylesheet" type="text/css" />
@@ -81,7 +82,7 @@
       <button class="navbarBtn" id="browserReload" onclick="window.aboutbrowser.handleReload();">
         <span class="material-symbols-outlined">refresh</span>
       </button>
-      <input class="navbarUrl" id="browserUrl" autocomplete="off"></input>
+      <input class="navbarUrl" id="browserUrl" autocomplete="off" aria-label="Browser URL"></input>
       <div class="bookmarksBtnWrapper">
         <button class="navbarBtn bookmarksBtn" id="browserBookmarks" onclick="window.aboutbrowser.handleBookmarks();">
           <span class="material-symbols-outlined">star</span>
@@ -114,7 +115,7 @@
         </button>
         <div class="sep"></div>
         <button onclick="window.aboutbrowser.handleSettingsCtxMenu('about');">
-          <span class="menuIcon"><span class="placeholder"></span></span><span class="title">About AboutBrowser</span>
+          <span class="menuIcon"><span class="placeholder"></span></span><span class="title">About ${name}</span>
         </button>
       </div>
     </div>

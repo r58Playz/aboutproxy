@@ -15,19 +15,20 @@
 <body>
     <div class="container">
         <div id="content">
-            <h1>AboutBrowser</h1>
+            <h1>${name}</h1>
             <input type="text" class="omnibox" autocomplete="off" placeholder="Search or type a URL" id="omnibox">
             <div id="recentsWrapper"><div id="recents"></div></div>
         </div>
         <div class="footerRight">
             <div></div>
-            <span>AboutBrowser 0.8.1</span>
+                <span>${name} ${version}</span>
             <button class="themedBtn" id="browserBack" onclick="openVerHistory();">
                 <span class="material-symbols-outlined">history</span>
             </button>
         </div>
     </div>
     <script src="/browser-api-tab.js"></script>
+    <script src="branding.js"></script>
     <script src="start.js"></script>
 </body>
 

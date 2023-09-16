@@ -1,10 +1,16 @@
 // todo private methods+variables maybe?
 class AboutBrowser {
     constructor(plugins) {
+        this.branding = {
+            name: "AboutBrowser",
+            version: "v0.9.0-dev"
+        }
+        this.addBranding();
+
         this.plugins = plugins;
         this.resourcesProtocol = "aboutbrowser://"
         this.resourcesPrefix = window.location.origin + "/aboutbrowser/";
-        this.titleSuffix = " - AboutBrowser";
+        this.titleSuffix = ` - ${this.branding.name}`;
         this.browserTitle = "New Tab" + this.titleSuffix;
         document.title = this.browserTitle;
 
@@ -14,9 +20,6 @@ class AboutBrowser {
         // initialize themes as early as possible
         this.extensions = new ExtensionsController();
         
-        // initialize sw
-        proxyUsing("https://nya.r58playz.dev", "UV", () => {});
-
         this.bookmarks = new Bookmarks(document.querySelector(".bookmarksContainer"));
         this.bookmarks.load();
 
@@ -79,16 +82,21 @@ class AboutBrowser {
         // if(probeForChrome()) unfuckChrome();
         // sadly got removed
 
+        this.bareClient = new Ultraviolet.BareClient(`${window.location.origin}/bare/`)
+
         this.eventsInit();
 
         this.asyncInit();
     }
 
     async asyncInit() {
+        // prime the serviceworker
+        await new Promise(r=>proxyUsing("https://nya.r58playz.dev", "UV", r));
+
         this.extensions = new ExtensionsController(this);
         await this.extensions.setup();
 
-        await this.reapplyTheme();
+        this.reapplyTheme();
 
         document.querySelector(".container.browserContainer").style.removeProperty("visibility");
     }
@@ -113,10 +121,10 @@ class AboutBrowser {
         return new CustomEvent(name, {detail: detail, bubbles: false, cancelable: cancelable, composed: false});
     }
 
-    async reapplyTheme() {
-        await this.extensions.injectTheme();
+    reapplyTheme() {
+        this.extensions.injectTheme();
         for (const tab of this.tabs.internalList) {
-            await tab.value.reinjectTheme();
+            tab.value.reinjectTheme();
         }
     }
 
@@ -199,6 +207,26 @@ class AboutBrowser {
 
     handleExtensions() {
         this.openTab(this.resourcesProtocol + "extensions");
+    }
+
+    replaceInText(element, pattern, replacement) {
+      for (let node of element.childNodes) {
+        switch (node.nodeType) {
+          case Node.ELEMENT_NODE:
+            this.replaceInText(node, pattern, replacement);
+            break;
+          case Node.TEXT_NODE:
+            node.textContent = node.textContent.replace(pattern, replacement);
+            break;
+          case Node.DOCUMENT_NODE:
+            this.replaceInText(node, pattern, replacement);
+        }
+      }
+    }
+
+    addBranding() {
+        this.replaceInText(document.body, /\${name}/g, this.branding.name);
+        this.replaceInText(document.body, /\${version}/g, this.branding.version);
     }
 }
 
