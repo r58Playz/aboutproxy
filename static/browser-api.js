@@ -40,19 +40,21 @@ window.addEventListener("message", (event) => {
     } else if (msg.type === "importExtensionCrx") {
         console.debug("recieved importExtensionCrx");
         (async ()=>{
-            window.aboutbrowser.extensions.installFromCrxBlob(await fetch(msg.base64).then(r=>r.blob()));
+            await window.aboutbrowser.extensions.installFromCrxBlob(await fetch(msg.base64).then(r=>r.blob()));
             sendMessage({ type: "reloadExtensions" }, sender);
         })();
     } else if (msg.type === "importExtensionZip") {
         console.debug("recieved importExtensionZip");
         (async ()=>{
-            window.aboutbrowser.extensions.installFromUnpackedZipBlob(await fetch(msg.base64).then(r=>r.blob()), msg.name);
+            await window.aboutbrowser.extensions.installFromUnpackedZipBlob(await fetch(msg.base64).then(r=>r.blob()), msg.name);
             sendMessage({ type: "reloadExtensions" }, sender);
         })();
     } else if (msg.type === "removeExtension") {
         console.debug("recieved removeExtension");
-        window.aboutbrowser.extensions.uninstallExtension(msg.id);
-        sendMessage({ type: "reloadExtensions" }, sender);
+        (async ()=>{
+            await window.aboutbrowser.extensions.uninstallExtension(msg.id);
+            sendMessage({ type: "reloadExtensions" }, sender);
+        })();
     } else if (msg.type === "setExtensionEnabled") {
         console.debug("recieved setExtensionEnabled");
         window.aboutbrowser.extensions.setExtensionEnabled(msg.id, msg.enabled);

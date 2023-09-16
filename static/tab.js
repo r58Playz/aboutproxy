@@ -20,8 +20,8 @@ class Tab {
         if(!background) this.browser.chromeTabs.setCurrentTab(this.tabEl);
     }
 
-    reinjectTheme() {
-        this.browser.extensions.injectThemeIntoFrame(this.currentUrl, this.iframe);
+    async reinjectTheme() {
+        await this.browser.extensions.injectThemeIntoFrame(this.currentUrl, this.iframe);
     }
 
     // Needed because you can't listen for DOMContentLoaded from an iframe across navigations
@@ -32,7 +32,7 @@ class Tab {
             self.iframe.contentWindow.addEventListener("DOMContentLoaded", () => { 
                 self.handleOnload();
             });
-            self.iframe.contentWindow.addEventListener("load", () => { self.browser.extensions.injectLoaded(self.currentUrl, self.iframe) });
+            self.iframe.contentWindow.addEventListener("load", async () => { await self.browser.extensions.injectLoaded(self.currentUrl, self.iframe) });
             self.iframe.contentWindow.addEventListener("unload", () => { self.handleUnload() });
         }, 0);
     }
@@ -54,7 +54,6 @@ class Tab {
         }
         this.currentUrl = url;
 
-        this.browser.extensions.injectDOMContentLoaded(this.currentUrl, this.iframe);
 
         // get title of iframe
         var title = this.iframe.contentWindow.document.title;
@@ -72,17 +71,19 @@ class Tab {
 
         var self = this;
         (async (url) => {
+            await self.browser.extensions.injectDOMContentLoaded(self.currentUrl, self.iframe);
             // get favicon of iframe
             var favi = null;
             if(url.startsWith(this.browser.resourcesProtocol)) {
                 favi = getIconNoFallback(self.iframe.contentWindow.document);
             } else if (url != "") {
                 var faviUrl = getIcon(self.iframe.contentWindow.document, new URL(url));
+                console.debug(`checking for icon at "${window.location.origin + baseUrlFor("UV") + encodeUrl(faviUrl, "UV")}"`)
                 var blob = await fetch(window.location.origin + baseUrlFor("UV") + encodeUrl(faviUrl, "UV")).then((r) => r.blob())
                 if (
                     blob != null &&
-                    // for sites that 200 and send some other non-image data instead of 404ing
-                    // LOOKING AT YOU, mercurywork.shop! seriously, what server does this???
+                    /* for sites that 200 and send some other non-image data instead of 404ing
+                       LOOKING AT YOU, mercurywork.shop! seriously, what server does this??? */
                     blob.type.includes("image")
                 ) {
                     favi = await blobToDataUrl(blob); 

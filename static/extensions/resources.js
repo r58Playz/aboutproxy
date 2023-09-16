@@ -23,9 +23,7 @@ class ExtensionResources {
   }
 
   setUpSw() {
-    return window.navigator.serviceWorker.register(
-      "/nohost-sw.js?route=extension&fsName=aboutproxy-extensions",
-      { scope: "/extension" });
+    return window.navigator.serviceWorker.register("/nohost-sw.js?route=extension&fsName=aboutproxy-extensions");
   }
 }
 

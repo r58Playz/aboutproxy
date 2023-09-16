@@ -31,7 +31,7 @@ function encodeUrl(url, proxy) {
 }
 
 function proxyUsingUV(url, callback) {
-    window.navigator.serviceWorker.register('./sw.js').then(() => {
+    window.navigator.serviceWorker.register('./sw.js', {scope: "/service"}).then(() => {
         callback(baseUrlFor("UV") + encodeUrl(url, "UV"));
     });
 }

@@ -1,0 +1,43 @@
+{
+  "manifest_version": 2,
+  "version": "1.0",
+  "name": "Catppuccin AboutBrowser - Mocha Mauve",
+  "theme": {
+    "colors": {
+      "frame": [30, 30, 46],
+      "frame_inactive": [30, 30, 46],
+      "frame_incognito": [69, 71, 90],
+      "frame_incognito_inactive": [69, 71, 90],
+      "bookmark_text": [205, 214, 244],
+      "tab_background_text": [108, 112, 134],
+      "tab_background_text_inactive": [69, 71, 90],
+      "tab_background_text_incognito": [205, 214, 244],
+      "tab_background_text_incognito_inactive": [108, 112, 134],
+      "tab_text": [205, 214, 244],
+      "toolbar": [30, 30, 46],
+      "toolbar_button_icon": [205, 214, 244],
+      "omnibox_text": [245, 224, 220],
+      "omnibox_background": [49, 50, 68],
+      "ntp_background": [30, 30, 46],
+      "ntp_link": [245, 224, 220],
+      "ntp_text": [205, 214, 244],
+      "button_background": [30, 30, 46],
+
+      "accent_color": [203, 166, 247],
+      "ui_search_background": [17, 17, 27],
+      "ui_search_foreground": [205, 214, 244],
+      "ui_sidebar_background": [30, 30, 46],
+      "ui_sidebar_foreground": [205, 214, 244],
+      "ui_toolbar_background": [24, 24, 37],
+      "ui_toolbar_foreground": [205, 214, 244],
+      "ui_sidebar_active_background": [203, 166, 247],
+      "ui_sidebar_active_foreground": [205, 214, 244],
+      "ui_layer1_background": [49, 50, 68],
+      "ui_layer1_foreground": [205, 214, 244]
+    }
+  },
+  "icons": {
+    "128": "icon128.png"
+  },
+  "aboutbrowser": "true"
+}

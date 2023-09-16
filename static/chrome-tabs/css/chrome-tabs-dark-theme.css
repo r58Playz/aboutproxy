@@ -6,6 +6,9 @@
 .chrome-tabs.chrome-tabs-dark-theme {
   background: var(--aboutbrowser-frame-bg);
 }
+[data-aboutbrowser-theme-use-image-for-frame=""] .chrome-tabs.chrome-tabs-dark-theme {
+  background: var(--aboutbrowser-image-frame-bg);
+}
 .chrome-tabs.chrome-tabs-dark-theme .chrome-tab .chrome-tab-background > svg .chrome-tab-geometry {
   fill: var(--aboutbrowser-inactive-tab-bg);
 }

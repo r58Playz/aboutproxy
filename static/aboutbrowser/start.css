@@ -112,3 +112,9 @@
 .themedBtn:active  {
     background-color: color-mix(in srgb, var(--aboutbrowser-ui-bg) var(--aboutbrowser-ui-fg) 25%);
 }
+
+
+[data-aboutbrowser-theme-use-image-for-ntp-bg=""] body {
+    background: var(--aboutbrowser-image-ui-bg) no-repeat;
+    background-position: center bottom;
+}

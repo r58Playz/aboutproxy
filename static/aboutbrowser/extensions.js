@@ -13,11 +13,11 @@ document.querySelector("#loadAsCrx").addEventListener("click", async ()=>{
   sendMessage({ type: "importExtensionCrx", base64: await blobToDataUrl(document.querySelector("#fileInput").files[0]) });
 });
 
-function extensionListCallback(msg) {
+async function extensionListCallback(msg) {
   const {extensions, themeExtensions} = JSON.parse(msg.data);
   document.querySelector("#extensions").innerHTML = '';
   for(const extension of extensions) {
-    let extIcon = "/aboutbrowser/darkfavi.png"
+    let extIcon = "/aboutbrowser/darkfavi.png";
     if(extension.icon) extIcon = extension.icon;
     const extName = extension.name;
     const extVer = extension.version;
@@ -56,6 +56,7 @@ function extensionListCallback(msg) {
 }
 
 function reloadExtensionsCallback() {
+  console.debug("reloading")
   sendMessage({type:"getExtensions"});
 }
 

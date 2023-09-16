@@ -119,6 +119,12 @@ class ExtensionsController {
   getExtensionMetadata() {
     let metadata = [];
     for (const extension of Object.entries(this.extensions)) {
+      let icon = "/aboutbrowser/darkfavi.png";
+      if(extension[1].manifest.icons && Object.keys(extension[1].manifest.icons).length) {
+        const iconPath = extension[1].manifest.icons[Object.keys(extension[1].manifest.icons).sort((a,b)=>b-a)[0]];
+        icon = `/extension/${extension[0]}/${iconPath}`;
+      }
+
       metadata.push({
         id: extension[0],
         name: extension[1].manifest.name,
@@ -127,7 +133,8 @@ class ExtensionsController {
         type: extension[1].type,
         enabled: extension[1].enabled,
         internal: extension[0] == this.internalThemeId, /* this is for future internal extensions I may add */
-        internalTheme: extension[0] == this.internalThemeId /* this is so users can't accidentally disable the one internal theme */
+        internalTheme: extension[0] == this.internalThemeId, /* this is so users can't accidentally disable the one internal theme */
+        icon: icon
       });
     }
     return {extensions: metadata, themeExtensions: this.themeExtensions};
@@ -141,12 +148,12 @@ class ExtensionsController {
     this.browser.reapplyTheme();
   }
 
-  injectTheme() {
-    this.extensions[this.browser.settings.getSetting("themeId")].inject();
+  async injectTheme() {
+    await this.extensions[this.browser.settings.getSetting("themeId")].inject();
   }
 
-  injectThemeIntoFrame(url, iframe) {
-    this.extensions[this.browser.settings.getSetting("themeId")].injectTheme(url, iframe);
+  async injectThemeIntoFrame(url, iframe) {
+    await this.extensions[this.browser.settings.getSetting("themeId")].injectTheme(url, iframe);
   }
 
   async injectDOMContentLoaded(url, iframe) {

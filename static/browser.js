@@ -88,7 +88,7 @@ class AboutBrowser {
         this.extensions = new ExtensionsController(this);
         await this.extensions.setup();
 
-        this.reapplyTheme();
+        await this.reapplyTheme();
 
         document.querySelector(".container.browserContainer").style.removeProperty("visibility");
     }
@@ -113,10 +113,10 @@ class AboutBrowser {
         return new CustomEvent(name, {detail: detail, bubbles: false, cancelable: cancelable, composed: false});
     }
 
-    reapplyTheme() {
-        this.extensions.injectTheme();
+    async reapplyTheme() {
+        await this.extensions.injectTheme();
         for (const tab of this.tabs.internalList) {
-            tab.value.reinjectTheme();
+            await tab.value.reinjectTheme();
         }
     }
 

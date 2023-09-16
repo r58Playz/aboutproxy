@@ -47,7 +47,7 @@ class ThemeDummy {
 }
 
 class Theme {
-  constructor(themeJson) {
+  constructor(themeJson, extension) {
     this.json = themeJson;
     // Sanity check the json
     
@@ -64,19 +64,23 @@ class Theme {
     this.name = themeJson.name;
     this.isAboutBrowserTheme = !!themeJson.aboutbrowser;
     this.colorMap = themeJson.theme.colors;
+    this.imageMap = themeJson.theme.images || {};
     this.flags = [];
     let colorMap = this.colorMap;
 
+    this.extension = extension;
+
     // Sanity check the theme
     let colorMapContains = Object.keys(colorMap);
+    let imageMapContains = Object.keys(this.imageMap);
     for(const k of [
       "frame",
       "toolbar",
-      "tab_text",
-      "tab_background_text"
     ]) if(!colorMapContains.includes(k)) throw new Error("Invalid theme, did not contain "+k);
 
     // Set any fallbacks necessary
+    if(!colorMapContains.includes("tab_text")) colorMap.tab_text = gcp.Grey900; // chrome defaults this to dark, seen in the wild
+    if(!colorMapContains.includes("tab_background_text")) colorMap.tab_background_text = gcp.Grey900; // same for this in the m3 refresh 
     if(!colorMapContains.includes("background_tab")) colorMap.background_tab = colorMap.frame;
     if(!colorMapContains.includes("button_background")) colorMap.button_background = colorMap.frame;
     if(!colorMapContains.includes("ntp_background")) colorMap.ntp_background = colorMap.toolbar;
@@ -89,7 +93,9 @@ class Theme {
     if(!colorMapContains.includes("bookmark_text")) colorMap.bookmark_text = colorMap.tab_text;
 
     // Set flags
-    if(arraysEqual(colorMap.frame, colorMap.toolbar)) this.flags.push("theme-need-tab-contrast")
+    if(arraysEqual(colorMap.frame, colorMap.toolbar)) this.flags.push("theme-need-tab-contrast");
+    if(imageMapContains.includes("theme_frame")) this.flags.push("theme-use-image-for-frame");
+    if(imageMapContains.includes("theme_ntp_background")) this.flags.push("theme-use-image-for-ntp-bg");
     // Check aboutbrowser theme
     if(this.isAboutBrowserTheme) {
       // Sanity check
@@ -138,6 +144,11 @@ class Theme {
       ui_layer1_background: "--aboutbrowser-ui-layer1-bg",
       ui_layer1_foreground: "--aboutbrowser-ui-layer1-fg"
     };
+    // TODO: implement more images
+    this.imageToCSSMap = {
+      theme_frame: "--aboutbrowser-image-frame-bg",
+      theme_ntp_background: "--aboutbrowser-image-ui-bg"
+    }
   }
 
   #rgbArrayToCSSDirective(colorData) {
@@ -153,9 +164,9 @@ class Theme {
     }
   }
   
-  inject() {
+  async inject() {
     let style = document.documentElement.style;
-    let css = this.getCSSForTheme(false);
+    let css = await this.getCSSForTheme(false);
     for(const directive of css) {
       style.setProperty(directive[0], directive[1]);
     }
@@ -163,26 +174,26 @@ class Theme {
     for(const flag of this.flags) document.documentElement.setAttribute("data-aboutbrowser-"+flag, "");
   }
 
-  injectIntoFrame(frame, isNtp) {
+  async injectIntoFrame(frame, isNtp) {
     let style = frame.contentWindow.document.documentElement.style;
-    let css = this.getCSSForTheme(isNtp);
+    let css = await this.getCSSForTheme(isNtp);
     for(const directive of css) {
       style.setProperty(directive[0], directive[1]);
     }
-    this.#removeAllAboutbrowserTagsFromEl(document.documentElement);
-    for(const flag of this.flags) document.documentElement.setAttribute("data-aboutbrowser-"+flag, "");
+    this.#removeAllAboutbrowserTagsFromEl(frame.contentWindow.document.documentElement);
+    for(const flag of this.flags) frame.contentWindow.document.documentElement.setAttribute("data-aboutbrowser-"+flag, "");
 
     if(this.isAboutBrowserTheme || isNtp) return;
     
     // Apply default styling if this is not an aboutbrowser theme
-    css = Extension.internalThemeExtension.theme.getCSSForTheme(isNtp);
+    css = await Extension.internalThemeExtension.theme.getCSSForTheme(isNtp);
     for(const directive of css) {
       if(!directive[0].includes('--aboutbrowser-ui')) continue;
       style.setProperty(directive[0], directive[1]);
     }
   }
 
-  getCSSForTheme(isNtp) {
+  async getCSSForTheme(isNtp) {
     let themeCSS = [];
 
     if(this.isAboutBrowserTheme) {
@@ -196,6 +207,17 @@ class Theme {
       // This allows only aboutbrowser themes to theme internal pages, similar to the default Chrome behavior
       if(!this.isAboutBrowserTheme && !isNtp && color[1].includes('--aboutbrowser-ui')) continue;
       themeCSS.push([color[1], this.#rgbArrayToCSSDirective(this.colorMap[color[0]])]);
+    }
+
+    for(const image of Object.entries(this.imageToCSSMap)) {
+      // can't intercept these requests with an SW so guess i'm fetching it here and turning it into a data url
+      try {
+        const binary = await this.extension.controller.resources.fs.readFile(`/${this.extension.id}/${this.imageMap[image[0]]}`);
+        const b64 = binary.toString('base64');
+        themeCSS.push([image[1], `url(data:image/png;base64,${b64})`]);
+      } catch {
+        console.debug(`skipping image "${image[0]}"`);
+      }
     }
 
     return themeCSS;

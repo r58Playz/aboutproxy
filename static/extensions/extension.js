@@ -111,7 +111,7 @@ class Extension {
     if(this.manifest["theme"]) {
       this.type = "theme";
       this.injector = new ExtensionInjectorDummy();
-      this.theme = new Theme(this.manifest, this.id);
+      this.theme = new Theme(this.manifest, this);
       this.injector.parseManifest();
       return;
     } 
@@ -125,16 +125,16 @@ class Extension {
     this.injector.parseManifest();
   }
 
-  inject() {
-    this.theme.inject();
+  async inject() {
+    await this.theme.inject();
   }
 
-  injectTheme(url, frame) {
-    this.theme.injectIntoFrame(frame, url === this.controller.browser.settings.getSetting("startUrl"));
+  async injectTheme(url, frame) {
+    await this.theme.injectIntoFrame(frame, url === this.controller.browser.settings.getSetting("startUrl"));
   }
 
-  injectDOMContentLoaded(url, frame) {
-    this.injectTheme(url, frame);
+  async injectDOMContentLoaded(url, frame) {
+    await this.injectTheme(url, frame);
     this.injector.injectDOMContentLoaded(url, frame);
   }
 
