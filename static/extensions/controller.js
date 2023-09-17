@@ -24,7 +24,10 @@ class ExtensionsController {
     if(!installedExtensions.includes(this.internalThemeId) && await this.#exists(`/${this.internalThemeId}`)) {
       await ((new this.resources.regularFs.Shell()).promises).rm(`/${this.internalThemeId}`, {recursive:true})
     }
-    if(!installedExtensions.includes(this.internalThemeId)) await this.installFromUnpackedZipBlob(await fetch("/themes/chrome_dark.zip").then(r=>r.blob()), "aboutproxy-bad-theme");
+    if(!installedExtensions.includes(this.internalThemeId)) {
+      await this.installFromUnpackedZipBlob(await fetch("/themes/chrome_dark.zip").then(r=>r.blob()), "aboutproxy-bad-theme");
+      this.setExtensionEnabled(this.internalThemeId, true);
+    }
 
     for (const id of installedExtensions) {
       let ext = new Extension(this);
