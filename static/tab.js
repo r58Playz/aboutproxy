@@ -145,6 +145,7 @@ class Tab {
     
     navigateTo(url, callback) {
         var self = this;
+        // TODO: allow registering custom protocols and clean this up
         if (url == "" || url.startsWith(this.browser.resourcesProtocol)) {
             if (url == "") {
                 url = this.browser.resourcesPrefix + "blank.html";
@@ -154,6 +155,11 @@ class Tab {
             }
             this.iframe.src = url;
             if(callback) callback();
+        } else if (url.startsWith("javascript:")) {
+            let el = this.iframe.contentWindow.document.createElement("script");
+            el.textContent = url;
+            this.iframe.contentWindow.document.querySelector("head").appendChild(el);
+            this.setBrowserAttributes();
         } else if (isUrl(url)) {
             if (hasHttps(url)) {
                 proxyUsing(url, this.browser.settings.getSetting("currentProxyId"), (url) => {

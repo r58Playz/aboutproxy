@@ -54,7 +54,10 @@ class ExtensionInjectorMV2 extends ExtensionInjector {
         if(this.parseChromeGlob(exclude, url)) {globExcludes = true; break};
       }
 
-      if(matches && (cs.include_globs && globMatches) && !excludes && (cs.exclude_globs && !globExcludes)) {
+      if(cs.include_globs) matches = matches && globMatches;
+      if(cs.exclude_globs) excludes = excludes && globExcludes;
+
+      if(matches && !excludes) {
         for(const path of cs.js || []) {
           let code = await this.extension.resources.fs.readFile("/" + this.extension.id + "/" + path, 'utf8');
           // maybe sanitize any URLs in the code?
@@ -71,14 +74,17 @@ class ExtensionInjectorMV2 extends ExtensionInjector {
       }
     }
 
-    let code = "(()=>{/*aboutBrowserExtensionApisSeparator*//*aboutbrowserExtensionId="+this.extension.id+"*/"+jsToInject.join(";/*aboutbrowserExtensionInjectedScriptSeparator*/")+"})();";
+    let code = "(()=>{"+Extension.chromeApis+"/*aboutBrowserExtensionApisSeparator*/"+jsToInject.join(";/*aboutbrowserExtensionInjectedScriptSeparator*/")+"})();";
     let el = document.createElement("script");
-    el.innerText = code;
+    el.textContent = code;
+    el.setAttribute("data-aboutproxy-extid", this.extension.id);
+    el.setAttribute("data-aboutproxy-manifest", JSON.stringify(this.extension.manifest));
     frame.contentWindow.document.head.appendChild(el);
 
-    code = "/*aboutbrowserExtensionId="+this.extension.id+"*/"+cssToInject.join("/*aboutBrowserExtensionInjectedCssSeparator*/");
+    code = cssToInject.join("/*aboutBrowserExtensionInjectedCssSeparator*/");
     el = document.createElement("style");
-    el.innerText = code;
+    el.textContent = code;
+    el.setAttribute("data-aboutproxy-extid", this.extension.id);
     frame.contentWindow.document.head.appendChild(el);
   }
 

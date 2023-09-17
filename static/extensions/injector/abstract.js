@@ -33,7 +33,7 @@ class ExtensionInjector {
     if(this.#parseGlob(s, url)) return true;
 
     let m = this.validateMatchSequence(s);
-    if(m.length != 1 && m[3] === "/*") return this.#parseGlob(m[1]+"://"+m[2], url);
+    if(m.length != 1 && m[3] === "/*") return this.#parseGlob(m[1]+"://"+m[2]+"*", url);
   }
 
   parseChromeGlob(pattern, input) {

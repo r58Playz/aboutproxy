@@ -58,8 +58,6 @@ class AboutBrowser {
             self.openTab();
         })
 
-        this.openTab();
-
         this.addressBar.addEventListener("keydown", (e) => {
             if (e.code === "Enter") {
                 self.navigateTo(self.addressBar.value);
@@ -96,7 +94,12 @@ class AboutBrowser {
         this.extensions = new ExtensionsController(this);
         await this.extensions.setup();
 
+        Extension.chromeApis = await fetch("/extensions/injector/apis.js").then(r=>r.text());
+
         this.reapplyTheme();
+
+
+        this.openTab();
 
         document.querySelector(".container.browserContainer").style.removeProperty("visibility");
     }
