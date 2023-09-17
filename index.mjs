@@ -21,7 +21,7 @@ server.on('request', (req, res) => {
 		res.writeHead(err?.statusCode || 500, {
 			'Content-Type': 'text/plain',
 		});
-		res.end(err?.stack);
+		res.end("Error.");
 	});
 });
 
