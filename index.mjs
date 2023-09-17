@@ -1,18 +1,28 @@
 import { createBareServer } from '@tomphttp/bare-server-node';
-import http from 'http';
-import nodeStatic from 'node-static';
+import { createServer } from 'node:http';
+import { fileURLToPath } from 'node:url';
+import serveStatic from 'serve-static';
 
 const bare = createBareServer('/bare/');
-const serve = new nodeStatic.Server('static/');
-
-const server = http.createServer();
+const serve = serveStatic(
+	fileURLToPath(new URL('static/', import.meta.url)),
+	{
+		fallthrough: false,
+	}
+);
+const server = createServer();
 
 server.on('request', (req, res) => {
 	if (bare.shouldRoute(req)) {
 		bare.routeRequest(req, res);
 		return;
 	}
-	serve.serve(req, res);
+	serve(req, res, (err) => {
+		res.writeHead(err?.statusCode || 500, {
+			'Content-Type': 'text/plain',
+		});
+		res.end(err?.stack);
+	});
 });
 
 server.on('upgrade', (req, socket, head) => {

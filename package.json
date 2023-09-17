@@ -1,22 +1,15 @@
 {
   "dependencies": {
     "@tomphttp/bare-server-node": "^2.0.1",
-    "bare-server-node": "github:tomphttp/bare-server-node",
-    "chrome-tabs": "^5.4.0",
-    "draggabilly": "^3.0.0",
-    "node-static": "^0.7.11"
+    "serve-static": "^1.15.0"
   },
-  "name": "uv-app",
-  "version": "1.0.0",
-  "description": "Ultraviolet instance",
+  "name": "aboutproxy",
+  "version": "dev",
+  "description": "Chrome in your browser.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ."
   },
-  "keywords": [
-    "proxy"
-  ],
   "author": "",
   "license": "GPL-3.0-or-later"
 }
