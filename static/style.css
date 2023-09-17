@@ -214,4 +214,8 @@ a:hover {
   transition: transform 0.25s ease-out;
 }
 
-.aboutbrowser-event-el {display: none};
+.aboutbrowser-event-el {display: none}
+
+.browserControlsContainer {
+  border-bottom: 1px solid color-mix(in srgb, var(--aboutbrowser-frame-bg), var(--aboutbrowser-active-tab-fg) 20%);
+}

@@ -47,80 +47,82 @@
 <body onload="init(document.body);">
   <div class="aboutbrowser-event-el" id="aboutbrowser-event-el"></div>
   <div class="container browserContainer" style="visibility: hidden;">
-    <div class="chrome-tabs chrome-tabs-dark-theme" style="--tab-content-margin: 9px">
-      <div class="chrome-tabs-content-wrapper">
-        <button id="addtab" class="chrome-tabs-btn" data-add-tab style="position:absolute;">
-          <span class="material-symbols-outlined">add</span>
-        </button>
-        <div class="chrome-tabs-content">
+    <div class="browserControlsContainer">
+      <div class="chrome-tabs chrome-tabs-dark-theme" style="--tab-content-margin: 9px">
+        <div class="chrome-tabs-content-wrapper">
+          <button id="addtab" class="chrome-tabs-btn" data-add-tab style="position:absolute;">
+            <span class="material-symbols-outlined">add</span>
+          </button>
+          <div class="chrome-tabs-content">
+          </div>
+          <div class="chrome-tabs-content-after"></div>
         </div>
-        <div class="chrome-tabs-content-after"></div>
-      </div>
-      <div class="chrome-tabs-bottom-bar"></div>
-      <div class="chrome-tabs-bottom-bar chrome-tabs-second-bottom-bar"></div>
-      <!-- Styles to prevent flash after JS initialization -->
-      <style>
-        .chrome-tabs .chrome-tab {
-          width: 258px
-        }
+        <div class="chrome-tabs-bottom-bar"></div>
+        <div class="chrome-tabs-bottom-bar chrome-tabs-second-bottom-bar"></div>
+        <!-- Styles to prevent flash after JS initialization -->
+        <style>
+          .chrome-tabs .chrome-tab {
+            width: 258px
+          }
 
-        .chrome-tabs .chrome-tab:nth-child(1) {
-          transform: translate3d(0px, 0, 0)
-        }
+          .chrome-tabs .chrome-tab:nth-child(1) {
+            transform: translate3d(0px, 0, 0)
+          }
 
-        .chrome-tabs .chrome-tab:nth-child(2) {
-          transform: translate3d(239px, 0, 0)
-        }
-      </style>
-    </div>
-    <div class="navbar">
-      <button class="navbarBtn" id="browserBack" onclick="window.aboutbrowser.handleBack()">
-        <span class="material-symbols-outlined">arrow_back</span>
-      </button>
-      <button class="navbarBtn" id="browserForward" onclick="window.aboutbrowser.handleForward()">
-        <span class="material-symbols-outlined">arrow_forward</span>
-      </button>
-      <button class="navbarBtn" id="browserReload" onclick="window.aboutbrowser.handleReload();">
-        <span class="material-symbols-outlined">refresh</span>
-      </button>
-      <input class="navbarUrl" id="browserUrl" autocomplete="off" aria-label="Browser URL"></input>
-      <div class="bookmarksBtnWrapper">
-        <button class="navbarBtn bookmarksBtn" id="browserBookmarks" onclick="window.aboutbrowser.handleBookmarks();">
-          <span class="material-symbols-outlined">star</span>
+          .chrome-tabs .chrome-tab:nth-child(2) {
+            transform: translate3d(239px, 0, 0)
+          }
+        </style>
+      </div>
+      <div class="navbar">
+        <button class="navbarBtn" id="browserBack" onclick="window.aboutbrowser.handleBack()">
+          <span class="material-symbols-outlined">arrow_back</span>
+        </button>
+        <button class="navbarBtn" id="browserForward" onclick="window.aboutbrowser.handleForward()">
+          <span class="material-symbols-outlined">arrow_forward</span>
+        </button>
+        <button class="navbarBtn" id="browserReload" onclick="window.aboutbrowser.handleReload();">
+          <span class="material-symbols-outlined">refresh</span>
+        </button>
+        <input class="navbarUrl" id="browserUrl" autocomplete="off" aria-label="Browser URL"></input>
+        <div class="bookmarksBtnWrapper">
+          <button class="navbarBtn bookmarksBtn" id="browserBookmarks" onclick="window.aboutbrowser.handleBookmarks();">
+            <span class="material-symbols-outlined">star</span>
+          </button>
+        </div>
+        <button class="navbarBtn" id="browserExtensions" onclick="window.aboutbrowser.handleExtensions();">
+          <span class="material-symbols-outlined">extension</span>
+        </button>
+        <button class="navbarBtn" id="browserSettings" onclick="window.aboutbrowser.handleSettings();">
+          <span class="material-symbols-outlined">more_vert</span>
         </button>
       </div>
-      <button class="navbarBtn" id="browserExtensions" onclick="window.aboutbrowser.handleExtensions();">
-        <span class="material-symbols-outlined">extension</span>
-      </button>
-      <button class="navbarBtn" id="browserSettings" onclick="window.aboutbrowser.handleSettings();">
-        <span class="material-symbols-outlined">more_vert</span>
-      </button>
-    </div>
-    <div>
-      <div class="moreMenu hidden">
-        <button onclick="window.aboutbrowser.handleSettingsCtxMenu('newTab');">
-            <span class="material-symbols-outlined menuIcon">tab</span><span class="title">New tab</span>
-        </button>
-        <div class="sep"></div>
-        <button onclick="window.aboutbrowser.handleSettingsCtxMenu('history');">
-          <span class="material-symbols-outlined menuIcon">history</span><span class="title">History</span>
-        </button>
-        <button onclick="window.aboutbrowser.handleSettingsCtxMenu('downloads');">
-          <span class="material-symbols-outlined menuIcon">download</span><span class="title">Downloads</span>
-        </button>
-        <button onclick="window.aboutbrowser.handleSettingsCtxMenu('bookmarks');">
-          <span class="material-symbols-outlined menuIcon">bookmark</span><span class="title">Bookmarks</span>
-        </button>
-        <button onclick="window.aboutbrowser.handleSettingsCtxMenu('settings');">
-          <span class="material-symbols-outlined menuIcon">settings</span><span class="title">Settings</span>
-        </button>
-        <div class="sep"></div>
-        <button onclick="window.aboutbrowser.handleSettingsCtxMenu('about');">
-          <span class="menuIcon"><span class="placeholder"></span></span><span class="title">About ${name}</span>
-        </button>
+      <div>
+        <div class="moreMenu hidden">
+          <button onclick="window.aboutbrowser.handleSettingsCtxMenu('newTab');">
+              <span class="material-symbols-outlined menuIcon">tab</span><span class="title">New tab</span>
+          </button>
+          <div class="sep"></div>
+          <button onclick="window.aboutbrowser.handleSettingsCtxMenu('history');">
+            <span class="material-symbols-outlined menuIcon">history</span><span class="title">History</span>
+          </button>
+          <button onclick="window.aboutbrowser.handleSettingsCtxMenu('downloads');">
+            <span class="material-symbols-outlined menuIcon">download</span><span class="title">Downloads</span>
+          </button>
+          <button onclick="window.aboutbrowser.handleSettingsCtxMenu('bookmarks');">
+            <span class="material-symbols-outlined menuIcon">bookmark</span><span class="title">Bookmarks</span>
+          </button>
+          <button onclick="window.aboutbrowser.handleSettingsCtxMenu('settings');">
+            <span class="material-symbols-outlined menuIcon">settings</span><span class="title">Settings</span>
+          </button>
+          <div class="sep"></div>
+          <button onclick="window.aboutbrowser.handleSettingsCtxMenu('about');">
+            <span class="menuIcon"><span class="placeholder"></span></span><span class="title">About ${name}</span>
+          </button>
+        </div>
       </div>
+      <div class="bookmarksContainer"></div>
     </div>
-    <div class="bookmarksContainer"></div>
     <div id="tabContents" class="browser"></div>
     <div class="ctxMenuClickChecker" style="display:none;"></div>
   </div>

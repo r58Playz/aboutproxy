@@ -12,11 +12,17 @@ class Bookmarks {
         var bookmarkTitle = document.createTextNode(title);
         node.appendChild(bookmarkTitle);
         this.bookmarkContainer.appendChild(node);
+        if(Array.from(this.bookmarkContainer.childNodes).length > 0) {
+            this.bookmarkContainer.style = "";
+        }
     }
 
     delete(number = 0) {
         var bookmarks = this.bookmarkContainer.childNodes;
         bookmarks[number].remove();
+        if(Array.from(this.bookmarkContainer.childNodes).length == 0) {
+            this.bookmarkContainer.style = "display: none";
+        }
     }
 
     bookmarkHandler() {
@@ -71,6 +77,11 @@ class Bookmarks {
         var localStorageData = this.archive(localStorageKey);
         for (const bookmark of localStorageData) {
             this.add(bookmark.name, bookmark.url, bookmark.favicon);
+        }
+        if(Array.from(this.bookmarkContainer.childNodes).length == 0) {
+            this.bookmarkContainer.style = "display: none";
+        } else {
+            this.bookmarkContainer.style = "";
         }
     }
 
