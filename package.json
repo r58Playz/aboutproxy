@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@tomphttp/bare-server-node": "^1.0.2-beta-readme2",
+    "@tomphttp/bare-server-node": "^2.0.1",
     "bare-server-node": "github:tomphttp/bare-server-node",
     "chrome-tabs": "^5.4.0",
     "draggabilly": "^3.0.0",
