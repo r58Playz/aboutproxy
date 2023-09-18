@@ -6,10 +6,10 @@
 }
 
 .extensionView {
-  margin-top: 2em;
-  margin-left: 150px;
-  margin-right: 150px;
-  flex: 0 1 1400px;
+  margin-top: 1em;
+  flex: 1 1;
+  justify-content: center;
+  padding: 1em;
 }
 
 .extensionViewButtons {

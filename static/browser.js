@@ -52,6 +52,11 @@ class AboutBrowser {
         tabsEl.addEventListener("tabRemove", (event) => {
             console.debug("Tab closed: ", event.detail.tabEl);
             self.closeTab(event.detail);
+            console.debug("Number of tabs left: ", self.chromeTabs.tabEls.length);
+            if(self.chromeTabs.tabEls.length === 0) {
+                document.querySelector(".container.browserContainer").style.setProperty("display", "none");
+                document.querySelector(".goodbyeContainer").style.removeProperty("display");
+            }
         });
 
         document.querySelector("button[data-add-tab]").addEventListener("click", () => {

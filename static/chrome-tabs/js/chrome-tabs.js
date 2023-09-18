@@ -51,7 +51,7 @@ function h(type, inner) { // used by apparently chrome-tabs?
         <div class="chrome-tab-favicon"></div>
         <div class="chrome-tab-title"></div>
         <div class="chrome-tab-drag-handle"></div>
-        <div class="chrome-tab-close"></div>
+        <svg class="chrome-tab-close" xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'><path stroke-linecap='square' stroke-width='1.25' d='M0 0 L8 8 M8 0 L0 8'></path></svg>
       </div>
     </div>
   `
