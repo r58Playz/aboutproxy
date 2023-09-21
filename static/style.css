@@ -233,3 +233,85 @@ a:hover {
   background-color: var(--aboutbrowser-toolbar-bg);
   color: var(--aboutbrowser-active-tab-fg);
 }
+
+.popupHolder {
+  position: absolute;
+}
+
+.popup {
+  position: absolute;
+  background-color: var(--aboutbrowser-ui-bg);
+  color: var(--aboutbrowser-ui-fg) !important;
+  left: calc(50% - 225px);
+  width: 450px;
+  padding: 1em;
+  border-radius: 4px;
+  min-height: 144px;
+  max-height: 320px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5em;
+  border: 1px solid color-mix(in srgb, var(--aboutbrowser-frame-bg), var(--aboutbrowser-active-tab-fg) 40%);
+  border-top: 1px solid transparent;
+}
+
+.popup .title {
+  font-size: 18px;
+}
+
+.popup .content {
+  flex: 1;
+  overflow-y: scroll;
+  overflow-wrap: break-word;
+}
+
+.popup .buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  column-gap: 1em;
+}
+
+.popup .buttons button {
+  width: 64px;
+  height: 32px;
+  border: 1px solid var(--aboutbrowser-ui-accent);
+  border-radius: 4px;
+  color: var(--aboutbrowser-ui-accent);
+  background-color: var(--aboutbrowser-ui-bg);
+  transition: background-color 0.15s linear, border-color 0.15s linear;
+}
+
+.popup .buttons button:hover {
+  background-color: color-mix(in srgb, var(--aboutbrowser-ui-bg), var(--aboutbrowser-ui-accent) 10%);
+}
+.popup .buttons button:active {
+  background-color: color-mix(in srgb, var(--aboutbrowser-ui-bg), var(--aboutbrowser-ui-accent) 20%);
+}
+
+.popup .buttons button.preferred {
+  background-color: var(--aboutbrowser-ui-accent);
+  color: var(--aboutbrowser-ui-bg);
+}
+
+.popup .buttons button.preferred:hover {
+  border-color:  color-mix(in srgb, var(--aboutbrowser-ui-accent), var(--aboutbrowser-ui-bg) 10%);
+  background-color: color-mix(in srgb, var(--aboutbrowser-ui-accent), var(--aboutbrowser-ui-bg) 10%);
+}
+.popup .buttons button.preferred:active {
+  border-color: color-mix(in srgb, var(--aboutbrowser-ui-accent), var(--aboutbrowser-ui-bg) 20%);
+  background-color: color-mix(in srgb, var(--aboutbrowser-ui-accent), var(--aboutbrowser-ui-bg) 20%);
+}
+
+.popup.prompt {
+  min-height: calc(144px + 32px);
+  max-height: calc(320px + 32px);
+}
+
+.popup input {
+  background-color: var(--aboutbrowser-ui-layer1-bg);
+  color: var(--aboutbrowser-ui-layer1-fg);
+  border: 1px solid var(--aboutbrowser-ui-accent);
+  border-radius: 2px;
+  flex: 0 0 32px;
+}
