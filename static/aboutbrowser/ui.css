@@ -65,6 +65,7 @@ span {
     flex-direction: row;
     justify-content: center;
     flex: 1;
+    visibility: hidden;
 }
 
 .content {
