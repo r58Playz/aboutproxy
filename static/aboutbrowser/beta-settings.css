@@ -1,0 +1,28 @@
+.actualContent {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 1em;
+}
+
+.expand {flex:1}
+
+.settingsView {
+  margin: 1em;
+  background-color: var(--aboutbrowser-ui-layer1-bg);
+  color: var(--aboutbrowser-ui-layer1-fg);
+  flex: 0 1 640px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  .setting {
+    display: flex;
+    flex-direction: row;
+    padding: 1em;
+    /* i would use row-gap but i want a line separating each thing */
+    border-bottom: 1px solid color-mix(in srgb, var(--aboutbrowser-ui-layer1-bg), var(--aboutbrowser-ui-layer1-fg) 20%);
+  }
+  .setting:last-child {
+    border-bottom: none;
+  }
+}

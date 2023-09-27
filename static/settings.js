@@ -11,6 +11,28 @@ class Settings {
         };
         this.settings = JSON.parse(localStorage.getItem("settings"));
         if(this.settings == null) this.settings = {};
+        // dynamic does NOT like iframes and... yeah
+        if(this.getSetting("currentProxyId") === "Dynamic") this.resetSetting("currentProxyId");
+        this.settingsMetadata = [
+            {
+                id: "currentProxyId",
+                name: "Proxy backend to use",
+                type: "dropdown",
+                values: [
+                    ["UV", "Ultraviolet"]
+                ]
+            },
+            {
+                id: "searchEngineUrl",
+                name: "Search engine URL",
+                type: "text"
+            },
+            {
+                id: "startUrl",
+                name: "New Tab URL",
+                type: "text"
+            }
+        ];
     }
 
     getSetting(setting) {
