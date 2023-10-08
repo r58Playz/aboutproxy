@@ -1,103 +1,54 @@
-var startUrlInput, startUrlStatus;
-var searchEngineUrlInput, searchEngineUrlStatus;
-var proxyInput, proxyStatus;
+const dropdownSetting = `<div class="setting dropdown"><span></span><div class="expand"></div><div class="control"><select name="setting"></select></div></div>`;
+const textSetting = `<div class="setting text"><span></span><div class="expand"></div><div class="control"><input type="text"/></div></div>`; 
+const switchSetting = `<div class="setting switch"><span></span><div class="expand"></div><div class="control"><input type="checkbox" /></div></div>`;
 
-function init() {
-    var startUrlSetting = document.querySelector("settings setting#startUrl");
-    startUrlInput = startUrlSetting.querySelector("input");
-    startUrlStatus = startUrlSetting.querySelector("settingStatus");
-    startUrlInput.addEventListener("input", () => {
-        console.debug("startUrl value = " + startUrlInput.value)
-        if (startUrlInput.value == "") {
-            return;
-        }
-        sendMessage({
-            type: "setSetting",
-            setting: "startUrl",
-            value: startUrlInput.value
-        });
-    })
-
-    var searchEngineUrlSetting = document.querySelector("settings setting#searchEngineUrl");
-    searchEngineUrlInput = searchEngineUrlSetting.querySelector("input");
-    searchEngineUrlStatus = searchEngineUrlSetting.querySelector("settingStatus");
-    searchEngineUrlInput.addEventListener("input", () => {
-        console.debug("searchEngineUrl value = " + searchEngineUrlInput.value)
-        if (searchEngineUrlInput.value == "") {
-            return;
-        }
-        sendMessage({
-            type: "setSetting",
-            setting: "searchEngineUrl",
-            value: searchEngineUrlInput.value
-        });
-    })
-
-    var proxySetting = document.querySelector("settings setting#proxy");
-    proxyInput = proxySetting.querySelector("#proxyselector");
-    proxyStatus = proxySetting.querySelector("settingStatus");
-    proxyInput.addEventListener("change", () => {
-        console.debug("proxy value = " + proxyInput.value);
-        sendMessage({
-            type: "setSetting",
-            setting: "currentProxyId",
-            value: proxyInput.value
-        });
-    })
-
-    getAllSettings();
-}
-
-function getAllSettings() {
-    sendMessage({
-        type: "getSetting",
-        setting: "startUrl"
-    });
-    sendMessage({
-        type: "getSetting",
-        setting: "searchEngineUrl"
-    });
-    sendMessage({
-        type: "getSetting",
-        setting: "currentProxyId"
-    });
-}
-
-function resetAllSettings() {
-    console.debug("resetting all settings...");
-    sendMessage({
-        type: "resetSettings"
-    });
-    setTimeout(() => {
-        getAllSettings();
-    }, 100);
-}
-
-function settingSetCallback(msg) {
-    if (msg.setting == "startUrl") {
-        startUrlStatus.innerText = "Saved!";
-        setTimeout(() => {
-            startUrlStatus.innerText = "";
-        }, 1000)
-    } else if (msg.setting == "searchEngineUrl") {
-        searchEngineUrlStatus.innerText = "Saved!";
-        setTimeout(() => {
-            searchEngineUrlStatus.innerText = "";
-        }, 1000)
-    } else if (msg.setting == "currentProxyId") {
-        proxyStatus.innerText = "Saved!";
-        setTimeout(() => {
-            proxyStatus.innerText = "";
-        }, 1000)
+function settingsMetadataCallback(msg) {
+  const data = msg.metadata;
+  const values = msg.values;
+  const settings = document.querySelector(".settingsView");
+  settings.innerHTML='';
+  for(const setting of data) {
+    let node = null;
+    switch (setting.type) {
+      case "text":
+        node = htmlToElement(textSetting);
+        break;
+      case "dropdown":
+        node = htmlToElement(dropdownSetting);
+        break;
+      default:
+        console.error(`invalid setting type ${setting.type}`);
+        continue;
     }
+    node.id = setting.id;
+    node.querySelector("span").innerText = setting.name;
+    switch (setting.type) {
+      case "text":
+        const textNode = node.querySelector("input");
+        textNode.value = msg.values[setting.id];
+        textNode.addEventListener("input", () => {
+          if(textNode.value === "") return;
+          sendMessage({type: "setSetting", setting: setting.id, value: textNode.value});
+        })
+        break;
+      case "dropdown":
+        const dropdownNode = node.querySelector("select");
+        for (const option of setting.values) {
+          const el = document.createElement("option");
+          el.value = option[0];
+          el.innerText = option[1];
+          dropdownNode.appendChild(el);
+        }
+        dropdownNode.value = msg.values[setting.id];
+        dropdownNode.addEventListener("change", ()=>{
+          sendMessage({type: "setSetting", setting: setting.id, value: dropdownNode.value});
+        })
+        break;
+      default:
+        break;
+    }
+    settings.appendChild(node);
+  }
 }
 
-function settingValueCallback(msg) {
-    if (msg.setting == "startUrl") {
-        startUrlInput.value = msg.value;
-    } else if (msg.setting == "searchEngineUrl") {
-        searchEngineUrlInput.value = msg.value;
-    } else if (msg.setting == "currentProxyId") {
-        proxyInput.value = msg.value;
-    }
-}
+sendMessage({type: "getSettingsMetadata"});

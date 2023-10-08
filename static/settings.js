@@ -35,6 +35,10 @@ class Settings {
         ];
     }
 
+    getSettingsMetadataValues() {
+        return Object.fromEntries(this.settingsMetadata.map(setting=>[setting.id, this.getSetting(setting.id)]));
+    }
+
     getSetting(setting) {
         var value = this.settings[setting];
         if(value != null) {

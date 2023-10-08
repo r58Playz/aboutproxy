@@ -28,6 +28,9 @@ window.addEventListener("message", (event) => {
     } else if (msg.type === "branding") {
         console.debug("recieved branding");
         brandingCallback(msg);
+    } else if (msg.type === "settingsMetadata") {
+        console.debug("recieved settingsMetadata");
+        settingsMetadataCallback(msg);
     }
 })
 
@@ -38,3 +41,4 @@ function historyDomainViewCountsCallback() {}
 function reloadExtensionsCallback() {}
 function extensionListCallback() {}
 function brandingCallback() {}
+function settingsMetadataCallback() {}

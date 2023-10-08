@@ -67,5 +67,8 @@ window.addEventListener("message", (event) => {
     } else if (msg.type === "getBranding") {
         console.debug("recieved getBranding");
         sendMessage({ type: "branding", branding: window.aboutbrowser.branding }, sender);
+    } else if (msg.type === "getSettingsMetadata") {
+        console.debug("recieved getSettingsMetadata");
+        sendMessage({ type: "settingsMetadata", metadata: window.aboutbrowser.settings.settingsMetadata, values: window.aboutbrowser.settings.getSettingsMetadataValues() }, sender);
     }
 })

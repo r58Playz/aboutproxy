@@ -5,60 +5,43 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>Settings</title>
-    <link href="/roboto.css" rel+"stylesheet" type="text/css" />
+    <link href="/roboto.css" rel="stylesheet" type="text/css" />
     <link href="ui.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="settings.css">
+    <link href="settings.css" rel="stylesheet" type="text/css" />
+    <script src="/helpers.js"></script>
     <script src="/browser-api-tab.js"></script>
-    <script src="branding.js"></script>
-    <script src="settings.js"></script>
 </head>
 
-<body onload="init();">
-    <div class="container containerPadding">
-        <h1>${name} Settings</h1>
-        <settings>
-            <setting id="startUrl">
-                <settingTitle>
-                    <div>
-                        <div class="pleasecenter">Start URL: </div>
-                    </div> <input type="text">
-                </settingTitle>
-                Start URL used when creating a new tab.
-                <settingStatus></settingStatus>
-                <hr>
-            </setting>
-            <setting id="searchEngineUrl">
-                <settingTitle>
-                    <div>
-                        <div class="pleasecenter">Search Engine URL: </div>
-                    </div> <input type="text">
-                </settingTitle>
-                Search Engine URL used when searching.
-                <settingStatus></settingStatus>
-                <hr>
-            </setting>
-            <setting id="proxy">
-                <settingTitle>
-                    <div>
-                        <div class="pleasecenter">Proxy: </div>
+<body>
+    <div class="container">
+        <div class="topBar">
+            <img class="icon" src="/aboutbrowser/darkfavi.png"></img>
+            <div class="title">Settings</div>
+            <div class="searchContainer"><input class="search" placeholder="Don't search settings"></input></div>
+        </div>
+        <div class="content">
+            <div class="actualContent">
+                <div class="settingsView">
+                    <div class="setting dropdown">
+                        <span>Example setting dropdown</span>
+                        <div class="expand"></div>
+                        <div class="control"><select name="example"><option>example0</option><option>example1</option></select></div>
                     </div>
-                    <select name="Proxy" id="proxyselector">
-                        <option value="UV">Ultraviolet</option>
-                    </select>
-                </settingTitle>
-                Proxy used to proxy URLs.
-                <settingStatus></settingStatus>
-                <hr>
-            </setting>
-            <setting id="resetSettings">
-                <settingTitle>
-                    <button onclick="resetAllSettings();">RESET ALL SETTINGS</button>
-                </settingTitle>
-                RESET ALL settings to defaults.
-                <hr>
-            </setting>
-        </settings>
+                    <div class="setting text">
+                        <span>Example setting text</span>
+                        <div class="expand"></div>
+                        <div class="control"><input type="text" /></div>
+                    </div>
+                    <div class="setting switch">
+                        <span>Example setting switch</span>
+                        <div class="expand"></div>
+                        <div class="control"><input type="checkbox" /></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <script src="settings.js"></script>
 </body>
 
 </html>
