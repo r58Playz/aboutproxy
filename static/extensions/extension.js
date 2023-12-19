@@ -59,14 +59,14 @@ class Extension {
       toExtractArr.push({ path: actualPath, dir: file.dir, file: file })
     });
 
-    await fs.mkdir("/"+id);
+    await fs.mkdir("/extension/"+id);
 
     for(const entry of toExtractArr) {
       if(entry.dir) {
-        await fs.mkdir(entry.path);
+        await fs.mkdir("/extension/" + entry.path);
         continue;
       }
-      await fs.writeFile(entry.path, Filer.Buffer.from(await entry.file.async('arraybuffer')));
+      await fs.writeFile("/extension/" + entry.path, Filer.Buffer.from(await entry.file.async('arraybuffer')));
     }
   }
 
@@ -78,7 +78,7 @@ class Extension {
 
     await Extension.extractBuffer(buffer, fs, id);
 
-    this.manifest = JSON.parse(await this.resources.fs.readFile("/"+id+"/manifest.json", 'utf8'));
+    this.manifest = JSON.parse(await this.resources.fs.readFile("/extension/"+id+"/manifest.json", 'utf8'));
     this.id = id;
 
     return id;
@@ -93,7 +93,7 @@ class Extension {
     // Now we extract the CRX to it's respective folder on the fs
     await Extension.extractBuffer(buffer, fs, id);
 
-    this.manifest = JSON.parse(await this.resources.fs.readFile("/"+id+"/manifest.json", 'utf8'));
+    this.manifest = JSON.parse(await this.resources.fs.readFile("/extension/"+id+"/manifest.json", 'utf8'));
     this.id = id;
 
     return id;
@@ -101,7 +101,7 @@ class Extension {
 
   // use when extension has already been installed via `readFromCrxBlob`
   async readFromFilerFs(id) {
-    this.manifest = JSON.parse(await this.resources.fs.readFile("/"+id+"/manifest.json", 'utf8'));
+    this.manifest = JSON.parse(await this.resources.fs.readFile("/extension/"+id+"/manifest.json", 'utf8'));
     this.id = id;
   }
 

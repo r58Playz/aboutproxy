@@ -10,14 +10,18 @@ class ExtensionResources {
     // least confusing code
     // it's what? 2 promises nested? no 3
     // 1
+    // As a gift from rafflesia, here is another callback
     return new Promise((resolve, reject) => {
       let filesystem = new Filer.FileSystem({ name: fsName }, (err, fs) => {
         if(err) reject(err);
-        let cls = new ExtensionResources(Filer.fs);
-        cls.setUpSw().then(
-          ()=>{resolve(cls)},
-          (val)=>{reject(val)}
-        );
+        (new Filer.fs.Shell()).mkdirp("/extension", () => {
+          let cls = new ExtensionResources(Filer.fs);
+          cls.setUpSw().then(
+            ()=>{resolve(cls)},
+            (val)=>{reject(val)}
+          );
+        })
+
       })
     });
   }
