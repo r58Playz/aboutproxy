@@ -58,12 +58,21 @@ class Extension {
       let actualPath = '/' + id + '/' + relativePath;
       toExtractArr.push({ path: actualPath, dir: file.dir, file: file })
     });
-
-    await fs.mkdir("/extension/"+id);
+    try {
+      await fs.mkdir("/extension/"+id);
+    } catch (e) {
+      // Folder already exists, dont worry about it
+    }
+    
 
     for(const entry of toExtractArr) {
       if(entry.dir) {
-        await fs.mkdir("/extension/" + entry.path);
+        try {
+          await fs.mkdir("/extension/" + entry.path);
+        } catch (e) {
+            // Folder already exists, dont worry about it
+        }
+        
         continue;
       }
       await fs.writeFile("/extension/" + entry.path, Filer.Buffer.from(await entry.file.async('arraybuffer')));
