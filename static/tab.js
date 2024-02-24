@@ -9,7 +9,6 @@ class Tab {
         this.iframe.title = "Tab Contents";
         this.iframe.classList.add("browserTabContents");
         this.iframe.style.setProperty("display", "none");
-        var self = this;
         this.browser.iFrameContainer.appendChild(this.iframe);
 
         this.currentUrl = '';
@@ -34,7 +33,7 @@ class Tab {
                 self.handleOnload();
             });
             self.iframe.contentWindow.addEventListener("load", () => { self.browser.extensions.injectLoaded(self.currentUrl, self.iframe) });
-            self.iframe.contentWindow.addEventListener("unload", () => { self.handleUnload() });
+            self.iframe.contentWindow.addEventListener("pagehide", () => { self.handleUnload() }); // s/unload/pagehide/
         }, 0);
     }
 
