@@ -60,6 +60,8 @@ body {
   color: var(--aboutbrowser-toolbar-button-fg);
   height: 2.5em;
   width: 2.5em;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .navbarBtn:hover {
@@ -209,6 +211,8 @@ a:hover {
   display: flex;
   align-items: center;
   justify-content: center;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 #addtab.transition {
