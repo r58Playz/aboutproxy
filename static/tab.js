@@ -15,6 +15,7 @@ class Tab {
         this.currentTitle = '';
         this.currentFavi = '';
         this.isActive = false;
+        this.isDevToolsActive = false;
         this.handleUnload();
 
         if(!background) this.browser.chromeTabs.setCurrentTab(this.tabEl);
@@ -135,6 +136,48 @@ class Tab {
     handleClose() {
         this.iframe.remove();
     }
+    async handleDevTools() {
+        const iframeWindow = this.iframe.contentWindow;
+        let state = this.isDevToolsActive;
+        if (!iframeWindow.eruda) {
+          iframeWindow.eval(await (await fetch ('/libs/eruda.js')).text())
+          this.isDevToolsActive = true;
+          state = true;
+        }
+    
+        if (!iframeWindow.eruda._isInit) iframeWindow.eruda.init();
+    
+        const btnBk = iframeWindow.eruda._entryBtn._$el[0].cloneNode(true);
+        btnBk.style.display = "none";
+        iframeWindow.eruda._entryBtn._$el[0].parentElement.replaceChild(
+          btnBk,
+          iframeWindow.eruda._entryBtn._$el[0]
+        );
+        btnBk.onclick = () => {
+          btnBk.style.display = "none";
+          iframeWindow.eruda.hide();
+        };
+        iframeWindow.eruda._entryBtn._$el[0] = btnBk;
+    
+        if (state) {
+          btnBk.style.display = "flex";
+          iframeWindow.eruda.show();
+        } else {
+          if (
+            state !== undefined ||
+            iframeWindow.eruda._shadowRoot.querySelector(".eruda-dev-tools").style
+              .display !== "none"
+          ) {
+            this.isDevToolsActive = false;
+            btnBk.style.display = "none";
+            iframeWindow.eruda.hide();
+          } else {
+            btnBk.style.display = "flex";
+            iframeWindow.eruda.show();
+          }
+        }
+    }
+    
 
     setBrowserAttributes() {
         this.browser.addressBar.value = this.currentUrl;
