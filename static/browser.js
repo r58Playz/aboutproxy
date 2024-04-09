@@ -190,6 +190,9 @@ class AboutBrowser {
             case "bookmarks":
                 this.openTab(this.resourcesProtocol + "bookmarks");
                 break;
+            case "devtools":
+                this.handleDevTools()
+                break;
             case "settings":
                 this.openTab(this.resourcesProtocol + "settings");
                 break;
@@ -201,6 +204,9 @@ class AboutBrowser {
 
     handleBack() {
         this.activeTab.handleHistoryBack();
+    }
+    handleDevTools() {
+        this.activeTab.handleDevTools();
     }
 
     handleForward() {
