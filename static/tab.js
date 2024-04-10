@@ -158,6 +158,7 @@ class Tab {
           iframeWindow.eruda.hide();
         };
         iframeWindow.eruda._entryBtn._$el[0] = btnBk;
+        btnBk.setAttribute("style", "display: flex; position: fixed; bottom: 0; right: 0; margin-right: 20px; margin-bottom: 20px;")
     
         if (state) {
           btnBk.style.display = "flex";
