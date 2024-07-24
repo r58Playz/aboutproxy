@@ -85,7 +85,7 @@ class AboutBrowser {
         // if(probeForChrome()) unfuckChrome();
         // sadly got removed
 
-        this.bareClient = new Ultraviolet.BareClient(`${window.location.origin}/bare/`)
+        this.bareClient = new Ultraviolet.BareClient()
 
         this.eventsInit();
 
